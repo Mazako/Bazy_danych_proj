@@ -17,3 +17,12 @@ wywołania kodu SQL'owego
 
 Lepiej tak, niż kleić wieżę babel 1000 linijkową w jednym pliku, do której później nikt nie bedzie chciał zaglądać
 
+## PgAdmin4
+Do compose'a dołączono pgadmina 4. połączyć się możemy w przeglądarce wpisując
+```console
+http://localhost:8888
+```
+login: admin@gmail.com \
+haslo: admin
+
+Łącząc się do bazy w polu Host name/address wpisujemy: host.docker.internal
