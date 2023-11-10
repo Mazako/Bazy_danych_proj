@@ -8,7 +8,7 @@ docker compose up
 
 ## Skrypty i w ogóle
 Z racji tego, że mamy podejście base-first, musimy już w tym dockerze mieć zdefinowane wszystkie skrypty sql. 
-Żeby to było jakkolwiek przejrzyste, tworzymy skrypty w katalogu DDL i DML, a do pliku init.db doklejamy linikę
+Żeby to było jakkolwiek przejrzyste, tworzymy skrypty w katalogu DDL i DML, a do pliku init.sql doklejamy linikę
 wywołania kodu SQL'owego
 
 ```console
