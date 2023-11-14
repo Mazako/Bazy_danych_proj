@@ -1,0 +1,21 @@
+- Data wyjazdu musi być wczesniej niz przyjazdu
+- Data rezerwacji musi byc przed data wyjazdu
+- cena musi byc >0
+- gwiazdki (1-5)
+- standard pokoju (1-3)
+
+Triggery:
+- pokoj w tabeli pokoje_wycieczka musi byc z kurortu do ktorego jest wycieczka
+- pokoj w tabeli umowa_pokoje musi byc w tabeli pokoje_wycieczka odpowiadajacej wycieczki
+- kaskadowe usuwanie wycieczek
+- kaskadowe usuwanie kurortow
+- kaskadowe usuwanie uzytkownika
+- pokoj w tablei pokoje_wycieczka musi być możliwy do dodania (tzn w tym okresie nie jest już zajęty pokój)
+
+Procedury:
+- pageowanie kurortow
+- pageowanie wycieczek
+- pageowanie pokoi
+- wyswietlenie dostepnych pokoi w danym terminie
+
+WIDOKI: ?
