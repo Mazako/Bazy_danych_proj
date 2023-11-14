@@ -1,68 +1,70 @@
 -- Basic DDL script for create tables, indexes and relations
+-- enums
+CREATE TYPE user_type AS ENUM ('USER', 'ADMIN');
 -- tables
 CREATE TABLE contract (
-  id                SERIAL NOT NULL,
+  id                SERIAL8 NOT NULL,
   reservation_date  date NOT NULL,
   status            varchar(20) NOT NULL,
-  pearson_count     int4 NOT NULL,
-  user_id           int4 NOT NULL,
-  tour_id           int4 NOT NULL,
+  pearson_count     int2 NOT NULL CHECK (pearson_count > 0),
+  user_id           int8 NOT NULL,
+  tour_id           int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE notification (
-  id           SERIAL NOT NULL,
+  id           SERIAL8 NOT NULL,
   content      varchar(100) NOT NULL,
   type         varchar(35) NOT NULL,
-  contract_id  int4 NOT NULL,
+  contract_id  int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE tour (
-  id             SERIAL NOT NULL,
+  id             SERIAL8 NOT NULL,
   name           varchar(255) NOT NULL,
-  price          int4 NOT NULL,
+  price          real NOT NULL CHECK ( price > 0.0 ),
   departure_date date NOT NULL,
-  return_date    date NOT NULL,
+  return_date    date NOT NULL CHECK (return_date > departure_date),
   description    varchar(1000),
-  facility_id    int4 NOT NULL,
-  resort_id      int4 NOT NULL,
+  facility_id    int8 NOT NULL,
+  resort_id      int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE resort (
-  id         SERIAL NOT NULL,
-  name       int4 NOT NULL,
-  address_id int4 NOT NULL,
+  id         SERIAL8 NOT NULL,
+  name       varchar(100) NOT NULL,
+  address_id int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE app_user (
-  id                SERIAL NOT NULL,
+  id                SERIAL8 NOT NULL,
   name              varchar(20) NOT NULL,
   last_name         varchar(50) NOT NULL,
   mail              varchar(255) NOT NULL,
   password_hash     char(60) NOT NULL,
-  type              varchar(9) NOT NULL,
+  type              user_type NOT NULL,
   creation_date     date NOT NULL,
   phone             varchar(11),
   PRIMARY KEY (id));
 CREATE TABLE opinion (
-  id              SERIAL NOT NULL,
-  rate            int4 NOT NULL,
+  id              SERIAL8 NOT NULL,
+  rate            int2 NOT NULL CHECK ( rate BETWEEN 0 AND 5),
   comment         varchar(1000),
   send_date       date NOT NULL,
-  resort_id       int4 NOT NULL,
-  user_id         int4 NOT NULL,
+  resort_id       int8 NOT NULL,
+  user_id         int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE address (
-  id                  SERIAL NOT NULL,
+  id                  SERIAL8 NOT NULL,
   street              varchar(10) NOT NULL,
   building_number     varchar(15) NOT NULL,
   house_number        int4,
-  city_id            int4 NOT NULL,
+  city_id             int8 NOT NULL,
   PRIMARY KEY (id));
 CREATE TABLE city (
-  id               SERIAL NOT NULL,
+  id               SERIAL8 NOT NULL,
   country          varchar(30) NOT NULL,
   name             varchar(50) NOT NULL,
   latitude         varchar(12),
   longitude        varchar(12),
   PRIMARY KEY (id));
 CREATE TABLE facility (
-  id                  SERIAL NOT NULL,
+  id                  SERIAL8 NOT NULL,
   wifi                bool NOT NULL,
   swimming_pool       bool NOT NULL,
   air_conditioning    bool NOT NULL,
@@ -75,21 +77,21 @@ CREATE TABLE facility (
   all_time_reception  bool NOT NULL,
   PRIMARY KEY (ID));
 CREATE TABLE room (
-  id            SERIAL NOT NULL,
-  person_count  smallint NOT NULL,
+  id            SERIAL8 NOT NULL,
+  person_count  int2 NOT NULL CHECK ( person_count > 0 ),
   name          varchar(255) NOT NULL,
-  standard      smallint NOT NULL,
-  resort_id     int NOT NULL,
+  standard      int2 NOT NULL CHECK ( standard BETWEEN 0 AND 3),
+  resort_id     int8 NOT NULL,
   PRIMARY KEY (ID));
 CREATE TABLE room_tour (
-  id          SERIAL NOT NULL,
-  room_id     int4 NOT NULL,
-  tour_id     int4 NOT NULL,
+  id          SERIAL8 NOT NULL,
+  room_id     int8 NOT NULL,
+  tour_id     int8 NOT NULL,
   PRIMARY KEY (ID));
 CREATE TABLE room_contract (
-  id                SERIAL NOT NULL,
-  room_id           int4 NOT NULL,
-  contract_id       int4 NOT NULL,
+  id                SERIAL8 NOT NULL,
+  room_id           int8 NOT NULL,
+  contract_id       int8 NOT NULL,
   PRIMARY KEY (ID));
 
 -- INDEXES
@@ -167,23 +169,23 @@ CREATE INDEX room_tour_tour_id
 
 CREATE INDEX room_contract_id
   ON room_contract (id);
-CREATE INDEX room_contract_id
+CREATE INDEX room_contract_contact_id
   ON room_contract (contract_id);
 CREATE INDEX room_room_id
   ON room_contract (room_id);
 
 -- Foreign keys
-ALTER TABLE notification ADD CONSTRAINT FKNotification87969 FOREIGN KEY (contract_id) REFERENCES contract (id);
+ALTER TABLE notification ADD CONSTRAINT FKNotification87969 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE;
 ALTER TABLE address ADD CONSTRAINT FKAddress387723 FOREIGN KEY (city_id) REFERENCES city (id);
 ALTER TABLE resort ADD CONSTRAINT FKResort585514 FOREIGN KEY (address_id) REFERENCES address (id);
-ALTER TABLE opinion ADD CONSTRAINT FKOpinion963868 FOREIGN KEY (resort_id) REFERENCES resort (id);
-ALTER TABLE contract ADD CONSTRAINT FKContract29695 FOREIGN KEY (user_id) REFERENCES app_user (id);
-ALTER TABLE opinion ADD CONSTRAINT FKOpinion944050 FOREIGN KEY (user_id) REFERENCES app_user (id);
-ALTER TABLE room ADD CONSTRAINT FKRoom672956 FOREIGN KEY (resort_id) REFERENCES resort (id);
+ALTER TABLE opinion ADD CONSTRAINT FKOpinion963868 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE;
+ALTER TABLE contract ADD CONSTRAINT FKContract29695 FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE;
+ALTER TABLE opinion ADD CONSTRAINT FKOpinion944050 FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE;
+ALTER TABLE room ADD CONSTRAINT FKRoom672956 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE;
 ALTER TABLE tour ADD CONSTRAINT FKTour963567 FOREIGN KEY (facility_id) REFERENCES facility (id);
-ALTER TABLE room_tour ADD CONSTRAINT FKRoom_tour741677 FOREIGN KEY (room_id) REFERENCES room (id);
-ALTER TABLE room_tour ADD CONSTRAINT FKRoom_tour151885 FOREIGN KEY (tour_id) REFERENCES tour (id);
-ALTER TABLE contract ADD CONSTRAINT FKContract551734 FOREIGN KEY (tour_id) REFERENCES tour (id);
-ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract200774 FOREIGN KEY (room_id) REFERENCES room (id);
-ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract959389 FOREIGN KEY (contract_id) REFERENCES contract (id);
-ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES resort (id);
+ALTER TABLE room_tour ADD CONSTRAINT FKRoom_tour741677 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE;
+ALTER TABLE room_tour ADD CONSTRAINT FKRoom_tour151885 FOREIGN KEY (tour_id) REFERENCES tour (id) ON DELETE CASCADE;
+ALTER TABLE contract ADD CONSTRAINT FKContract551734 FOREIGN KEY (tour_id) REFERENCES tour (id) ON DELETE CASCADE ;
+ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract200774 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE ;
+ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract959389 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE ;
+ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE ;
