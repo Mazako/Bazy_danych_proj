@@ -30,6 +30,7 @@ CREATE TABLE resort (
   id         SERIAL8 NOT NULL,
   name       varchar(100) NOT NULL,
   address_id int8 NOT NULL,
+  avg_opinion real,
   PRIMARY KEY (id));
 CREATE TABLE app_user (
   id                SERIAL8 NOT NULL,
@@ -46,8 +47,7 @@ CREATE TABLE opinion (
   rate            int2 NOT NULL CHECK ( rate BETWEEN 0 AND 5),
   comment         varchar(1000),
   send_date       date NOT NULL,
-  resort_id       int8 NOT NULL,
-  user_id         int8 NOT NULL,
+  contract_id     int8,
   PRIMARY KEY (id));
 CREATE TABLE address (
   id                  SERIAL8 NOT NULL,
@@ -124,6 +124,9 @@ CREATE UNIQUE INDEX resort_id
   ON resort (id);
 CREATE INDEX resort_address_id
   ON resort (address_id);
+CREATE INDEX resort_avg_opinion
+  ON resort (avg_opinion);
+
 CREATE UNIQUE INDEX app_user_id
   ON app_user (id);
 CREATE UNIQUE INDEX app_user_mail
@@ -136,9 +139,7 @@ CREATE UNIQUE INDEX opinion_id
 CREATE INDEX opinion_send_date
   ON opinion (send_date);
 CREATE INDEX opinion_resort_id
-  ON opinion (resort_id);
-CREATE INDEX opinion_user_id
-  ON opinion (user_id);
+  ON opinion (contract_id);
 
 CREATE UNIQUE INDEX address_id
   ON address (id);
@@ -178,9 +179,7 @@ CREATE INDEX room_room_id
 ALTER TABLE notification ADD CONSTRAINT FKNotification87969 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE;
 ALTER TABLE address ADD CONSTRAINT FKAddress387723 FOREIGN KEY (city_id) REFERENCES city (id);
 ALTER TABLE resort ADD CONSTRAINT FKResort585514 FOREIGN KEY (address_id) REFERENCES address (id);
-ALTER TABLE opinion ADD CONSTRAINT FKOpinion963868 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE;
 ALTER TABLE contract ADD CONSTRAINT FKContract29695 FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE;
-ALTER TABLE opinion ADD CONSTRAINT FKOpinion944050 FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE;
 ALTER TABLE room ADD CONSTRAINT FKRoom672956 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE;
 ALTER TABLE tour ADD CONSTRAINT FKTour963567 FOREIGN KEY (facility_id) REFERENCES facility (id);
 ALTER TABLE room_tour ADD CONSTRAINT FKRoom_tour741677 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE;
@@ -189,3 +188,4 @@ ALTER TABLE contract ADD CONSTRAINT FKContract551734 FOREIGN KEY (tour_id) REFER
 ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract200774 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE ;
 ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract959389 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE ;
 ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE ;
+ALTER TABLE opinion ADD CONSTRAINT FK_OPINION_CONTRACT FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE;

@@ -5,7 +5,7 @@ INSERT INTO address
 VALUES(1, 'Legnicka', '12', 104, 1);
 
 INSERT INTO resort
-VALUES (1, 'Sky tower weekend', 1);
+VALUES (1, 'Sky tower weekend', 1, 3.4);
 
 INSERT INTO facility
 VALUES (1, true, true, true, true, true, true, true, true, true, true);
@@ -26,4 +26,4 @@ INSERT INTO notification
 VALUES (1, 'jazda', 'xd', 1);
 
 INSERT INTO opinion
-VALUES (1, 1, 'Ale chujoza', '2023-12-23', 1, 1);
+VALUES (1, 1, 'Ale chujoza', '2023-12-23', 1);

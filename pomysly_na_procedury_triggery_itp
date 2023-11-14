@@ -35,7 +35,7 @@ WIDOKI:
 - Widok Adres + miasto
 - Widok kurort - adres - miasto
 - Widok Powiadomienia + uzytkownik
-- Widok Opinia + uzytkownik
+- Widok Opinia + uzytkownik + kurort
 - Widok sami userzy
 - Widok sami admini
 - Widok aktywne wycieczki (patrz to na dole)
