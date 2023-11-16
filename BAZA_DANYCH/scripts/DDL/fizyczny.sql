@@ -47,7 +47,7 @@ CREATE TABLE opinion (
   rate            int2 NOT NULL CHECK ( rate BETWEEN 0 AND 5),
   comment         varchar(1000),
   send_date       date NOT NULL,
-  contract_id     int8,
+  contract_id     int8 UNIQUE ,
   PRIMARY KEY (id));
 CREATE TABLE address (
   id                  SERIAL8 NOT NULL,
@@ -178,7 +178,7 @@ CREATE INDEX room_room_id
 -- Foreign keys
 ALTER TABLE notification ADD CONSTRAINT FKNotification87969 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE;
 ALTER TABLE address ADD CONSTRAINT FKAddress387723 FOREIGN KEY (city_id) REFERENCES city (id);
-ALTER TABLE resort ADD CONSTRAINT FKResort585514 FOREIGN KEY (address_id) REFERENCES address (id);
+ALTER TABLE resort ADD CONSTRAINT FKResort585514 FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE;
 ALTER TABLE contract ADD CONSTRAINT FKContract29695 FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE;
 ALTER TABLE room ADD CONSTRAINT FKRoom672956 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE;
 ALTER TABLE tour ADD CONSTRAINT FKTour963567 FOREIGN KEY (facility_id) REFERENCES facility (id);
