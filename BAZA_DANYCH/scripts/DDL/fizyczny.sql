@@ -118,7 +118,7 @@ CREATE INDEX notification_contract_id
 CREATE INDEX notification_type_id
   ON notification (notification_type_id);
 
-CREATE UNIQUE INDEX notification_type_id
+CREATE UNIQUE INDEX notification_type_id_ind
     ON notification_type (id);
 
 CREATE UNIQUE INDEX tour_id
