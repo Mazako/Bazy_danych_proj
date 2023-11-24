@@ -1,11 +1,12 @@
 -- Basic DDL script for create tables, indexes and relations
 -- enums
 CREATE TYPE user_type AS ENUM ('USER', 'ADMIN');
+CREATE TYPE contract_status AS ENUM('PENDING_PAYMENT', 'CANCELLED', 'PAID', 'IN_PROGRESS', 'DONE');
 -- tables
 CREATE TABLE contract (
   id                SERIAL8 NOT NULL,
   reservation_date  date NOT NULL,
-  status            varchar(20) NOT NULL,
+  status            contract_status NOT NULL DEFAULT 'PENDING_PAYMENT',
   pearson_count     int2 NOT NULL CHECK (pearson_count > 0),
   user_id           int8 NOT NULL,
   tour_id           int8 NOT NULL,
@@ -114,7 +115,7 @@ CREATE UNIQUE INDEX notification_id
   ON notification (id);
 CREATE INDEX notification_contract_id
   ON notification (contract_id);
-CREATE INDEX notification_contract_id
+CREATE INDEX notification_type_id
   ON notification (notification_type_id);
 
 CREATE UNIQUE INDEX notification_type_id
