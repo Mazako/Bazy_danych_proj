@@ -88,6 +88,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE TRIGGER trigger_update_resort_avg
+    AFTER INSERT OR UPDATE OR DELETE ON opinion
+    FOR EACH ROW EXECUTE FUNCTION update_resort_avg_opinion();
+
 
 CREATE OR REPLACE FUNCTION check_reservation_before_departure()
     RETURNS TRIGGER AS $$
@@ -99,3 +103,7 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_check_reservation_before_departure
+    BEFORE INSERT OR UPDATE ON contract
+    FOR EACH ROW EXECUTE FUNCTION check_reservation_before_departure();
