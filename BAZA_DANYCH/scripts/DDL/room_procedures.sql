@@ -108,3 +108,28 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER check_room_before_insert_or_update
     BEFORE INSERT OR UPDATE ON room_tour
     FOR EACH ROW EXECUTE FUNCTION check_room_before_insert_or_update();
+
+
+CREATE OR REPLACE FUNCTION generate_popularity_report(
+    start_date date,
+    end_date date
+)
+    RETURNS TABLE (id int8, resort_name varchar(100), signed_contracts int8, persons int8, total_profit double precision)
+    LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    RETURN QUERY
+        SELECT resort.id,
+               resort.name AS resort_name,
+               COUNT(contract.id) AS signed_contracts,
+               SUM(contract.pearson_count) AS persons,
+               SUM(tour.price * contract.pearson_count) AS total_profit
+
+        FROM resort
+                 LEFT JOIN tour ON resort.id = tour.resort_id
+                 LEFT JOIN contract ON tour.id = contract.tour_id
+        WHERE contract.reservation_date BETWEEN start_date AND end_date
+        GROUP BY resort.id;
+END;
+$$;
