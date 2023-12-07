@@ -49,9 +49,10 @@ CREATE OR REPLACE FUNCTION check_room_availability()
 DECLARE
     tourStartDate DATE;
     tourEndDate DATE;
-    isRoomOccupied BOOLEAN;
+    tourId INT8;
+    isRoomOccupied BOOL;
 BEGIN
-    SELECT t.departure_date, t.return_date INTO tourStartDate, tourEndDate
+    SELECT t.departure_date, t.return_date, t.id INTO tourStartDate, tourEndDate, tourId
     FROM contract c
              JOIN tour t ON c.tour_id = t.id
     WHERE c.id = NEW.contract_id;
@@ -64,9 +65,15 @@ BEGIN
         RAISE EXCEPTION 'Pokój nie jest częścią wycieczki dla tej umowy!';
     END IF;
 
-    IF NOT is_room_available(NEW.room_id, tourStartDate, tourEndDate) THEN
+    SELECT NEW.room_id IN (
+        SELECT room_id
+        FROM room_contract
+        INNER JOIN contract ON room_contract.contract_id = contract.id
+        WHERE contract.tour_id = tourId) INTO isRoomOccupied;
+
+    IF (isRoomOccupied) THEN
         RAISE EXCEPTION 'Pokój jest już zajęty w tym terminie!';
-    END IF;
+    end if;
 
     RETURN NEW;
 END;

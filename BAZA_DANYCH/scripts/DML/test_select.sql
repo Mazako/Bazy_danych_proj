@@ -114,8 +114,8 @@ VALUES
 -- Pokoje dla kurortu Male Oceanview
 INSERT INTO room_tour(room_id, tour_id)
 VALUES
-    (8, 3);
+    (9, 3);
 
 INSERT INTO room_contract(room_id, contract_id)
 VALUES
-    (8, 3);
+    (9, 3);
