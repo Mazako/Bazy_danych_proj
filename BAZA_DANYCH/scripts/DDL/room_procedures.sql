@@ -88,6 +88,8 @@ CREATE TRIGGER trigger_check_room_availability
 
 CREATE OR REPLACE FUNCTION check_room_before_insert_or_update()
     RETURNS TRIGGER AS $$
+DECLARE
+    isAvailable BOOL;
 BEGIN
     IF NOT EXISTS (
             SELECT 1
@@ -98,9 +100,18 @@ BEGIN
         RAISE EXCEPTION 'Pokój nie znajduje się w odpowiednim kurorcie!';
     END IF;
 
+    isAvailable := is_room_available(NEW.room_id,
+        (SELECT departure_date FROM tour WHERE id = NEW.tour_id),
+        (SELECT return_date FROM tour WHERE id = NEW.tour_id));
+
+    IF NOT isAvailable THEN
+        RAISE EXCEPTION 'Pokój nie jest dostępny w tym okresie!';
+    END IF;
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE TRIGGER check_room_before_insert_or_update
     BEFORE INSERT OR UPDATE ON room_tour
