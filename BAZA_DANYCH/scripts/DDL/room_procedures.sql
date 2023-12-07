@@ -42,3 +42,66 @@ BEGIN
                  NOT (start_date <= tour.departure_date AND end_date >= tour.return_date))));
 END;
 $$;
+
+
+CREATE OR REPLACE FUNCTION check_room_availability()
+    RETURNS TRIGGER AS $$
+DECLARE
+    tourStartDate DATE;
+    tourEndDate DATE;
+    isRoomOccupied BOOLEAN;
+BEGIN
+    SELECT t.departure_date, t.return_date INTO tourStartDate, tourEndDate
+    FROM contract c
+             JOIN tour t ON c.tour_id = t.id
+    WHERE c.id = NEW.contract_id;
+
+    IF NOT EXISTS (
+            SELECT 1
+            FROM room_tour rt
+            WHERE rt.room_id = NEW.room_id AND rt.tour_id = (SELECT tour_id FROM contract WHERE id = NEW.contract_id)
+        ) THEN
+        RAISE EXCEPTION 'Pokój nie jest częścią wycieczki dla tej umowy!';
+    END IF;
+
+    SELECT EXISTS (
+                   SELECT 1
+                   FROM room_contract rc
+                            JOIN contract c ON rc.contract_id = c.id
+                            JOIN tour t ON c.tour_id = t.id
+                   WHERE rc.room_id = NEW.room_id AND
+                       ((t.departure_date BETWEEN tourStartDate AND tourEndDate) OR
+                        (t.return_date BETWEEN tourStartDate AND tourEndDate))
+               ) INTO isRoomOccupied;
+
+    IF isRoomOccupied THEN
+        RAISE EXCEPTION 'Pokój jest już zajęty w tym terminie!';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER trigger_check_room_availability
+    BEFORE INSERT OR UPDATE ON room_contract
+    FOR EACH ROW EXECUTE FUNCTION check_room_availability();
+
+
+CREATE OR REPLACE FUNCTION check_room_before_insert_or_update()
+    RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EXISTS (
+            SELECT 1
+            FROM room
+                     JOIN tour ON room.resort_id = tour.resort_id
+            WHERE room.id = NEW.room_id AND tour.id = NEW.tour_id
+        ) THEN
+        RAISE EXCEPTION 'Pokój nie znajduje się w odpowiednim kurorcie!';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_room_before_insert_or_update
+    BEFORE INSERT OR UPDATE ON room_tour
+    FOR EACH ROW EXECUTE FUNCTION check_room_before_insert_or_update();
