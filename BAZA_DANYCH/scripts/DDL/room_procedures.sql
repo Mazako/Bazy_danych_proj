@@ -64,32 +64,25 @@ BEGIN
         RAISE EXCEPTION 'Pokój nie jest częścią wycieczki dla tej umowy!';
     END IF;
 
-    SELECT EXISTS (
-                   SELECT 1
-                   FROM room_contract rc
-                            JOIN contract c ON rc.contract_id = c.id
-                            JOIN tour t ON c.tour_id = t.id
-                   WHERE rc.room_id = NEW.room_id AND
-                       ((t.departure_date BETWEEN tourStartDate AND tourEndDate) OR
-                        (t.return_date BETWEEN tourStartDate AND tourEndDate))
-               ) INTO isRoomOccupied;
-
-    IF isRoomOccupied THEN
+    IF NOT is_room_available(NEW.room_id, tourStartDate, tourEndDate) THEN
         RAISE EXCEPTION 'Pokój jest już zajęty w tym terminie!';
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
 CREATE TRIGGER trigger_check_room_availability
     BEFORE INSERT OR UPDATE ON room_contract
     FOR EACH ROW EXECUTE FUNCTION check_room_availability();
+
 
 
 CREATE OR REPLACE FUNCTION check_room_before_insert_or_update()
     RETURNS TRIGGER AS $$
 DECLARE
     isAvailable BOOL;
+
 BEGIN
     IF NOT EXISTS (
             SELECT 1
@@ -111,7 +104,6 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-
 
 CREATE TRIGGER check_room_before_insert_or_update
     BEFORE INSERT OR UPDATE ON room_tour

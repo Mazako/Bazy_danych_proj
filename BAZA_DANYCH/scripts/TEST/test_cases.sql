@@ -91,7 +91,7 @@ DO $$
     END $$;
 
 
---Zliczanie sredniej opini
+--check avg opinion
 DO $$
     DECLARE
         resort_id int8;
