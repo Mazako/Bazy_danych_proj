@@ -38,6 +38,7 @@ CREATE TABLE resort (
   name       varchar(100) NOT NULL,
   address_id int8 NOT NULL,
   avg_opinion real,
+  description varchar(1000),
   PRIMARY KEY (id));
 CREATE TABLE app_user (
   id                SERIAL8 NOT NULL,

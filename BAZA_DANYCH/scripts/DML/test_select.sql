@@ -35,10 +35,10 @@ VALUES
 
 INSERT INTO resort (name, address_id, avg_opinion)
 VALUES
-    ('Ibiza Sun Resort', 1, 4.5),
-    ('Santorini Dreams', 2, 4.8),
-    ('Rio Beachfront', 3, 4.3),
-    ('Male Oceanview', 4, 4.7);
+    ('Ibiza Sun Resort', 1, null),
+    ('Santorini Dreams', 2, null),
+    ('Rio Beachfront', 3, null),
+    ('Male Oceanview', 4, null);
 
 
 INSERT INTO facility (wifi, swimming_pool, air_conditioning, gym, food, room_service, bar, restaurant, free_parking, all_time_reception)
@@ -114,8 +114,8 @@ VALUES
 -- Pokoje dla kurortu Male Oceanview
 INSERT INTO room_tour(room_id, tour_id)
 VALUES
-    (8, 3);
+    (9, 3);
 
 INSERT INTO room_contract(room_id, contract_id)
 VALUES
-    (8, 3);
+    (9, 3);
