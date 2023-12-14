@@ -1,8 +1,8 @@
-INSERT INTO app_user (name, last_name, mail, password_hash, type, creation_date, phone)
+INSERT INTO app_user (name, last_name, mail, password_hash, role_id, creation_date, phone)
 VALUES
-    ('Jan', 'Kowalski', 'jan.kowalski@example.com', 'hash1234', 'USER', '2023-01-01', '123456789'),
-    ('Anna', 'Nowak', 'anna.nowak@example.com', 'hash5678', 'USER', '2023-02-01', '987654321'),
-    ('Admin', 'Adminowy', 'admin@tourpol.com', 'hash9012', 'ADMIN', '2023-03-01', '112233445');
+    ('Jan', 'Kowalski', 'jan.kowalski@example.com', 'hash1234', 2, '2023-01-01', '123456789'),
+    ('Anna', 'Nowak', 'anna.nowak@example.com', 'hash5678', 2, '2023-02-01', '987654321'),
+    ('Admin', 'Adminowy', 'admin@tourpol.com', 'hash9012', 1, '2023-03-01', '112233445');
 
 INSERT INTO city (country, name, latitude, longitude)
 VALUES

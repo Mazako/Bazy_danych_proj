@@ -3,6 +3,44 @@
 CREATE TYPE user_type AS ENUM ('USER', 'ADMIN');
 CREATE TYPE contract_status AS ENUM('PENDING_PAYMENT', 'CANCELLED', 'PAID', 'IN_PROGRESS', 'DONE');
 -- tables
+
+CREATE TABLE role (
+    id          SERIAL8 NOT NULL,
+    role_name   varchar(30) NOT NULL,
+    PRIMARY KEY (id));
+
+INSERT INTO role VALUES (1, 'ADMIN'), (2, 'USER'), (3, 'GUEST');
+
+CREATE TABLE permission (
+    id                  SERIAL8 NOT NULL,
+    permission_name     varchar(100) NOT NULL,
+    PRIMARY KEY (id));
+
+INSERT INTO permission (permission_name) VALUES
+    ('USERS_CREATE'), ('USERS_READ'), ('USERS_UPDATE'), ('USERS_DELETE'),
+    ('CONTRACT_CREATE'), ('CONTRACT_READ'), ('CONTRACT_UPDATE'), ('CONTRACT_DELETE'),
+    ('OPINION_CREATE'), ('OPINION_READ'), ('OPINION_UPDATE'), ('OPINION_DELETE'),
+    ('NOTIFICATION_CREATE'), ('NOTIFICATION_READ'), ('NOTIFICATION_UPDATE'), ('NOTIFICATION_DELETE'),
+    ('ROOM_CONTRACT_CRATE'), ('ROOM_CONTRACT_READ'), ('ROOM_CONTRACT_UPDATE'), ('ROOM_CONTRACT_DELETE'),
+    ('ROOM_TOUR_CREATE'), ('ROOM_TOUR_READ'), ('ROOM_TOUR_UPDATE'), ('ROOM_TOUR_DELETE'),
+    ('ROOM_CREATE'), ('ROOM_READ'), ('ROOM_UPDATE'), ('ROOM_DELETE'),
+    ('FACILITY_CREATE'), ('FACILITY_READ'), ('FACILITY_UPDATE'), ('FACILITY_DELETE'),
+    ('RESORT_CREATE'), ('RESORT_READ'), ('RESORT_UPDATE'), ('RESORT_DELETE'),
+    ('ADDRESS_CREATE'), ('ADDRESS_READ'), ('ADDRESS_UPDATE'), ('ADDRESS_DELETE'),
+    ('CITY_CREATE'), ('CITY_READ'), ('CITY_UPDATE'), ('CITY_DELETE'),
+    ('TOUR_CREATE'), ('TOUR_READ'), ('TOUR_UPDATE'), ('TOUR_DELETE'),
+    ('ROLE_CREATE'), ('ROLE_READ'), ('ROLE_UPDATE'), ('ROLE_DELETE'),
+    ('PERMISSION_CREATE'), ('PERMISSION_READ'), ('PERMISSION_UPDATE'), ('PERMISSION_DELETE'),
+    ('ROLE_PERMISSION_CREATE'), ('ROLE_PERMISSION_READ'), ('ROLE_PERMISSION_UPDATE'), ('ROLE_PERMISSION_DELETE');
+--60
+
+CREATE TABLE role_permission (
+    id              SERIAL8 NOT NULL,
+    role_id         int8 NOT NULL,
+    permission_id   int8 NOT NULL,
+    only_related    boolean NOT NULL DEFAULT false,
+    PRIMARY KEY (id));
+
 CREATE TABLE contract (
   id                SERIAL8 NOT NULL,
   reservation_date  date NOT NULL,
@@ -46,7 +84,7 @@ CREATE TABLE app_user (
   last_name         varchar(50) NOT NULL,
   mail              varchar(255) NOT NULL,
   password_hash     char(60) NOT NULL,
-  type              user_type NOT NULL,
+  role_id           int8,
   creation_date     date NOT NULL,
   phone             varchar(11),
   PRIMARY KEY (id));
@@ -203,3 +241,50 @@ ALTER TABLE contract ADD CONSTRAINT FKContract551734 FOREIGN KEY (tour_id) REFER
 ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract200774 FOREIGN KEY (room_id) REFERENCES room (id) ON DELETE CASCADE ;
 ALTER TABLE room_contract ADD CONSTRAINT FKRoom_contract959389 FOREIGN KEY (contract_id) REFERENCES contract (id) ON DELETE CASCADE ;
 ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES resort (id) ON DELETE CASCADE ;
+ALTER TABLE app_user ADD CONSTRAINT FKUserRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE SET NULL;
+ALTER TABLE role_permission ADD CONSTRAINT FKRolePermissionRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE ;
+ALTER TABLE role_permission ADD CONSTRAINT FKROlePermissionPermission FOREIGN KEY (permission_id) REFERENCES permission (id) ON DELETE CASCADE ;
+
+--ASSIGN PERMISSIONS
+INSERT INTO role_permission(role_id, permission_id) VALUES
+--ADMIN PERMISSIONS
+(1, 1), (1, 2), (1, 3), (1, 4),
+(1, 5), (1, 6), (1, 7), (1, 8),
+(1, 9), (1, 10), (1, 11), (1, 12),
+(1, 13), (1, 14), (1, 15), (1, 16),
+(1, 17), (1, 18), (1, 19), (1, 20),
+(1, 21), (1, 22), (1, 23), (1, 24),
+(1, 25), (1, 26), (1, 27), (1, 28),
+(1, 29), (1, 30), (1, 31), (1, 32),
+(1, 33), (1, 34), (1, 35), (1, 36),
+(1, 37), (1, 38), (1, 39), (1, 40),
+(1, 41), (1, 42), (1, 43), (1, 44),
+(1, 45), (1, 46), (1, 47), (1, 48),
+(1, 49), (1, 50), (1, 51), (1, 52),
+(1, 53), (1, 54), (1, 55), (1, 56),
+(1, 57), (1, 58), (1, 59), (1, 60);
+
+--USER_PERMISSIONS
+INSERT INTO role_permission (role_id, permission_id, only_related) VALUES
+(2, 2, true), (2, 3, true), (2, 4, true),
+(2, 5, false), (2, 6, true), (2, 7, true), (2, 8, true),
+(2, 9, true), (2, 10, false), (2, 12, true),
+(2, 14, true), (2, 16, true),
+(2, 17, true), (2, 18, true), (2, 19, true), (2, 20, true),
+(2, 22, false),
+(2, 26, false),
+(2, 30, false),
+(2, 34, false),
+(2, 38, false),
+(2, 42, false),
+(2, 46, false),
+
+--GUESTS PERMISSIONS
+(3, 22, false),
+(3, 26, false),
+(3, 30, false),
+(3, 34, false),
+(3, 38, false),
+(3, 42, false),
+(3, 46, false),
+(3, 10, false);

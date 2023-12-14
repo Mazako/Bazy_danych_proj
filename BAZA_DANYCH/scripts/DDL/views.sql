@@ -50,12 +50,12 @@ FROM resort
 CREATE OR REPLACE VIEW regular_users
 AS
 SELECT * FROM app_user
-WHERE type = 'USER';
+WHERE role_id = 2;
 
 CREATE OR REPLACE VIEW admins
 AS
 SELECT * FROM app_user
-WHERE type = 'ADMIN';
+WHERE role_id = 1;
 
 CREATE OR REPLACE VIEW incoming_tours
 AS
