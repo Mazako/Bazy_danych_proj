@@ -1,6 +1,5 @@
 -- Basic DDL script for create tables, indexes and relations
 -- enums
-CREATE TYPE user_type AS ENUM ('USER', 'ADMIN');
 CREATE TYPE contract_status AS ENUM('PENDING_PAYMENT', 'CANCELLED', 'PAID', 'IN_PROGRESS', 'DONE');
 -- tables
 
@@ -262,24 +261,22 @@ INSERT INTO role_permission(role_id, permission_id) VALUES
 INSERT INTO role_permission (role_id, permission_id, only_related) VALUES
 (2, 2, true), (2, 3, true), (2, 4, true),
 (2, 5, true), (2, 6, true),
-(2, 9, true), (2, 10, false), (2, 12, true),
-(2, 14, true), (2, 16, true),
-(2, 17, true), (2, 18, true), (2, 19, true), (2, 20, true),
-(2, 22, false),
-(2, 26, false),
-(2, 30, false),
-(2, 34, false),
-(2, 38, false),
-(2, 42, false),
-(2, 46, false),
---
+(2, 7, true), (2, 8, false),
+(2, 12, true), (2, 14, true),
+(2, 15, true), (2, 16, true),
+(2, 17, false),
+(2, 19, false),
+(2, 21, false),
+(2, 23, false),
+(2, 25, false),
+(2, 27, false),
+(2, 29, false),
+
 --GUESTS PERMISSIONS
--- (3, 22, false),
--- (3, 26, false),
--- (3, 30, false),
--- (3, 34, false),
--- (3, 38, false),
--- (3, 42, false),
--- (3, 46, false),
--- (3, 10, false);
---
+(3, 17, false),
+(3, 19, false),
+(3, 21, false),
+(3, 23, false),
+(3, 25, false),
+(3, 27, false),
+(3, 29, false);
