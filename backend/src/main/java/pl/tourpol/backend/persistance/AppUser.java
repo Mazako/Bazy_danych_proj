@@ -34,7 +34,7 @@ public class AppUser {
 
     @Size(max = 60)
     @NotNull
-    @Column(name = "password_hash", nullable = false, length = 60)
+    @Column(name = "password_hash", nullable = false, length = 60, columnDefinition = "bpchar")
     private String passwordHash;
 
     @ManyToOne(fetch = FetchType.LAZY)
