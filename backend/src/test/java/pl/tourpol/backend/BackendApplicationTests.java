@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import pl.tourpol.backend.app.BackendApplication;
 
-@SpringBootTest(classes = BackendApplication.class)
+@SpringBootTest(classes = BackendApplication.class,
+webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BackendApplicationTests {
 
     @Autowired
@@ -20,6 +20,11 @@ class BackendApplicationTests {
         simpleMailMessage.setTo("michal.maziarz12@gmail.com");
         simpleMailMessage.setText("No co tam halo");
         sender.send(simpleMailMessage);
+    }
+
+    @Test
+    void xxx() {
+
     }
 
 }
