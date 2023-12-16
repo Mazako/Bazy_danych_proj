@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tourpol
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  mail:
+    username: tourpol.aplikacja@gmail.com
+    password: vgap aygh giuk vtxv
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.smtp.auth: true
+springfox:
+  documentation:
+    swagger:
+      v2:
+        enabled: true

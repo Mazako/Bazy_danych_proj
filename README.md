@@ -26,3 +26,6 @@ login: admin@gmail.com \
 haslo: admin
 
 Łącząc się do bazy w polu Host name/address wpisujemy: host.docker.internal
+
+## Dokumentacja API
+Link do swaggera: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
