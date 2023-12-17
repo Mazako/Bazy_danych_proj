@@ -23,6 +23,7 @@ import pl.tourpol.backend.persistance.repository.RoleRepository;
 import pl.tourpol.backend.persistance.repository.UserRepository;
 import pl.tourpol.backend.persistance.repository.VerificationTokenRepository;
 import pl.tourpol.backend.security.registration.RegistrationListener;
+import pl.tourpol.backend.security.registration.RegistrationListenerImpl;
 import pl.tourpol.backend.security.registration.RegistrationService;
 
 @Configuration
@@ -84,7 +85,7 @@ class SecurityConfig {
 
     @Bean
     RegistrationListener registrationListener(JavaMailSender javaMailSender) {
-        return new RegistrationListener(javaMailSender, appMail);
+        return new RegistrationListenerImpl(javaMailSender, appMail);
     }
 
     @Bean
