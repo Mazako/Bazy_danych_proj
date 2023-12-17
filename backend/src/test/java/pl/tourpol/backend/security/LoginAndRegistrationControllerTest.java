@@ -48,7 +48,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
                         "kaszanka@paruwa.com",
-                        "$2a$12$fr8psvJmB7TkCBxLQE2TTOtYhb7EUnDboUOHdJz4yOo2eoLjX9mke",
+                        "kaszanka",
                         "112 997 998"))
                 .exchange()
                 .expectStatus()
@@ -65,7 +65,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
                         "kaszanka@paruwa.com",
-                        "$2a$12$fr8psvJmB7TkCBxLQE2TTOtYhb7EUnDboUOHdJz4yOo2eoLjX9mke",
+                        "kaszanka",
                         "112 997 998"))
                 .exchange()
                 .expectStatus()
@@ -77,7 +77,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .bodyValue(new RegistrationDto("Jaś",
                         "Kowalski",
                         "kaszanka@paruwa.com",
-                        "$2a$12$fr8psvJmB7TkCBxLQE2TTOtYhb7EUnDboUOHdJz4yOo2eoLjX9mke",
+                        "kaszanka",
                         "142 937 928"))
                 .exchange()
                 .expectStatus()
@@ -94,7 +94,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
                         "kaszanka@paruwa.com",
-                        "$2a$12$fr8psvJmB7TkCBxLQE2TTOtYhb7EUnDboUOHdJz4yOo2eoLjX9mke",
+                        "kaszanka",
                         "112 997 998"))
                 .exchange()
                 .expectStatus()

@@ -91,8 +91,9 @@ class SecurityConfig {
     @Bean
     RegistrationService registrationService(UserRepository userRepository,
                                             VerificationTokenRepository verificationTokenRepository,
-                                            RoleRepository roleRepository) {
+                                            RoleRepository roleRepository,
+                                            PasswordEncoder passwordEncoder) {
         return new RegistrationService(userRepository, verificationTokenRepository,
-                () -> roleRepository.findById(2L).get());
+                () -> roleRepository.findById(2L).get(), passwordEncoder);
     }
 }

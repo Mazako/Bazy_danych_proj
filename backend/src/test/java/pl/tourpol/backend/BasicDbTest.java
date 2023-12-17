@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -22,6 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
         classes = {BackendApplication.class, TestConfig.class},
         webEnvironment = DEFINED_PORT)
 @AutoConfigureWebTestClient
+@SuppressWarnings("java:S2187")
 public class BasicDbTest {
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
@@ -38,13 +41,16 @@ public class BasicDbTest {
     }
 
     private static MountableFile createMountableFile() {
-        URI resource = null;
         try {
-            resource = BasicDbTest.class.getResource("init.sql").toURI();
+            URI resource = BasicDbTest.class.getResource("init.sql").toURI();
+            return MountableFile.forHostPath(Paths.get(resource).toString());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        return MountableFile.forHostPath(Paths.get(resource).toString());
     }
 
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url",() -> postgreSQLContainer.getJdbcUrl());
+    }
 }

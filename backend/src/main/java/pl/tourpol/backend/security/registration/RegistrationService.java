@@ -1,5 +1,6 @@
 package pl.tourpol.backend.security.registration;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.tourpol.backend.persistance.entity.AppUser;
 import pl.tourpol.backend.persistance.entity.Role;
 import pl.tourpol.backend.persistance.entity.VerificationToken;
@@ -16,10 +17,12 @@ public class RegistrationService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final Supplier<Role> userRoleProvider;
-    public RegistrationService(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository, Supplier<Role> userRoleProvider) {
+    private final PasswordEncoder passwordEncoder;
+    public RegistrationService(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository, Supplier<Role> userRoleProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
         this.userRoleProvider = userRoleProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String registerUser(RegistrationDto registrationDto) {
@@ -30,7 +33,7 @@ public class RegistrationService {
                 registrationDto.firstName(),
                 registrationDto.lastName(),
                 registrationDto.mail(),
-                registrationDto.hashedPassword(),
+                passwordEncoder.encode(registrationDto.password()),
                 userRoleProvider.get(),
                 LocalDate.now(),
                 registrationDto.phone(),
