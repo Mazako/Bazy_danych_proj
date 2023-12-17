@@ -3,7 +3,7 @@ LANGUAGE plpgsql
 AS
 $$
 BEGIN
-    DELETE FROM verification_token
-    WHERE expiration_date <= current_timestamp;
+    DELETE FROM app_user
+    WHERE id IN (SELECT user_id FROM verification_token WHERE expiration_date <= current_timestamp);
 END;
 $$

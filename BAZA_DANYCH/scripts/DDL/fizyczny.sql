@@ -252,7 +252,7 @@ ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES r
 ALTER TABLE app_user ADD CONSTRAINT FKUserRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE SET NULL;
 ALTER TABLE role_permission ADD CONSTRAINT FKRolePermissionRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE ;
 ALTER TABLE role_permission ADD CONSTRAINT FKROlePermissionPermission FOREIGN KEY (permission_id) REFERENCES permission (id) ON DELETE CASCADE ;
-ALTER TABLE verification_token ADD CONSTRAINT FKVerification_AppUser FOREIGN KEY (user_id) REFERENCES app_user(id);
+ALTER TABLE verification_token ADD CONSTRAINT FKVerification_AppUser FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE CASCADE ;
 
 --ASSIGN PERMISSIONS
 INSERT INTO role_permission(role_id, permission_id) VALUES
