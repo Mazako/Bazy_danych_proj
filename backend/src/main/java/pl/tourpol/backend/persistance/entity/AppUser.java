@@ -1,4 +1,4 @@
-package pl.tourpol.backend.persistance;
+package pl.tourpol.backend.persistance.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -49,6 +49,33 @@ public class AppUser {
     @Size(max = 11)
     @Column(name = "phone", length = 11)
     private String phone;
+
+    @NotNull
+    @Column(name = "enabled", nullable = false)
+    private Boolean enabled = false;
+
+    public AppUser() {
+
+    }
+
+    public AppUser(String name, String lastName, String mail, String passwordHash, Role role, LocalDate creationDate, String phone, Boolean enabled) {
+        this.name = name;
+        this.lastName = lastName;
+        this.mail = mail;
+        this.passwordHash = passwordHash;
+        this.role = role;
+        this.creationDate = creationDate;
+        this.phone = phone;
+        this.enabled = enabled;
+    }
+
+    public Boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Long getId() {
         return id;

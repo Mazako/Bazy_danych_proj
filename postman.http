@@ -1,0 +1,20 @@
+### Try to register user (Hashed password: kaszanka)
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Piotr",
+  "lastName": "Skowyrski",
+  "hashedPassword": "$2a$12$fr8psvJmB7TkCBxLQE2TTOtYhb7EUnDboUOHdJz4yOo2eoLjX9mke",
+  "mail": "michal.maziarz12@gmail.com",
+  "phone": "997 998 112"
+}
+
+### Then, after mail confirmation try to log in
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "mail": "michal.maziarz12@gmail.com",
+  "password": "kaszanka"
+}

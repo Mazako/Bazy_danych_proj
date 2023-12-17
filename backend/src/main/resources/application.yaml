@@ -15,3 +15,5 @@ spring:
     properties:
       mail.smtp.starttls.enable: true
       mail.smtp.auth: true
+
+appMail: tourpol.aplikacja@gmail.com

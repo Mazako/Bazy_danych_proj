@@ -1,4 +1,4 @@
-package pl.tourpol.backend.persistance;
+package pl.tourpol.backend.persistance.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

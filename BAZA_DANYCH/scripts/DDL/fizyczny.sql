@@ -33,6 +33,14 @@ INSERT INTO permission (permission_name) VALUES
     ('ROLE_PERMISSION_READ'), ('ROLE_PERMISSION_MANAGE');
 --60
 
+CREATE TABLE verification_token(
+    id              SERIAL8 NOT NULL,
+    token           varchar(256) NOT NULL,
+    expiration_date timestamp NOT NULL,
+    user_id         int8 NOT NULL UNIQUE ,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE role_permission (
     id              SERIAL8 NOT NULL,
     role_id         int8 NOT NULL,
@@ -86,6 +94,7 @@ CREATE TABLE app_user (
   role_id           int8,
   creation_date     date NOT NULL,
   phone             varchar(11),
+  enabled           bool NOT NULL DEFAULT true,
   PRIMARY KEY (id));
 CREATE TABLE opinion (
   id              SERIAL8 NOT NULL,
@@ -243,6 +252,7 @@ ALTER TABLE tour ADD CONSTRAINT FKTour78363 FOREIGN KEY (resort_id) REFERENCES r
 ALTER TABLE app_user ADD CONSTRAINT FKUserRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE SET NULL;
 ALTER TABLE role_permission ADD CONSTRAINT FKRolePermissionRole FOREIGN KEY (role_id) REFERENCES role (id) ON DELETE CASCADE ;
 ALTER TABLE role_permission ADD CONSTRAINT FKROlePermissionPermission FOREIGN KEY (permission_id) REFERENCES permission (id) ON DELETE CASCADE ;
+ALTER TABLE verification_token ADD CONSTRAINT FKVerification_AppUser FOREIGN KEY (user_id) REFERENCES app_user(id);
 
 --ASSIGN PERMISSIONS
 INSERT INTO role_permission(role_id, permission_id) VALUES
