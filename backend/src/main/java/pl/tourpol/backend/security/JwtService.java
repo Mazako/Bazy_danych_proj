@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 class JwtService {
-    public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    private static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    private static final int TOKEN_DURATION = 1000 * 60 * 60 * 2;
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String userName = extractUserName(token);
@@ -25,7 +26,7 @@ class JwtService {
                 .claims(new HashMap<>())
                 .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60))
+                .expiration(new Date(System.currentTimeMillis() + TOKEN_DURATION))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -37,7 +37,7 @@ public class AppUser {
     @Column(name = "password_hash", nullable = false, length = 60, columnDefinition = "bpchar")
     private String passwordHash;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "role_id")
     private Role role;

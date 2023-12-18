@@ -19,12 +19,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.tourpol.backend.persistance.repository.RoleRepository;
 import pl.tourpol.backend.persistance.repository.UserRepository;
 import pl.tourpol.backend.persistance.repository.VerificationTokenRepository;
+import pl.tourpol.backend.security.permissions.AccessSensitiveOperation;
+import pl.tourpol.backend.security.permissions.AccessSensitiveOperationImpl;
 import pl.tourpol.backend.security.registration.RegistrationListener;
 import pl.tourpol.backend.security.registration.RegistrationListenerImpl;
 import pl.tourpol.backend.security.registration.RegistrationService;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -33,20 +41,24 @@ class SecurityConfig {
 
     @Value("${appMail:tourpol.aplikacja@gmail.com}")
     private String appMail;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   JwtAuthFilter jwtAuthFilter,
-                                                   AuthenticationProvider authenticationProvider) throws Exception {
+                                            JwtAuthFilter jwtAuthFilter,
+                                            AuthenticationProvider authenticationProvider,
+                                            CorsConfigurationSource corsConfigurationSource) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(conf -> conf
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/public/api").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll())
                 .sessionManagement(conf -> conf.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(FormLoginConfigurer::disable)
+                .cors(c -> c.configurationSource(corsConfigurationSource))
                 .build();
     }
 
@@ -95,5 +107,23 @@ class SecurityConfig {
                                             PasswordEncoder passwordEncoder) {
         return new RegistrationService(userRepository, verificationTokenRepository,
                 () -> roleRepository.findById(2L).get(), passwordEncoder);
+    }
+
+    @Bean
+    AccessSensitiveOperation accessSensitiveOperation(UserRepository userRepository) {
+        return new AccessSensitiveOperationImpl(userRepository);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Specify the origin
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Specify the HTTP methods
+        configuration.setAllowCredentials(true); // Allow credentials
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

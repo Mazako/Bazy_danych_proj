@@ -18,3 +18,9 @@ Content-Type: application/json
   "mail": "michal.maziarz12@gmail.com",
   "password": "kaszanka"
 }
+
+### TEST
+GET http://localhost:8080/api/user/findByName?firstName=Piotr
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaWNoYWwubWF6aWFyejEyQGdtYWlsLmNvbSIsImlhdCI6MTcwMjg2MjAwOSwiZXhwIjoxNzAyODY5MjA5fQ.3Cs2yyvZLpLCkWrgO4Nj-IkuR5xUrW8WObjm_C5_s7Y
+
+
