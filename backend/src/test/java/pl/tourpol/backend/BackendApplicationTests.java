@@ -22,9 +22,4 @@ class BackendApplicationTests {
         sender.send(simpleMailMessage);
     }
 
-    @Test
-    void xxx() {
-
-    }
-
 }

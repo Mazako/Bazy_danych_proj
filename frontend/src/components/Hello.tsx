@@ -1,3 +1,10 @@
+import {Outlet} from "react-router";
+
 export function Hello() {
-    return <h1>Siema</h1>
+    return (
+        <div>
+            <h1>Siema</h1>
+            <Outlet />
+        </div>
+    )
 }
