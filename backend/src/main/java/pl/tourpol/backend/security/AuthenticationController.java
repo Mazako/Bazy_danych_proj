@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import pl.tourpol.backend.persistance.repository.UserRepository;
 import pl.tourpol.backend.security.registration.*;
 
 @RestController
@@ -18,22 +19,28 @@ class AuthenticationController {
     private final JwtService jwtService;
     private final RegistrationService registrationService;
     private final ApplicationEventPublisher eventPublisher;
+    private final UserRepository userRepository;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService, RegistrationService registrationService, ApplicationEventPublisher eventPublisher) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService, RegistrationService registrationService, ApplicationEventPublisher eventPublisher,
+                                    UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.registrationService = registrationService;
         this.eventPublisher = eventPublisher;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/login")
-    ResponseEntity<String> login(@RequestBody CredentialsDTO credentials) {
+    ResponseEntity<?> login(@RequestBody CredentialsDTO credentials) {
         try {
             var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.mail, credentials.password));
             if (auth.isAuthenticated()) {
                 String token = jwtService.generateToken(credentials.mail);
-                return ResponseEntity.ok(token);
+                return userRepository.findAppUserByMail(credentials.mail)
+                        .map(user -> new LoginResponseDto(user.getName(), user.getLastName(), token, user.getRole().getRoleName()))
+                        .map(ResponseEntity::ok)
+                        .orElseThrow(RuntimeException::new);
             }
             return ResponseEntity.badRequest().body("Chuj nie logowanie");
         } catch (BadCredentialsException e) {
@@ -64,7 +71,7 @@ class AuthenticationController {
         }
     }
 
-    record CredentialsDTO(String mail, String password) {
+    record CredentialsDTO(String mail, String password) { }
 
-    }
+    record LoginResponseDto(String firstName, String lastName, String token, String role) { }
 }

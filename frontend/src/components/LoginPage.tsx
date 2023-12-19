@@ -1,18 +1,24 @@
 import React, {useState} from "react";
-import {loginRequest} from "../requests/Requests";
+import {useDispatch, useSelector} from "react-redux";
+import {loginSelector, userLogIn} from "../features/user/UserSlice";
+import {AppDispatch} from "../app/Store";
 
 export function LoginPage(): React.JSX.Element {
     const [mail, setMail] = useState('')
-    const [password, setPassword] = useState(' ')
-    const [token, setToken] = useState('');
+    const [password, setPassword] = useState('')
+    const [triedToLogin, setTriedToLogin] = useState(false)
+    const loggedIn = useSelector(loginSelector)
+    const dispatch: AppDispatch = useDispatch()
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        loginRequest({mail: mail, password: password})
-            .then(resp => setToken(resp.data))
-            .catch(err => {
-                alert(err.response.status)
-            })
+        dispatch(userLogIn({mail: mail, password: password}))
+        if (!loggedIn) {
+            setTriedToLogin(true)
+        }
+
     }
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -24,7 +30,7 @@ export function LoginPage(): React.JSX.Element {
                         placeholder='Hasło'/>
                 <button>Zaloguj się</button>
             </form>
-            <p>{token || 'nie ma'}</p>
+            <p>{loggedIn ? "GIT" : (triedToLogin ? "CHUJNIA" : '')}</p>
         </div>
     )
 }
