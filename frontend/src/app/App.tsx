@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -7,8 +7,18 @@ import {
 } from "react-router-dom";
 import {Hello} from "../components/Hello";
 import {LoginPage} from "../components/LoginPage";
+import Cookies from "js-cookie";
+import {defaultRequester} from "../api/Requests";
 
 function App() {
+
+    useEffect(() => {
+        if (Cookies.get('token')) {
+            defaultRequester.defaults.headers['Authorization'] = `Bearer ${Cookies.get('token')}`
+
+        }
+    }, [])
+
   const router = createBrowserRouter(createRoutesFromElements([
       <Route path='/' element={<Hello />}>
           <Route path='/login' element={<LoginPage />} />
