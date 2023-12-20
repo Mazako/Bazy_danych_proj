@@ -3,6 +3,8 @@ package pl.tourpol.backend.security;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import pl.tourpol.backend.persistance.repository.UserRepository;
 import pl.tourpol.backend.security.registration.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/auth")
@@ -65,7 +69,9 @@ class AuthenticationController {
     ResponseEntity<?> confirmRegistration(@PathVariable String token) {
         try {
             registrationService.confirmRegistration(token);
-            return ResponseEntity.ok().build();
+            var headers = new HttpHeaders();
+            headers.setLocation(URI.create("http://localhost:3000/login?success=true"));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
         } catch (RegistrationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

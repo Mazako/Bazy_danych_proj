@@ -1,26 +1,26 @@
 import {useSelector} from "react-redux";
 import {userRoleSelector} from "../../features/user/UserSlice";
 import {role} from "../../features/user/UserTypes";
-import {JSX} from "react";
-import {NavLink} from "react-router-dom";
+import React, {JSX} from "react";
+import {Nav} from "react-bootstrap";
 
 export function NavBar() {
     const role: role = useSelector(userRoleSelector)
     const positions: Array<JSX.Element> = []
-    positions.push(<li key='offer'><NavLink to='/'>Oferty</NavLink></li>)
+    positions.push(
+        <Nav.Link href="/">Oferty</Nav.Link>
+    )
     if (role === "GUEST") {
-        positions.push(<li key='log'><NavLink to="/login">Logowanie</NavLink></li>)
+        positions.push(<Nav.Link eventKey="login" href="/login">Logowanie</Nav.Link>)
     } else if (role === "USER") {
-        positions.push(<li key='contr'><NavLink to="/">Umowy</NavLink></li>)
+        positions.push(<Nav.Link eventKey="offers">Oferty</Nav.Link>)
     } else if (role === "ADMIN") {
-        positions.push(<li key='manage'><NavLink to='/'>Panel zarządzania</NavLink></li>)
+        positions.push(<Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>)
     }
 
     return (
-        <div>
-            <ul>
-                {positions}
-            </ul>
-        </div>
+        <Nav variant="pills">
+            {positions.map(position => <Nav.Item>{position}</Nav.Item>)}
+        </Nav>
     )
 }

@@ -5,7 +5,6 @@ export function Hello() {
     return (
         <div>
             <NavBar />
-            <h1>Siema</h1>
             <Outlet />
         </div>
     )

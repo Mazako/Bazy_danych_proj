@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {loginSelector, userLogIn} from "../features/user/UserSlice";
 import {AppDispatch} from "../app/Store";
 import {Button, Form} from "react-bootstrap";
+import {useNavigate} from "react-router";
+import {useSearchParams} from "react-router-dom";
 
 export function LoginPage(): React.JSX.Element {
     const [mail, setMail] = useState('')
@@ -10,27 +12,41 @@ export function LoginPage(): React.JSX.Element {
     const [triedToLogin, setTriedToLogin] = useState(false)
     const loggedIn = useSelector(loginSelector)
     const dispatch: AppDispatch = useDispatch()
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const success = searchParams.get("success")
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(userLogIn({mail: mail, password: password}))
         if (!loggedIn) {
             setTriedToLogin(true)
+        } else {
+            navigate('/')
         }
 
     }
 
-    return (
+    return (<>
+            {success === 'true' && <p className="fs-1 text-success">Pomyślnie utworzono konto</p>}
         <Form onSubmit={handleSubmit}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email</Form.Label>
-                <Form.Control type='text' onChange={e => setMail(e.target.value)}/>
+                <Form.Control
+                    type='text'
+                    onChange={e => setMail(e.target.value)}
+                    value={mail}/>
             </Form.Group>
             <Form.Group className='mb-3' controlId='formBasicPassword'>
                 <Form.Label>Hasło</Form.Label>
-                <Form.Control type='password' onChange={e => setPassword(e.target.value)}/>
+                <Form.Control
+                    value={password}
+                    type='password'
+                    onChange={e => setPassword(e.target.value)}/>
             </Form.Group>
             <Button variant='primary' type='submit'>Zaloguj się</Button>
         </Form>
+        {triedToLogin && <p className="fs-2 text-danger">Nie udało się zalogować</p>}
+        </>
     )
 }
