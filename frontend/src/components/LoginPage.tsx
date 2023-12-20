@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {loginSelector, userLogIn} from "../features/user/UserSlice";
 import {AppDispatch} from "../app/Store";
+import {Button, Form} from "react-bootstrap";
 
 export function LoginPage(): React.JSX.Element {
     const [mail, setMail] = useState('')
@@ -20,17 +21,16 @@ export function LoginPage(): React.JSX.Element {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <h1>Zaloguj się</h1>
-                <input onChange={e => setMail(e.target.value)}
-                        placeholder='E-mail'/>
-                <input onChange={e => setPassword(e.target.value)}
-                       type='password'
-                        placeholder='Hasło'/>
-                <button>Zaloguj się</button>
-            </form>
-            <p>{loggedIn ? "GIT" : (triedToLogin ? "CHUJNIA" : '')}</p>
-        </div>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
+                <Form.Label>Email</Form.Label>
+                <Form.Control type='text' onChange={e => setMail(e.target.value)}/>
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formBasicPassword'>
+                <Form.Label>Hasło</Form.Label>
+                <Form.Control type='password' onChange={e => setPassword(e.target.value)}/>
+            </Form.Group>
+            <Button variant='primary' type='submit'>Zaloguj się</Button>
+        </Form>
     )
 }

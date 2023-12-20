@@ -9,6 +9,8 @@ import {Hello} from "../components/Hello";
 import {LoginPage} from "../components/LoginPage";
 import Cookies from "js-cookie";
 import {defaultRequester} from "../api/Requests";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
 
