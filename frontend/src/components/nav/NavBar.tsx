@@ -3,24 +3,42 @@ import {userRoleSelector} from "../../features/user/UserSlice";
 import {role} from "../../features/user/UserTypes";
 import React, {JSX} from "react";
 import {Nav} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
 
 export function NavBar() {
     const role: role = useSelector(userRoleSelector)
     const positions: Array<JSX.Element> = []
     positions.push(
-        <Nav.Link href="/">Oferty</Nav.Link>
+        <LinkContainer to="/">
+            <Nav.Link eventKey="offers">Oferty</Nav.Link>
+        </LinkContainer>
     )
     if (role === "GUEST") {
-        positions.push(<Nav.Link eventKey="login" href="/login">Logowanie</Nav.Link>)
+        positions.push(
+            <LinkContainer to="/login">
+                <Nav.Link eventKey="login">Logowanie</Nav.Link>
+            </LinkContainer>
+        )
     } else if (role === "USER") {
-        positions.push(<Nav.Link eventKey="offers">Oferty</Nav.Link>)
+        positions.push(
+            <LinkContainer to="#">
+                <Nav.Link eventKey="offers">Oferty</Nav.Link>
+            </LinkContainer>
+        )
     } else if (role === "ADMIN") {
-        positions.push(<Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>)
+        positions.push(
+            <LinkContainer to="#">
+                <Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>)
+            </LinkContainer>
+        )
     }
 
     return (
-        <Nav variant="pills">
-            {positions.map(position => <Nav.Item>{position}</Nav.Item>)}
-        </Nav>
+        <div className="d-flex justify-content-between me-3">
+            <Nav fill variant="pills">
+                {positions.map(position => <Nav.Item className="fs-4">{position}</Nav.Item>)}
+            </Nav>
+            <p>Chuj</p>
+        </div>
     )
 }

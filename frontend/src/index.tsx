@@ -4,14 +4,20 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {store} from "./app/Store";
+import {DevSupport} from "@react-buddy/ide-toolbox";
+import { ComponentPreviews, useInitial } from './dev';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+    <Provider store={store}>
+        <DevSupport ComponentPreviews={ComponentPreviews}
+                    useInitialHook={useInitial}
+        >
+            <App/>
+        </DevSupport>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

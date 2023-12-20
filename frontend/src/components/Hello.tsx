@@ -3,7 +3,7 @@ import {NavBar} from "./nav/NavBar";
 
 export function Hello() {
     return (
-        <div>
+        <div className="vh-100">
             <NavBar />
             <Outlet />
         </div>
