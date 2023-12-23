@@ -1,52 +1,63 @@
-- Data wyjazdu musi być wczesniej niz przyjazdu X
-- cena musi byc >0 X
-- gwiazdki (1-5) X
-- standard pokoju (1-3) X
-- liczba ludzi w pokoju > 0 X
-- liczba ludzi na umowie > 0 X
-
-Triggery:
-- pokoj w tabeli pokoje_wycieczka musi byc z kurortu do ktorego jest wycieczka
-- pokoj w tabeli umowa_pokoje musi byc w tabeli pokoje_wycieczka odpowiadajacej wycieczki, oraz nie moze byc ten pokoj zajety
-- pokoj w tablei pokoje_wycieczka musi być możliwy do dodania (tzn w tym okresie nie jest już zajęty pokój)
-- kaskadowe usuwanie w DELETE ON CASCADE X
-- sprawdzanie, czy dodajemy do pokoj-wyczieczka do aktywnej wycieczki
-- Data rezerwacji musi byc przed data wyjazdu
-
-MOŻLIWE, ale chyba w chuj naciągane i idk czy bym to robił:
- - dodawanie do tabeli powiadomienia, gdy zmieni się status wycieczki
-POMYSŁ:
- - przechowujmy w tabeli kurort pole average_rate (srednia ocen) i przy kazdym dodawaniu oceny liczmy srednia cene (potencjalnie spoko)
-
-Procedury:
-- pageowanie kurortow
-- pageowanie wycieczek
-- pageowanie pokoi
-- wyswietlenie dostepnych pokoi w danym terminie
--   a co za tym idzie atomowe sprawdzenie, czy pokoj o danym ID jest dostepy w danym terminie
-- zwracanie mozliwej ceny zwrotu
-- sprawdzenie, czy jest mozliwy zwrot
-- Wygenerowanie raportu popularności (Możemy se zestawić raport z danego zakresu w kurortach: Ile było ofert, ile ludzi pojechało, wygenerowane siano)
-ZAPYTAŁEM CHATA, i no kurwa w tych procedurach można zmiescic cały backend, ale no nie rozdrabniajmy się tak jak nie musimy
+1) Kurorty (pagable)
+/api/resorts
+{
+    name,
+    averageOpinion,
+    country,
+    city,
+    price,
+    departureData,
+    returnDate
+}
 
 
-WIDOKI:
-- Widok wycieczka - udogodnienia - kurort
-- Widok Adres + miasto
-- Widok kurort - adres - miasto
-- Widok Powiadomienia + uzytkownik
-- Widok Opinia + uzytkownik + kurort
-- Widok sami userzy
-- Widok sami admini
-- Widok aktywne wycieczki (patrz to na dole)
+2) Wycieczki
+/api/resort?id=x
+{
+    resortName,
+    country,
+    city,
+    address {},
+    tour[] {
+        facilities[],
+        name,
+        price,
+        departureDate,
+        returnDate,
+        roomsCount,
+        placesLeft
+    }
+}
 
-Epilog:
-JEŻELI UZNAMY, ŻE PRZECHOWUJEMY DANE O WYCIECZCE WIĘCEJ NIŻ 30 DNI
-- trigger xxx jednak nie trigger bo na postgresie schedulery to piekło XD każdy normalny opierdoli to na backendzie
-myslalem ze trigger co usuwa wycieczki po 30 dniach od konca (albo nawet po samym skonczeniu, ale zrobimy to na backendzie no sorry)
 
-Ogólnie jakis czas przechowywania wycieczki bym ustalił, ponieważ wtedy ułatwi to wystawienie opinii (jeżeli po skoncze
-niu wycieczki usuwamy pole z tabeli wycieczka, no to jak się jorgniemy że ten user MOŻE te opinie wystawić? Trzeba byloby
-kolejna tabele historia_wycieczek czy cos xD)
+3) Opinie
+/api/opinions?resortId=x
+{
+    rate,
+    sendDate,
+    description
+}
 
-No chyba ze pierdolimy to totalnie i trzymamy wszystko jak babcie ogóry w spiżarni
+4) Powiadomienia
+/api/notifications?userId=x
+{
+    ...
+}
+
+5) Umowy
+/api/contracts?userId=x
+{
+    resortName,
+    departureDate,
+    returnDate,
+    country,
+    city,
+    reservationDate,
+    status,
+    personCount,
+    rooms[] {
+        name,
+        personCount,
+        standard
+    }
+}
