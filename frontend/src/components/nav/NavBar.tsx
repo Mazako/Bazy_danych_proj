@@ -4,6 +4,7 @@ import {role} from "../../features/user/UserTypes";
 import React, {JSX} from "react";
 import {Nav} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
+import {UserData} from "./UserData";
 
 export function NavBar() {
     const role: role = useSelector(userRoleSelector)
@@ -34,11 +35,11 @@ export function NavBar() {
     }
 
     return (
-        <div className="d-flex justify-content-between me-3">
+        <div className="d-flex justify-content-between align-items-center me-3 border-bottom">
             <Nav fill variant="pills">
                 {positions.map(position => <Nav.Item className="fs-4">{position}</Nav.Item>)}
             </Nav>
-            <p>Chuj</p>
+            <UserData />
         </div>
     )
 }

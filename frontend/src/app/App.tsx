@@ -17,7 +17,6 @@ function App() {
     useEffect(() => {
         if (Cookies.get('token')) {
             defaultRequester.defaults.headers['Authorization'] = `Bearer ${Cookies.get('token')}`
-
         }
     }, [])
 

@@ -28,7 +28,7 @@ export function LoginPage(): React.JSX.Element {
     }
 
     return (<div className="d-flex flex-column justify-content-start align-items-center mh-100">
-            {success === 'true' && <p className="fs-1 text-success">Pomyślnie utworzono konto</p>}
+            {success === 'true' && <p className="fs-3 text-success">Pomyślnie utworzono konto. Zaloguj się.</p>}
         <Form onSubmit={handleSubmit} className="border rounded p-lg-4" style={{marginTop: '90px'}}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
                 <Form.Label>Email</Form.Label>
@@ -46,7 +46,7 @@ export function LoginPage(): React.JSX.Element {
             </Form.Group>
             <Button variant='primary' type='submit'>Zaloguj się</Button>
         </Form>
-        {triedToLogin && <p className="fs-4 text-danger">Nie udało się zalogować</p>}
+        {triedToLogin && <p className="fs-4 text-danger">Niepoprawne dane logowania</p>}
         </div>
     )
 }

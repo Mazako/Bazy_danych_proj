@@ -1,13 +1,34 @@
+import {Badge, Button, OverlayTrigger, Tooltip} from "react-bootstrap";
+
 export function UserData() {
+
     return (
-        <div>
-            <img src="person-circle.svg"
-                 alt="person circle"
-                 width={60}/>
-            <p className="p-0 m-0">Michał Maziarz</p>
-            <img src="bell-fill.svg" alt="notification icon"/>
-            <img src="gear-fill.svg" alt="settings icon"/>
-            <img src="box-arrow-right.svg" alt="settings icon"/>
+        <div className="d-flex">
+
+            <OverlayTrigger trigger="hover" placement="bottom"
+                            overlay={<Tooltip style={{position: "fixed"}}>Powiadomienia</Tooltip>}>
+                <div>
+                    <Button>
+                        <img src="bell-fill.svg" alt="notification icon"/>
+                        <sup><Badge pill={true}
+                                    className="position-absolute top-0 start-100 translate-middle bg-danger">1</Badge></sup>
+                    </Button>
+                </div>
+            </OverlayTrigger>
+
+            <OverlayTrigger placement="bottom"
+                            overlay={<Tooltip style={{position: "fixed"}}>Ustawienia konta</Tooltip>}>
+                <Button className="mx-1">
+                    <img src="gear-fill.svg" alt="settings icon"/>
+                </Button>
+            </OverlayTrigger>
+
+            <OverlayTrigger placement="bottom" overlay={<Tooltip style={{position: "fixed"}}>Wyloguj się</Tooltip>}>
+                <Button>
+                    <img src="box-arrow-right.svg" alt="settings icon"/>
+                </Button>
+            </OverlayTrigger>
         </div>
+
     )
 }
