@@ -4,7 +4,7 @@ import {
     createRoutesFromElements,
     Route,
     RouterProvider
-} from "react-router-dom";
+} from 'react-router-dom';
 import {Hello} from "../components/Hello";
 import {LoginPage} from "../components/LoginPage";
 import Cookies from "js-cookie";

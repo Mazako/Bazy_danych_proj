@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.function.Function;
 
-class JwtService {
+public class JwtService {
     private static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
     private static final int TOKEN_DURATION = 1000 * 60 * 60 * 2;
 
