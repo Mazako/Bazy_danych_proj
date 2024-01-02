@@ -77,7 +77,9 @@ class AuthenticationController {
         }
     }
 
-    record CredentialsDTO(String mail, String password) { }
+    record CredentialsDTO(String mail, String password) {
+    }
 
-    record LoginResponseDto(String firstName, String lastName, String token, String role) { }
+    record LoginResponseDto(String firstName, String lastName, String token, String role) {
+    }
 }

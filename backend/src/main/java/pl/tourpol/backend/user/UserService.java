@@ -27,6 +27,10 @@ public class UserService {
         return true;
     }
 
+    public Optional<AppUser> getUserByEmail(String mail) {
+        return userRepository.findAppUserByMail(mail);
+    }
+
     public Optional<AppUser> findUserByName(String firstName) {
         return userRepository.findAll()
                 .stream()
