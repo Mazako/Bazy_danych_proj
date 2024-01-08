@@ -1,11 +1,33 @@
 import {Outlet} from "react-router";
 import {NavBar} from "./nav/NavBar";
+import {useDispatch, useSelector} from "react-redux";
+import {isMessageEmptySelector, messageSelector, removeMessage} from "../features/error/ToastMessageSlice";
+import {Toast, ToastContainer} from "react-bootstrap";
+import {AppDispatch} from "../app/Store";
 
 export function Hello() {
+    const toastEmpty = useSelector(isMessageEmptySelector)
+    const toast = useSelector(messageSelector)
+
+    const dispatch: AppDispatch = useDispatch()
+    const handleToast = () => {
+        if (!toastEmpty) {
+            return (
+                <ToastContainer position='bottom-end'>
+                    <Toast animation={true} onClose= {e => dispatch(removeMessage())}>
+                        <Toast.Header>{toast.title}</Toast.Header>
+                        <Toast.Body>{toast.description}</Toast.Body>
+                    </Toast>
+                </ToastContainer>
+            )
+        }
+    }
+
     return (
         <div className="vh-100">
             <NavBar />
             <Outlet />
+            {handleToast()}
         </div>
     )
 }

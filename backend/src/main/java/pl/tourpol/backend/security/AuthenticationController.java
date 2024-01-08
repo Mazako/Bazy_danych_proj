@@ -57,11 +57,11 @@ class AuthenticationController {
                                HttpServletRequest request) {
         try {
             String token = registrationService.registerUser(registrationDto);
-            String url = "http://" + request.getLocalAddr() + ":" + request.getServerPort();
+            String url = "http://localhost:" + request.getServerPort();
             eventPublisher.publishEvent(new RegistrationEvent(registrationDto.mail(), token, url));
             return ResponseEntity.ok().build();
         } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(RequestErrorMessage.MAIL_ALREADY_EXISTS);
         }
     }
 

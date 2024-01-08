@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {userReducer} from "../features/user/UserSlice";
+import {toastMessageReducer} from "../features/error/ToastMessageSlice";
 
 export const store = configureStore({
     reducer: {
-        user: userReducer
+        user: userReducer,
+        toastMessage: toastMessageReducer,
     }
 })
 
