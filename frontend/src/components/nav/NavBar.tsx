@@ -18,6 +18,9 @@ export function NavBar() {
         positions.push(
             <LinkContainer to="/login">
                 <Nav.Link eventKey="login">Logowanie</Nav.Link>
+            </LinkContainer>,
+            <LinkContainer to="/register">
+                <Nav.Link eventKey="register">Rejestracja</Nav.Link>
             </LinkContainer>
         )
     } else if (role === "USER") {
