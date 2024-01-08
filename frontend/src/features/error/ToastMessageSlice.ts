@@ -7,8 +7,8 @@ export interface ToastMessage {
 }
 
 const initialState: ToastMessage = {
-    title: 'Kutas',
-    description: 'Test'
+    title: '',
+    description: ''
 }
 
 const toastMessageSlice = createSlice({

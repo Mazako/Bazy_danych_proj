@@ -3,7 +3,7 @@ import {Button, Form} from "react-bootstrap";
 import {registrationRequest} from "../api/Requests";
 import {useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
-import {create5xxErrorMessage, createMessage} from "../features/error/ToastMessageSlice";
+import {createMessage} from "../features/error/ToastMessageSlice";
 
 interface ValidatedElements {
     fistName: boolean,
@@ -55,7 +55,7 @@ export function RegisterPage() {
 
     const validateForm = (): boolean => {
         return validatedElements.fistName && validatedElements.lastName && validatedElements.password
-            && validatedElements.repeatedPassword && validatedElements.mail && validatedElements.mail;
+            && validatedElements.repeatedPassword && validatedElements.mail && validatedElements.phone;
     }
 
     const handleSubmit = async (e) => {
@@ -69,6 +69,12 @@ export function RegisterPage() {
                     description: 'Zweryfikuj swoje konto przez link w wiadmości wysłanej na Twoją skrzynkę pocztową'
                 }))
                 nav('/')
+            } else if (response.status === 'MAIL_ALREADY_EXISTS') {
+                dispatch(createMessage({
+                    title: 'Adres E-mail w użyciu',
+                    description: `Wybrany adres E-mail: ${mail} jest już w użyciu.`
+                }))
+                setValidatedElements(prev => {return {...prev, mail: false}})
             }
         }
     }

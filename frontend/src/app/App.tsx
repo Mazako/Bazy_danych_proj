@@ -3,12 +3,13 @@ import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} fr
 import {Hello} from "../components/Hello";
 import {LoginPage} from "../components/LoginPage";
 import Cookies from "js-cookie";
-import {defaultRequester, ResponseBody, serverExceptionHandler} from "../api/Requests";
+import {defaultRequester, serverExceptionHandler} from "../api/Requests";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {RegisterPage} from "../components/RegisterPage";
 import {AppDispatch} from "./Store";
 import {useDispatch} from "react-redux";
 import {create5xxErrorMessage} from "../features/error/ToastMessageSlice";
+import {ResponseBody} from "../api/ResponseBody";
 
 
 function App() {
