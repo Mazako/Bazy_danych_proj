@@ -1,6 +1,10 @@
 package pl.tourpol.backend.api.contract;
 
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.tourpol.backend.persistance.entity.*;
 import pl.tourpol.backend.persistance.repository.ContractRepository;
@@ -19,20 +23,20 @@ public class ContractService {
     private final ContractRepository contractRepository;
     private final RoomContractRepository roomContractRepository;
     private final UserService userService;
-    private final JwtService jwtService;
-
-    public ContractService(ContractRepository contractRepository, RoomContractRepository roomContractRepository, UserService userService, JwtService jwtService) {
+    public ContractService(ContractRepository contractRepository,
+                           RoomContractRepository roomContractRepository,
+                           UserService userService) {
         this.contractRepository = contractRepository;
         this.roomContractRepository = roomContractRepository;
         this.userService = userService;
-        this.jwtService = jwtService;
     }
 
-    public List<ContractDTO> getAllContracts (String token){
-        String userEmail = jwtService.extractUserName(token.replace("Bearer ", ""));
-        AppUser user = userService.getUserByEmail(userEmail)
-                .orElseThrow(() -> new NoSuchElementException("Błędny użytkownik w sesji"));
-        List<Contract> contracts = contractRepository.findAllByUserId(user.getId());
+    public List<ContractDTO> getAllContracts (){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mail = user.getUsername();
+        AppUser appUser = userService.getUserByEmail(mail)
+                .orElseThrow(() -> new AccessDeniedException("User not found"));
+        List<Contract> contracts = contractRepository.findAllByUserId(appUser.getId());
         return contracts.stream()
                 .map(this::convertToContractDTO)
                 .toList();

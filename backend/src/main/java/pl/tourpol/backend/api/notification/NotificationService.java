@@ -1,5 +1,9 @@
 package pl.tourpol.backend.api.notification;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import pl.tourpol.backend.persistance.entity.AppUser;
 import pl.tourpol.backend.persistance.entity.Notification;
@@ -18,19 +22,18 @@ import java.util.stream.Collectors;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final JwtService jwtService;
     private final UserService userService;
-    public NotificationService(NotificationRepository notificationRepository, JwtService jwtService, UserService userService) {
+    public NotificationService(NotificationRepository notificationRepository, UserService userService) {
         this.notificationRepository = notificationRepository;
-        this.jwtService = jwtService;
         this.userService = userService;
     }
 
-    public List<NotificationDTO> getNotificationsByUserInSession(String token){
-        String userEmail = jwtService.extractUserName(token.replace("Bearer ", ""));
-        AppUser user = userService.getUserByEmail(userEmail)
-                .orElseThrow(() -> new NoSuchElementException("Błędny użytkownik w sesji"));
-        List<Notification> allNotificationByUserId = notificationRepository.getAllNotificationByUserId(user.getId());
+    public List<NotificationDTO> getNotificationsByUserInSession(){
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String mail = user.getUsername();
+        AppUser appUser = userService.getUserByEmail(mail)
+                .orElseThrow(() -> new AccessDeniedException("User not found"));
+        List<Notification> allNotificationByUserId = notificationRepository.getAllNotificationByUserId(appUser.getId());
         return allNotificationByUserId.stream()
                 .map(this::convertToNotificationDTO)
                 .toList();

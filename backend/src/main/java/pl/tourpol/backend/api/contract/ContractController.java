@@ -14,12 +14,9 @@ public class ContractController {
     public ContractController(ContractService contractService) {
         this.contractService = contractService;
     }
-
-    // TOKEN TESTOWY DO SWAGGERA
-    // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaWNoYWwubWF6aWFyejEyQGdtYWlsLmNvbSIsImlhdCI6MTcwNDIxMzI4OSwiZXhwIjoxNzA0MjIwNDg5fQ.dOuh1U53iI2IZ1DGegOBtSdvq6GhYCOsEwqFdq1ZqbI
     @GetMapping()
-    public ResponseEntity<?> getContracts(@RequestHeader String token) {
-        List<ContractDTO> contracts = contractService.getAllContracts(token);
+    public ResponseEntity<?> getContracts() {
+        List<ContractDTO> contracts = contractService.getAllContracts();
         return contracts != null ? ResponseEntity.ok(contracts) : ResponseEntity.notFound().build();
     }
 }
