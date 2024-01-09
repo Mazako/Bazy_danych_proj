@@ -10,7 +10,7 @@ export function NavBar() {
     const role: role = useSelector(userRoleSelector)
     const positions: Array<JSX.Element> = []
     positions.push(
-        <LinkContainer to="/">
+        <LinkContainer to="/offers">
             <Nav.Link eventKey="offers">Oferty</Nav.Link>
         </LinkContainer>
     )
@@ -26,7 +26,7 @@ export function NavBar() {
     } else if (role === "USER") {
         positions.push(
             <LinkContainer to="/login">
-                <Nav.Link eventKey="offers">Oferty</Nav.Link>
+                <Nav.Link eventKey="contracts">Kontrakty</Nav.Link>
             </LinkContainer>
         )
     } else if (role === "ADMIN") {

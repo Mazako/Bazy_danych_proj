@@ -1,6 +1,6 @@
 import {ComponentPreview, Previews} from "@react-buddy/ide-toolbox";
 import {ExampleLoaderComponent, PaletteTree} from "./palette";
-import {Hello} from "../components/Hello";
+import {MainPage} from "../components/MainPage";
 import {NavBar} from "../components/nav/NavBar";
 import {UserData} from "../components/nav/UserData";
 
@@ -15,7 +15,7 @@ const ComponentPreviews = () => {
                 <ExampleLoaderComponent/>
             </ComponentPreview>
             <ComponentPreview path="/Hello">
-                <Hello/>
+                <MainPage/>
             </ComponentPreview>
             <ComponentPreview path="/NavBar">
                 <NavBar/>

@@ -44,11 +44,18 @@ export function RegisterPage() {
             phone: /^(\+48|0048)?\s?([0-9]{9}|[0-9]{3}\s?[0-9]{3}\s?[0-9]{3})$/.test(phone), // NOSONAR,
             mail: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(mail), // regex valid with RFC 5322 and RFC 5321 standards
         })
-    },[firstName, lastName, password, repeatedPassword, phone, mail])
+    }, [firstName, lastName, password, repeatedPassword, phone, mail])
 
     const createFormLabel = (validatedElement: boolean, label: string, validationErrorMessage: string) => {
         if (everSubmitted && !validatedElement) {
-            return <Form.Label className='w-100 d-flex justify-content-between'><span className='d-inline-block'>{label}</span> <span className='text-danger text-end d-inline-block'>({validationErrorMessage})</span></Form.Label>
+            return (<Form.Label className='w-100 d-flex justify-content-between'>
+                <span className='d-inline-block'>
+                    {label}
+                </span>
+                <span className='text-danger text-end d-inline-block'>
+                    ({validationErrorMessage})
+                </span>
+            </Form.Label>)
         }
         return <Form.Label>{label}</Form.Label>
     }
@@ -74,7 +81,9 @@ export function RegisterPage() {
                     title: 'Adres E-mail w użyciu',
                     description: `Wybrany adres E-mail: ${mail} jest już w użyciu.`
                 }))
-                setValidatedElements(prev => {return {...prev, mail: false}})
+                setValidatedElements(prev => {
+                    return {...prev, mail: false}
+                })
             }
         }
     }
@@ -138,5 +147,4 @@ export function RegisterPage() {
             <Button variant='primary' type='submit'>Zarejestruj się</Button>
         </Form>
     </div>)
-
 }

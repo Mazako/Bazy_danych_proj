@@ -1,13 +1,16 @@
-import {Outlet} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {NavBar} from "./nav/NavBar";
 import {useDispatch, useSelector} from "react-redux";
 import {isMessageEmptySelector, messageSelector, removeMessage} from "../features/error/ToastMessageSlice";
 import {Toast, ToastContainer} from "react-bootstrap";
 import {AppDispatch} from "../app/Store";
+import {OffersPage} from "./OffersPage";
+import {useEffect} from "react";
 
-export function Hello() {
+export function MainPage() {
     const toastEmpty = useSelector(isMessageEmptySelector)
     const toasts = useSelector(messageSelector)
+    const navigate = useNavigate()
 
     const dispatch: AppDispatch = useDispatch()
     const handleToast = () => {
@@ -28,6 +31,10 @@ export function Hello() {
             )
         }
     }
+
+    useEffect(() => {
+        navigate('/offers')
+    }, [navigate])
 
     return (
         <div className="vh-100">
