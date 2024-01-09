@@ -1,29 +1,37 @@
 import React, {useEffect} from 'react';
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-    RouterProvider
-} from 'react-router-dom';
-import {Hello} from "../components/Hello";
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
+import {MainPage} from "../components/MainPage";
 import {LoginPage} from "../components/LoginPage";
 import Cookies from "js-cookie";
-import {defaultRequester} from "../api/Requests";
+import {defaultRequester, serverExceptionHandler} from "../api/Requests";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {RegisterPage} from "../components/RegisterPage";
+import {AppDispatch} from "./Store";
+import {useDispatch} from "react-redux";
+import {create5xxErrorMessage} from "../features/error/ToastMessageSlice";
+import {ResponseBody} from "../api/ResponseBody";
+import {OffersPage} from "../components/OffersPage";
 
 
 function App() {
+    const dispatch: AppDispatch = useDispatch()
+
+    serverExceptionHandler.handle5xxError = (): ResponseBody<any> => {
+        dispatch(create5xxErrorMessage())
+        return {data: null, status: "FAILURE"}
+    }
 
     useEffect(() => {
         if (Cookies.get('token')) {
             defaultRequester.defaults.headers['Authorization'] = `Bearer ${Cookies.get('token')}`
-
         }
     }, [])
 
   const router = createBrowserRouter(createRoutesFromElements([
-      <Route path='/' element={<Hello />}>
+      <Route path='/' element={<MainPage />}>
+          <Route path='/offers' element={<OffersPage />} />
           <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
       </Route>
   ]))
   return (
