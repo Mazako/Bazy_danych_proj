@@ -33,7 +33,7 @@ public class RegistrationService {
             throw new UserAlreadyExistsException("User with given mail: " + registrationDto.mail() + ", already exists");
         }
 
-        var savedUser = appUserByMail.orElse(userRepository.save(new AppUser(
+        var savedUser = appUserByMail.orElseGet(() -> userRepository.save(new AppUser(
                 registrationDto.firstName(),
                 registrationDto.lastName(),
                 registrationDto.mail(),

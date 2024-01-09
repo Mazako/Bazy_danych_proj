@@ -7,17 +7,23 @@ import {AppDispatch} from "../app/Store";
 
 export function Hello() {
     const toastEmpty = useSelector(isMessageEmptySelector)
-    const toast = useSelector(messageSelector)
+    const toasts = useSelector(messageSelector)
 
     const dispatch: AppDispatch = useDispatch()
     const handleToast = () => {
         if (!toastEmpty) {
             return (
                 <ToastContainer position='bottom-end'>
-                    <Toast animation={true} onClose= {e => dispatch(removeMessage())}>
-                        <Toast.Header>{toast.title}</Toast.Header>
-                        <Toast.Body>{toast.description}</Toast.Body>
-                    </Toast>
+                    {
+                        Object.entries(toasts).map(([id, message]) => {
+                            return (
+                                <Toast animation={true} onClose={() => dispatch(removeMessage(id))} key={id}>
+                                    <Toast.Header>{message.title}</Toast.Header>
+                                    <Toast.Body>{message.description}</Toast.Body>
+                                </Toast>
+                            )
+                        })
+                    }
                 </ToastContainer>
             )
         }
@@ -25,8 +31,8 @@ export function Hello() {
 
     return (
         <div className="vh-100">
-            <NavBar />
-            <Outlet />
+            <NavBar/>
+            <Outlet/>
             {handleToast()}
         </div>
     )

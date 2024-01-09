@@ -1,6 +1,11 @@
-import {Badge, Button, Overlay, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {Badge, Button, Overlay, OverlayTrigger, Toast, ToastContainer, Tooltip} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
 import {bottom} from "@popperjs/core";
+import {AppDispatch} from "../../app/Store";
+import {useDispatch} from "react-redux";
+import {logout} from "../../features/user/UserSlice";
+import {useNavigate} from "react-router";
+import {createMessage} from "../../features/error/ToastMessageSlice";
 
 /**
  * This component creates notifications popover also
@@ -11,8 +16,16 @@ export function UserData() {
     const [hoverNotificationButton, setHoverNotificationButton] = useState(false)
     const [clickNotificationButton, setClickNotificationButton] = useState(false)
 
-    const [notification, setNotification] = useState(1)
+    const [notification, setNotification] = useState(0)
 
+    const dispatch: AppDispatch = useDispatch()
+    const nav = useNavigate()
+    const handleLogout = () => {
+        dispatch(logout())
+        nav('/')
+        dispatch(createMessage({title: 'Wylogowano', description: 'Wylogowano pomyślnie'}))
+
+    }
     const handleNotificationClick = () => {
         setHoverNotificationButton(false)
         setClickNotificationButton(val => !val)
@@ -27,13 +40,24 @@ export function UserData() {
     const renderNotifications = () => {
         if (notification > 0) {
             return (
-                <p className="text-danger fs-4 text-center h-100">
+                <p className="text-danger fs-4 text-center h-100 justify-content-center">
                     Brak powiadomień :(
                 </p>
             )
         } else {
             return (
-                <p>XD</p>
+                <div>
+                    <Toast className="mb-3">
+                        <Toast.Header className='justify-content-between'>
+                            <small>dsaDSADSAx</small>
+                        </Toast.Header>
+                        <Toast.Body>XD</Toast.Body>
+                    </Toast>
+                    <Toast>
+                        <Toast.Header>Test</Toast.Header>
+                        <Toast.Body>XD</Toast.Body>
+                    </Toast>
+                </div>
             )
         }
     }
@@ -73,7 +97,7 @@ export function UserData() {
                      show={clickNotificationButton}
                      placement={'bottom-end'}
                      ref={notificationsDivRef}>
-                <div style={{width: 300, height: notification > 0 ? 500 : 44, position: "relative"}}
+                <div style={{width: 300, height: notification > 0 ? 500 : "auto", position: "relative"}}
                      className="border border-black bg-light-subtle z-3 rounded-3">
                     {renderNotifications()}
                 </div>
@@ -87,7 +111,7 @@ export function UserData() {
             </OverlayTrigger>
 
             <OverlayTrigger placement="bottom" overlay={<Tooltip style={{position: "fixed"}}>Wyloguj się</Tooltip>}>
-                <Button>
+                <Button onClick={handleLogout}>
                     <img src="box-arrow-right.svg" alt="settings icon"/>
                 </Button>
             </OverlayTrigger>

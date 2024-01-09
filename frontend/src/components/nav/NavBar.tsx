@@ -25,13 +25,13 @@ export function NavBar() {
         )
     } else if (role === "USER") {
         positions.push(
-            <LinkContainer to="#">
+            <LinkContainer to="/login">
                 <Nav.Link eventKey="offers">Oferty</Nav.Link>
             </LinkContainer>
         )
     } else if (role === "ADMIN") {
         positions.push(
-            <LinkContainer to="#">
+            <LinkContainer to="/login">
                 <Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>)
             </LinkContainer>
         )
