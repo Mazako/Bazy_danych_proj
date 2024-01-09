@@ -10,6 +10,7 @@ import pl.tourpol.backend.persistance.repository.VerificationTokenRepository;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -18,6 +19,7 @@ public class RegistrationService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final Supplier<Role> userRoleProvider;
     private final PasswordEncoder passwordEncoder;
+
     public RegistrationService(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository, Supplier<Role> userRoleProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.verificationTokenRepository = verificationTokenRepository;
@@ -26,10 +28,12 @@ public class RegistrationService {
     }
 
     public String registerUser(RegistrationDto registrationDto) {
-        if(userRepository.findAppUserByMail(registrationDto.mail()).isPresent()) {
+        Optional<AppUser> appUserByMail = userRepository.findAppUserByMail(registrationDto.mail());
+        if (appUserByMail.filter(AppUser::isEnabled).isPresent()) {
             throw new UserAlreadyExistsException("User with given mail: " + registrationDto.mail() + ", already exists");
         }
-        var user = new AppUser(
+
+        var savedUser = appUserByMail.orElseGet(() -> userRepository.save(new AppUser(
                 registrationDto.firstName(),
                 registrationDto.lastName(),
                 registrationDto.mail(),
@@ -37,8 +41,7 @@ public class RegistrationService {
                 userRoleProvider.get(),
                 LocalDate.now(),
                 registrationDto.phone(),
-                false);
-        var savedUser = userRepository.save(user);
+                false)));
 
         var token = UUID.randomUUID().toString();
         var verificationToken = new VerificationToken(token, Instant.now().plus(24, ChronoUnit.HOURS), savedUser);
