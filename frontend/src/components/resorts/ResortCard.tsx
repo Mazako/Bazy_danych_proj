@@ -1,46 +1,30 @@
 import React from "react";
 import { Card, Col } from "react-bootstrap";
-import {FaPlaneArrival, FaPlaneDeparture, FaStar } from "react-icons/fa";
+import { FaPlaneArrival, FaPlaneDeparture, FaStar } from "react-icons/fa";
 
 const ResortCard = ({ offer }) => {
-    const getBackgroundColor = (letter) => {
-        const unicode = letter.charCodeAt(0);
-        return `#${(unicode * 1234567).toString(16).substr(0, 6)}`;
-    };
-
-    const countryBackgroundColor = getBackgroundColor(offer.country.charAt(0));
-
     return (
-        <Col key={offer.resortName} md={4}>
-            <Card className="h-100 mx-4">
+        <Col md={4} className="mb-4">
+            <Card className="h-100 border border-dark shadow-sm mx-1 px-2">
                 <Card.Body>
                     <Card.Title className="d-flex justify-content-between align-items-center">
                         {offer.resortName}
-                        <span style={{
-                                backgroundColor: countryBackgroundColor,
-                                padding: "2px 6px",
-                                borderRadius: "4px",
-                                color: "white",
-                                border: "1px solid black",
-                            }}>
-                        {offer.country}
-                       </span>
+                        <span className="badge bg-primary text-white">
+                            {offer.country}
+                        </span>
                     </Card.Title>
-                    <Card.Text className="text-muted">
-
+                    <Card.Text className="text-muted small">
+                        {offer.city}
                     </Card.Text>
-
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between">
                         <div>
-                            { offer.city}
+                            <FaStar className="text-warning" /> {offer.averageOpinion}/5
                         </div>
-
                         <div>
-                            Ocena <FaStar /> {offer.averageOpinion}/5 || Cena: {offer.price ? `${offer.price} zł` : 'N/A'}
+                            Cena: {offer.price ? `${offer.price} zł` : 'N/A'}
                         </div>
                     </div>
-
-                    <div className="d-flex justify-content-between align-items-center mt-2">
+                    <div className="d-flex justify-content-between mt-2">
                         <div>
                             <FaPlaneDeparture /> {offer.departureData}
                         </div>
