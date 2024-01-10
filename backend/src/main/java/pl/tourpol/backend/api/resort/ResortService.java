@@ -2,7 +2,6 @@ package pl.tourpol.backend.api.resort;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.tourpol.backend.persistance.entity.Address;
 import pl.tourpol.backend.persistance.entity.Facility;
@@ -42,8 +41,8 @@ public class ResortService {
         return convertToResortDTO(resort, tours);
     }
 
-    public Page<ResortsList> getAllResort(int page){
-        Page<Resort> allResorts = resortRepository.findAllResorts(PageRequest.of(page, 10));
+    public Page<ResortsList> getAllResort(int page) {
+        Page<Resort> allResorts = resortRepository.findAllResorts(PageRequest.of(page, 15));
         return allResorts.map(this::convertToResortsList);
     }
 
@@ -66,6 +65,8 @@ public class ResortService {
                 averageOpinion,
                 resort.getAddress().getCity().getCountry(),
                 resort.getAddress().getCity().getName(),
+                resort.getAddress().getCity().getLatitude(),
+                resort.getAddress().getCity().getLongitude(),
                 price,
                 departureDate,
                 returnDate
@@ -100,13 +101,14 @@ public class ResortService {
 
     public int calculateAvailablePlacesForTour(Long tourId) {
         int totalConfirmedPersons = getTotalConfirmedPersons(tourId);
-        int totalRoomCapacity =getTotalRoomCapacity(tourId);
+        int totalRoomCapacity = getTotalRoomCapacity(tourId);
         return totalRoomCapacity - totalConfirmedPersons;
     }
 
     public Short getTotalRoomCapacity(Long tourId) {
-        return  Optional.ofNullable(roomTourRepository.sumTotalCapacityForTour(tourId)).orElse((short) 0);
+        return Optional.ofNullable(roomTourRepository.sumTotalCapacityForTour(tourId)).orElse((short) 0);
     }
+
     public Short getTotalConfirmedPersons(Long tourId) {
         return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
     }
@@ -116,6 +118,8 @@ public class ResortService {
             float averageOpinion,
             String country,
             String city,
+            String latitude,
+            String longitude,
             Float price,
             LocalDate departureData,
             LocalDate returnDate

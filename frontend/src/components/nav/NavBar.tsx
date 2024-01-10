@@ -39,7 +39,7 @@ export function NavBar() {
 
     return (
         <div className="d-flex justify-content-between align-items-center me-3 border-bottom">
-            <Nav fill variant="pills">
+            <Nav fill variant="pills" className="mx-4 my-2">
                 {positions.map(position => <Nav.Item className="fs-4">{position}</Nav.Item>)}
             </Nav>
             <UserData />
