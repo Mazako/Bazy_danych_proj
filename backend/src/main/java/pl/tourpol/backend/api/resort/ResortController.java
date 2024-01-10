@@ -3,10 +3,9 @@ package pl.tourpol.backend.api.resort;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 import static pl.tourpol.backend.api.resort.ResortService.ResortDTO;
 import static pl.tourpol.backend.api.resort.ResortService.ResortsList;
@@ -32,4 +31,19 @@ public class ResortController {
         Page<ResortsList> allResort = resortService.getAllResort(page);
         return !allResort.isEmpty() ? ResponseEntity.ok(allResort) : ResponseEntity.notFound().build();
     }
+    @GetMapping("/search")
+    public ResponseEntity<Page<ResortsList>> searchResorts(@ModelAttribute SearchParams searchParams, @RequestParam int page) {
+        Page<ResortsList> filteredResorts = resortService.searchResorts(searchParams,page);
+        return !filteredResorts.isEmpty() ? ResponseEntity.ok(filteredResorts) : ResponseEntity.notFound().build();
+    }
+    public record SearchParams(
+            String resortName,
+            String country,
+            String city,
+            Float minPrice,
+            Float maxPrice,
+            LocalDate departureDate,
+            LocalDate returnDate
+    ) {}
+
 }

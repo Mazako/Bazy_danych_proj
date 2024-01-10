@@ -16,3 +16,12 @@ export interface ResortsListResponse {
     totalPages: number;
     totalElements: number;
 }
+export interface SearchParams {
+    resortName?: string;
+    country?: string;
+    city?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    departureDate?: string;
+    returnDate?: string;
+}

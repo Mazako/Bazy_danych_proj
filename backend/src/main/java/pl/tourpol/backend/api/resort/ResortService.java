@@ -113,6 +113,18 @@ public class ResortService {
         return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
     }
 
+    public Page<ResortsList> searchResorts(ResortController.SearchParams searchParams, int page) {
+        Page<Resort> filtredResorts = resortRepository.findResortWithFilters(searchParams.resortName(),
+                searchParams.city(),
+                searchParams.country(),
+                searchParams.minPrice(),
+                searchParams.maxPrice(),
+                searchParams.departureDate(),
+                searchParams.returnDate(),
+                PageRequest.of(page, 15));
+        return filtredResorts.map(this::convertToResortsList);
+    }
+
     public static record ResortsList(
             String resortName,
             float averageOpinion,

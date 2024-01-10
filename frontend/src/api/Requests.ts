@@ -1,7 +1,7 @@
 import {LoginCredentials, LoginResponse} from "../features/user/UserTypes";
 import axios, {AxiosError, AxiosInstance} from "axios";
 import {ResponseBody} from "./ResponseBody";
-import {ResortsListResponse} from "../features/resort/ResortType";
+import {ResortsListResponse, SearchParams} from "../features/resort/ResortType";
 
 
 class ServerExceptionHandler {
@@ -59,5 +59,21 @@ export const getResortsRequest = async (page: number): Promise<ResponseBody<Reso
         throw new Error("Error fetching resorts");
     }
 }
+
+export const searchResortsRequest = async (searchParams: SearchParams, page: number): Promise<ResponseBody<ResortsListResponse>> => {
+    try {
+        const params = { ...searchParams, page };
+        const response = await defaultRequester.get(`/api/resort/search`, { params });
+        console.log(response);
+        return { data: response.data, status: "SUCCESS" };
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error searching for resorts");
+    }
+}
+
 
 
