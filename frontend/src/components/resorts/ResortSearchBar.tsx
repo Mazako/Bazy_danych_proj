@@ -21,7 +21,7 @@ export const SearchBar = ({ onSearch, onReset }) => {
 
     const handleReset = () => {
         formRef.current.reset();
-        onReset(); // Make sure to call the onReset prop if needed
+        onReset();
     };
 
     return (
