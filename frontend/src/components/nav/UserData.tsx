@@ -22,7 +22,7 @@ export function UserData() {
     const nav = useNavigate()
     const handleLogout = () => {
         dispatch(logout())
-        nav('/')
+        nav('/offers')
         dispatch(createMessage({title: 'Wylogowano', description: 'Wylogowano pomyślnie'}))
 
     }
