@@ -3,6 +3,7 @@ package pl.tourpol.backend.api.resort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import pl.tourpol.backend.api.resort.ResortController.SearchRequestDTO;
 import pl.tourpol.backend.persistance.entity.Address;
 import pl.tourpol.backend.persistance.entity.Facility;
 import pl.tourpol.backend.persistance.entity.Resort;
@@ -15,7 +16,6 @@ import pl.tourpol.backend.persistance.repository.TourRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ResortService {
@@ -52,7 +52,7 @@ public class ResortService {
         LocalDate departureDate = null;
         LocalDate returnDate = null;
         Float price = null;
-        Float averageOpinion = resort.getAvgOpinion() != null ? resort.getAvgOpinion() : 0.0f;
+        float averageOpinion = Optional.ofNullable(resort.getAvgOpinion()).orElse(0.0f);
 
         if (nearestTourOpt.isPresent()) {
             Tour nearestTour = nearestTourOpt.get();
@@ -76,7 +76,7 @@ public class ResortService {
     private ResortDTO convertToResortDTO(Resort resort, List<Tour> tours) {
         List<TourDTO> tourDTOs = tours.stream()
                 .map(this::convertToTourDTO)
-                .collect(Collectors.toList());
+                .toList();
 
         return new ResortDTO(
                 resort.getName(),
@@ -113,7 +113,7 @@ public class ResortService {
         return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
     }
 
-    public Page<ResortsList> searchResorts(ResortController.SearchParams searchParams, int page) {
+    public Page<ResortsList> searchResorts(SearchRequestDTO searchParams) {
         Page<Resort> filtredResorts = resortRepository.findResortWithFilters(searchParams.resortName(),
                 searchParams.city(),
                 searchParams.country(),
@@ -121,11 +121,11 @@ public class ResortService {
                 searchParams.maxPrice(),
                 searchParams.departureDate(),
                 searchParams.returnDate(),
-                PageRequest.of(page, 15));
+                PageRequest.of(searchParams.page(), 15));
         return filtredResorts.map(this::convertToResortsList);
     }
 
-    public static record ResortsList(
+    public record ResortsList(
             String resortName,
             float averageOpinion,
             String country,
@@ -149,7 +149,7 @@ public class ResortService {
     ) {
     }
 
-    public static record ResortDTO(
+    public record ResortDTO(
             String resortName,
             String country,
             String city,

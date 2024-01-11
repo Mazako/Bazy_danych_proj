@@ -27,23 +27,24 @@ public class ResortController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<ResortsList>> getResorts(@RequestParam int page){
+    public ResponseEntity<Page<ResortsList>> getAllResorts(@RequestParam int page){
         Page<ResortsList> allResort = resortService.getAllResort(page);
         return !allResort.isEmpty() ? ResponseEntity.ok(allResort) : ResponseEntity.notFound().build();
     }
-    @GetMapping("/search")
-    public ResponseEntity<Page<ResortsList>> searchResorts(@ModelAttribute SearchParams searchParams, @RequestParam int page) {
-        Page<ResortsList> filteredResorts = resortService.searchResorts(searchParams,page);
+    @PostMapping("/search")
+    public ResponseEntity<Page<ResortsList>> searchResorts(@RequestBody SearchRequestDTO searchParams) {
+        Page<ResortsList> filteredResorts = resortService.searchResorts(searchParams);
         return !filteredResorts.isEmpty() ? ResponseEntity.ok(filteredResorts) : ResponseEntity.notFound().build();
     }
-    public record SearchParams(
+    public record SearchRequestDTO(
             String resortName,
             String country,
             String city,
             Float minPrice,
             Float maxPrice,
             LocalDate departureDate,
-            LocalDate returnDate
+            LocalDate returnDate,
+            int page
     ) {}
 
 }

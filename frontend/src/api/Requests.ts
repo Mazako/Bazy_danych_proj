@@ -62,9 +62,7 @@ export const getResortsRequest = async (page: number): Promise<ResponseBody<Reso
 
 export const searchResortsRequest = async (searchParams: SearchParams, page: number): Promise<ResponseBody<ResortsListResponse>> => {
     try {
-        const params = { ...searchParams, page };
-        const response = await defaultRequester.get(`/api/resort/search`, { params });
-        console.log(response);
+        const response = await defaultRequester.post(`/api/resort/search`, {...searchParams, page: page});
         return { data: response.data, status: "SUCCESS" };
     } catch (e) {
         const err = e as AxiosError;
