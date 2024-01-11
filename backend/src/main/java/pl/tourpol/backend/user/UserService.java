@@ -6,6 +6,7 @@ import pl.tourpol.backend.security.permissions.AccessSensitiveOperation;
 
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
 import static pl.tourpol.backend.security.permissions.AccessSensitiveOperationType.APP_USER_ACCESS;
 
 public class UserService {
@@ -14,8 +15,8 @@ public class UserService {
     private final AccessSensitiveOperation accessSensitiveOperation;
 
     public UserService(UserRepository userRepository, AccessSensitiveOperation accessSensitiveOperation) {
-        this.userRepository = userRepository;
-        this.accessSensitiveOperation = accessSensitiveOperation;
+        this.userRepository = requireNonNull(userRepository);
+        this.accessSensitiveOperation = requireNonNull(accessSensitiveOperation);
     }
 
     public boolean deleteUserById(Long id) {

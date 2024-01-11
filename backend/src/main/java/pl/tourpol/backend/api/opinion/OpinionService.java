@@ -2,19 +2,19 @@ package pl.tourpol.backend.api.opinion;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import pl.tourpol.backend.persistance.entity.Opinion;
 import pl.tourpol.backend.persistance.repository.OpinionRepository;
 
 import java.time.LocalDate;
 
-@Service
+import static java.util.Objects.requireNonNull;
+
 public class OpinionService {
 
     private final OpinionRepository opinionRepository;
 
     public OpinionService(OpinionRepository opinionRepository) {
-        this.opinionRepository = opinionRepository;
+        this.opinionRepository = requireNonNull(opinionRepository);
     }
 
     public Page<OpinionDto> getOpinionsByResortId(long resortId, int page){

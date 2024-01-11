@@ -10,12 +10,14 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.LongFunction;
 
+import static java.util.Objects.requireNonNull;
+
 public class AccessSensitiveOperationImpl implements AccessSensitiveOperation {
 
     private final UserRepository userRepository;
 
     public AccessSensitiveOperationImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.userRepository = requireNonNull(userRepository);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class AccessSensitiveOperationImpl implements AccessSensitiveOperation {
         return callable.apply(id);
     }
     private void checkAccess(AppUser appUser, Long id, AccessSensitiveOperationType operationType) {
-        if (Objects.requireNonNull(operationType) == AccessSensitiveOperationType.APP_USER_ACCESS) {
+        if (requireNonNull(operationType) == AccessSensitiveOperationType.APP_USER_ACCESS) {
             checkAppUserAccess(id, appUser);
         } else if (operationType == AccessSensitiveOperationType.CONTRACT_ACCESS) {
             checkContractAccess(id, appUser);

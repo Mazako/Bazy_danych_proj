@@ -2,7 +2,6 @@ package pl.tourpol.backend.api.resort;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import pl.tourpol.backend.api.resort.ResortController.SearchRequestDTO;
 import pl.tourpol.backend.persistance.entity.Address;
 import pl.tourpol.backend.persistance.entity.Facility;
@@ -17,7 +16,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+import static java.util.Objects.requireNonNull;
+
 public class ResortService {
 
     private final ResortRepository resortRepository;
@@ -26,10 +26,10 @@ public class ResortService {
     private final RoomContractRepository roomContractRepository;
 
     public ResortService(ResortRepository resortRepository, TourRepository tourRepository, RoomTourRepository roomTourRepository, RoomContractRepository roomContractRepository) {
-        this.resortRepository = resortRepository;
-        this.tourRepository = tourRepository;
-        this.roomTourRepository = roomTourRepository;
-        this.roomContractRepository = roomContractRepository;
+        this.resortRepository = requireNonNull(resortRepository);
+        this.tourRepository = requireNonNull(tourRepository);
+        this.roomTourRepository = requireNonNull(roomTourRepository);
+        this.roomContractRepository = requireNonNull(roomContractRepository);
     }
 
     public ResortDTO getResortById(Long id) {
