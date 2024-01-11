@@ -6,11 +6,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.tourpol.backend.persistance.entity.AppUser;
 import pl.tourpol.backend.persistance.repository.UserRepository;
+
+import static java.util.Objects.requireNonNull;
+
 class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.userRepository = requireNonNull(userRepository);
     }
 
     @Override

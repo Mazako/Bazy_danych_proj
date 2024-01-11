@@ -15,6 +15,8 @@ import pl.tourpol.backend.security.registration.*;
 
 import java.net.URI;
 
+import static java.util.Objects.requireNonNull;
+
 @RestController
 @RequestMapping("/auth")
 class AuthenticationController {
@@ -26,13 +28,13 @@ class AuthenticationController {
     private final UserRepository userRepository;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService, RegistrationService registrationService, ApplicationEventPublisher eventPublisher,
+    AuthenticationController(AuthenticationManager authenticationManager, JwtService jwtService, RegistrationService registrationService, ApplicationEventPublisher eventPublisher,
                                     UserRepository userRepository) {
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-        this.registrationService = registrationService;
-        this.eventPublisher = eventPublisher;
-        this.userRepository = userRepository;
+        this.authenticationManager = requireNonNull(authenticationManager);
+        this.jwtService = requireNonNull(jwtService);
+        this.registrationService = requireNonNull(registrationService);
+        this.eventPublisher = requireNonNull(eventPublisher);
+        this.userRepository = requireNonNull(userRepository);
     }
 
     @PostMapping("/login")
