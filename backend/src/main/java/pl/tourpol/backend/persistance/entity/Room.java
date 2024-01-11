@@ -10,8 +10,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "room")
 public class Room {
     @Id
+    @SequenceGenerator(name = "room_id_gen", sequenceName = "room_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_id_gen")
-    @SequenceGenerator(name = "room_id_gen", sequenceName = "room_contract_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -33,6 +33,16 @@ public class Room {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "resort_id", nullable = false)
     private Resort resort;
+
+    public Room() {
+
+    }
+
+    public Room(String name, Short personCount, Short standard) {
+        this.personCount = personCount;
+        this.name = name;
+        this.standard = standard;
+    }
 
     public Long getId() {
         return id;

@@ -13,7 +13,7 @@ import static pl.tourpol.backend.api.resort.ResortService.ResortDTO;
 import static pl.tourpol.backend.api.resort.ResortService.ResortsList;
 
 @RestController
-@RequestMapping("/api/resort")
+@RequestMapping("public/api/resort")
 class ResortController {
 
     private final ResortService resortService;

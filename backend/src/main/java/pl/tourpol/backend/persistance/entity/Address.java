@@ -32,6 +32,23 @@ public class Address {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
+    public Address() {
+
+    }
+
+    public Address(String street, String buildingNumber, String houseNumber, City city) {
+        this.street = street;
+        this.buildingNumber = buildingNumber;
+        this.houseNumber = houseNumber;
+        this.city = city;
+    }
+
+    public Address(String street, String buildingNumber, String houseNumber) {
+        this.street = street;
+        this.buildingNumber = buildingNumber;
+        this.houseNumber = houseNumber;
+    }
+
     public Long getId() {
         return id;
     }

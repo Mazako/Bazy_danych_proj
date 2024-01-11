@@ -4,10 +4,9 @@ package pl.tourpol.backend.api.contract;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import pl.tourpol.backend.api.room.RoomDTO;
 import pl.tourpol.backend.persistance.entity.AppUser;
 import pl.tourpol.backend.persistance.entity.Contract;
-import pl.tourpol.backend.persistance.entity.Room;
-import pl.tourpol.backend.persistance.entity.RoomContract;
 import pl.tourpol.backend.persistance.repository.ContractRepository;
 import pl.tourpol.backend.persistance.repository.RoomContractRepository;
 import pl.tourpol.backend.user.UserService;
@@ -45,7 +44,7 @@ public class ContractService {
     public ContractDTO convertToContractDTO(Contract contract) {
 
         List<RoomDTO> roomDTOs = roomContractRepository.findRoomContractByContractId(contract.getId()).stream()
-                .map(this::convertToRoomDTO)
+                .map(RoomDTO::toDto)
                 .toList();
         return new ContractDTO(
                 contract.getTour().getResort().getName(),
@@ -58,14 +57,6 @@ public class ContractService {
                 contract.getPearsonCount(),
                 roomDTOs
         );
-    }
-
-    public RoomDTO convertToRoomDTO(RoomContract roomContract) {
-        Room room = roomContract.getRoom();
-        return new RoomDTO(room.getName(), room.getPersonCount(), room.getStandard());
-    }
-
-    public record RoomDTO(String name, Short personCount, Short standard) {
     }
 
     public record ContractDTO(

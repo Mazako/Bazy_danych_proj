@@ -6,6 +6,7 @@ import pl.tourpol.backend.api.contract.ContractService;
 import pl.tourpol.backend.api.notification.NotificationService;
 import pl.tourpol.backend.api.opinion.OpinionService;
 import pl.tourpol.backend.api.resort.ResortService;
+import pl.tourpol.backend.api.room.RoomService;
 import pl.tourpol.backend.persistance.repository.*;
 import pl.tourpol.backend.user.UserService;
 
@@ -32,6 +33,11 @@ class ApiConfiguration {
     ContractService contractService(ContractRepository contractRepository, RoomContractRepository roomContractRepository,
                                     UserService userService) {
         return new ContractService(contractRepository, roomContractRepository, userService);
+    }
+
+    @Bean
+    RoomService roomService(RoomRepository roomRepository, ResortRepository resortRepository) {
+        return new RoomService(roomRepository, resortRepository);
     }
 
 }

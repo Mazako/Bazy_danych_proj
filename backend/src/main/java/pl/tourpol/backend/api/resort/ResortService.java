@@ -3,14 +3,8 @@ package pl.tourpol.backend.api.resort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import pl.tourpol.backend.api.resort.ResortController.SearchRequestDTO;
-import pl.tourpol.backend.persistance.entity.Address;
-import pl.tourpol.backend.persistance.entity.Facility;
-import pl.tourpol.backend.persistance.entity.Resort;
-import pl.tourpol.backend.persistance.entity.Tour;
-import pl.tourpol.backend.persistance.repository.ResortRepository;
-import pl.tourpol.backend.persistance.repository.RoomContractRepository;
-import pl.tourpol.backend.persistance.repository.RoomTourRepository;
-import pl.tourpol.backend.persistance.repository.TourRepository;
+import pl.tourpol.backend.persistance.entity.*;
+import pl.tourpol.backend.persistance.repository.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +26,18 @@ public class ResortService {
         this.roomContractRepository = requireNonNull(roomContractRepository);
     }
 
+    public Page<ResortsList> searchResorts(SearchRequestDTO searchParams) {
+        Page<Resort> filtredResorts = resortRepository.findResortWithFilters(searchParams.resortName(),
+                searchParams.city(),
+                searchParams.country(),
+                searchParams.minPrice(),
+                searchParams.maxPrice(),
+                searchParams.departureDate(),
+                searchParams.returnDate(),
+                PageRequest.of(searchParams.page(), 15));
+        return filtredResorts.map(this::convertToResortsList);
+    }
+
     public ResortDTO getResortById(Long id) {
         Resort resort = resortRepository.findById(id).orElse(null);
         if (resort == null) {
@@ -44,6 +50,9 @@ public class ResortService {
     public Page<ResortsList> getAllResort(int page) {
         Page<Resort> allResorts = resortRepository.findAllResorts(PageRequest.of(page, 15));
         return allResorts.map(this::convertToResortsList);
+    }
+
+    public void addResort(NewResortData newResortData) {
     }
 
     private ResortsList convertToResortsList(Resort resort) {
@@ -99,63 +108,32 @@ public class ResortService {
         );
     }
 
-    public int calculateAvailablePlacesForTour(Long tourId) {
+    private int calculateAvailablePlacesForTour(Long tourId) {
         int totalConfirmedPersons = getTotalConfirmedPersons(tourId);
         int totalRoomCapacity = getTotalRoomCapacity(tourId);
         return totalRoomCapacity - totalConfirmedPersons;
     }
 
-    public Short getTotalRoomCapacity(Long tourId) {
+    private Short getTotalRoomCapacity(Long tourId) {
         return Optional.ofNullable(roomTourRepository.sumTotalCapacityForTour(tourId)).orElse((short) 0);
     }
 
-    public Short getTotalConfirmedPersons(Long tourId) {
+    private Short getTotalConfirmedPersons(Long tourId) {
         return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
     }
 
-    public Page<ResortsList> searchResorts(SearchRequestDTO searchParams) {
-        Page<Resort> filtredResorts = resortRepository.findResortWithFilters(searchParams.resortName(),
-                searchParams.city(),
-                searchParams.country(),
-                searchParams.minPrice(),
-                searchParams.maxPrice(),
-                searchParams.departureDate(),
-                searchParams.returnDate(),
-                PageRequest.of(searchParams.page(), 15));
-        return filtredResorts.map(this::convertToResortsList);
-    }
-
-    public record ResortsList(
-            String resortName,
-            float averageOpinion,
-            String country,
-            String city,
-            String latitude,
-            String longitude,
-            Float price,
-            LocalDate departureData,
-            LocalDate returnDate
+    public record ResortsList(String resortName, float averageOpinion, String country, String city, String latitude,
+            String longitude, Float price, LocalDate departureData, LocalDate returnDate
     ) {
     }
 
-    public record TourDTO(
-            Facility facilities,
-            String name,
-            Float price,
-            LocalDate departureDate,
-            LocalDate returnDate,
-            Short roomsCount,
-            Integer placesLeft
+    public record TourDTO(Facility facilities, String name, Float price, LocalDate departureDate, LocalDate returnDate,
+                          Short roomsCount, Integer placesLeft
     ) {
     }
 
-    public record ResortDTO(
-            String resortName,
-            String country,
-            String city,
-            Address address,
-            List<TourDTO> tours
-    ) {
+    public record ResortDTO(String resortName, String country, String city, Address address, List<TourDTO> tours) {
+
     }
 
 

@@ -11,7 +11,7 @@ import static java.util.Objects.requireNonNull;
 import static pl.tourpol.backend.api.contract.ContractService.ContractDTO;
 
 @RestController
-@RequestMapping("/api/contracts")
+@RequestMapping("public/api/contracts")
 public class ContractController {
     private final ContractService contractService;
 

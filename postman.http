@@ -15,12 +15,19 @@ POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-  "mail": "michal.maziarz12@gmail.com",
+  "mail": "admin",
   "password": "kaszanka"
 }
 
 ### TEST
-GET http://localhost:8080/api/user/findByName?firstName=Piotr
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtaWNoYWwubWF6aWFyejEyQGdtYWlsLmNvbSIsImlhdCI6MTcwMjg2MjAwOSwiZXhwIjoxNzAyODY5MjA5fQ.3Cs2yyvZLpLCkWrgO4Nj-IkuR5xUrW8WObjm_C5_s7Y
+POST http://localhost:8080/api/room/add
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwNTAwNTI2NSwiZXhwIjoxNzA1MDEyNDY1fQ.Yp5tRpw3_FuxHWe7ZrOrfEamGbwb2GDTgHVCOZ4ZKGY
+Content-Type: application/json
 
+{
+  "resortId": 1,
+  "name": "XD",
+  "pearsonCount": 10,
+  "standard": 3
+}
 
