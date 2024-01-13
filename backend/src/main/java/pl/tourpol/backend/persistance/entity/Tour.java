@@ -49,7 +49,7 @@ public class Tour {
     @JoinColumn(name = "resort_id", nullable = false)
     private Resort resort;
 
-    public Tour tour() {
+    public Tour() {
 
     }
 

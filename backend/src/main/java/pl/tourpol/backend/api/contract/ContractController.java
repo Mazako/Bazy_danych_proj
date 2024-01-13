@@ -18,7 +18,7 @@ public class ContractController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getContracts() {
+    public ResponseEntity<List<ContractDTO>> getContracts() {
         List<ContractDTO> contracts = contractService.getAllContracts();
         return contracts != null ? ResponseEntity.ok(contracts) : ResponseEntity.notFound().build();
     }
@@ -28,5 +28,5 @@ public class ContractController {
         return ResponseEntity.ok(contractService.addContract(dto.tourId, dto.roomIds));
     }
 
-    record AddContractRequestDTO(long tourId, List<Long> roomIds) {}
+    public record AddContractRequestDTO(long tourId, List<Long> roomIds) {}
 }

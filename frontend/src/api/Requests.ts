@@ -49,7 +49,7 @@ export const registrationRequest = async (firstName: string, lastName: string, m
 }
 export const getResortsRequest = async (page: number): Promise<ResponseBody<ResortsListResponse>> => {
     try {
-        const response = await defaultRequester.get(`/api/resort/list`, { params: { page } });
+        const response = await defaultRequester.get(`/public/api/resort/list`, { params: { page } });
         return { data: response.data, status: "SUCCESS" };
     } catch (e) {
         const err = e as AxiosError;
@@ -62,7 +62,7 @@ export const getResortsRequest = async (page: number): Promise<ResponseBody<Reso
 
 export const searchResortsRequest = async (searchParams: SearchParams, page: number): Promise<ResponseBody<ResortsListResponse>> => {
     try {
-        const response = await defaultRequester.post(`/api/resort/search`, {...searchParams, page: page});
+        const response = await defaultRequester.post(`/public/api/resort/search`, {...searchParams, page: page});
         return { data: response.data, status: "SUCCESS" };
     } catch (e) {
         const err = e as AxiosError;

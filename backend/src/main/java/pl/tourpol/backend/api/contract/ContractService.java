@@ -51,6 +51,9 @@ public class ContractService {
 
     @Transactional
     public ContractDTO addContract(long tourId, List<Long> roomIds) {
+        if (roomIds == null || roomIds.isEmpty()) {
+            throw new RequestException(RequestErrorMessage.EMPTY_LIST);
+        }
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String mail = user.getUsername();
         AppUser appUser = userService.getUserByEmail(mail)

@@ -12,5 +12,6 @@ public enum RequestErrorMessage {
     INVALID_DATE,
     INVALID_PRICE,
     INVALID_DESCRIPTION,
-    CONTRACT_NOT_EXISTS
+    CONTRACT_NOT_EXISTS,
+    EMPTY_LIST
 }
