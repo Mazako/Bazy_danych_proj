@@ -67,12 +67,12 @@ public class ResortService {
         Address address = locationService.addLocation(addressDTO.street(), addressDTO.buildingNumber(), addressDTO.houseNumber(),
                 addressDTO.city().name(), addressDTO.city().country(), addressDTO.city().longitude(), addressDTO.city().latitude());
 
-        Long resortId = resortRepository.save(new Resort(newResortData.name(), address, newResortData.description())).getId();
+        var resort = resortRepository.save(new Resort(newResortData.name(), address, newResortData.description()));
 
         newResortData.rooms()
-                .forEach(room -> roomService.addRoom(resortId, room.name(), room.personCount(), room.standard()));
+                .forEach(room -> roomService.addRoom(resort.getId(), room.name(), room.personCount(), room.standard()));
 
-        return resortRepository.findById(resortId).get();
+        return resort;
     }
 
     private void validate(String name, String description) {

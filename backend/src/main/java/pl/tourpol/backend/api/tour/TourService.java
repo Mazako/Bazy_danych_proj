@@ -115,11 +115,13 @@ public class TourService {
         var room = roomService.getRoomById(roomId).orElseThrow(() -> new RequestException(RequestErrorMessage.ROOM_NOT_EXISTS));
         var contract = contractRepository.findById(contractId).orElseThrow(() -> new RequestException(RequestErrorMessage.CONTRACT_NOT_EXISTS));
         long tourId = contract.getTour().getId();
-        boolean isTaken = roomContractRepository.getRoomsAssignedToTour(tourId)
+
+        boolean isAvailable = getAvailableRooms(tourId)
                 .stream()
                 .map(Room::getId)
-                .noneMatch(id -> id == roomId);
-        if (isTaken) {
+                .anyMatch(id -> id == roomId);
+
+        if (!isAvailable) {
             throw new RequestException(RequestErrorMessage.ROOM_BUSY);
         }
 
