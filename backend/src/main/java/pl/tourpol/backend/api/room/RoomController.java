@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping
 class RoomController {
 
     private final RoomService roomService;
@@ -30,7 +29,7 @@ class RoomController {
     @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<?> addRoom(@RequestBody AddRoomDto roomDTO) {
         roomService.addRoom(roomDTO.resortId, roomDTO.name, roomDTO.pearsonCount, roomDTO.standard);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(roomService.addRoom(roomDTO.resortId, roomDTO.name, roomDTO.pearsonCount, roomDTO.standard).getId());
     }
 
     record AddRoomDto(long resortId, String name, short pearsonCount, short standard) {

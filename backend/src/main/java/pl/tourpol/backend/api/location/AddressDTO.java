@@ -6,4 +6,5 @@ public record AddressDTO(String street,
                          String buildingNumber,
                          String houseNumber,
                          @JsonProperty("city") CityDTO city) {
+
 }

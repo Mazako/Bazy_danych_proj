@@ -27,14 +27,14 @@ public class RoomService {
                 .toList();
     }
 
-    public void addRoom(long resortId, String name, short pearsonCount, short standard) {
+    public Room addRoom(long resortId, String name, short pearsonCount, short standard) {
         var resort = resortRepository.findById(resortId)
                 .orElseThrow(() -> new RequestException(RequestErrorMessage.RESORT_NOT_EXISTS));
 
         var room = new Room(name, pearsonCount, standard);
         validate(room);
         room.setResort(resort);
-        roomRepository.save(room);
+        return roomRepository.save(room);
     }
 
     public boolean deleteRoom(long roomId) {

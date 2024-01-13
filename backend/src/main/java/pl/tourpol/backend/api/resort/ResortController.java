@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 import static java.util.Objects.requireNonNull;
-import static pl.tourpol.backend.api.resort.ResortService.ResortDTO;
-import static pl.tourpol.backend.api.resort.ResortService.ResortsList;
+import static pl.tourpol.backend.api.resort.ResortService.ResortDto;
+import static pl.tourpol.backend.api.resort.ResortService.ResortListItem;
 
 @RestController
-@RequestMapping("public/api/resort")
 class ResortController {
 
     private final ResortService resortService;
@@ -24,20 +23,25 @@ class ResortController {
     }
 
     @GetMapping()
-    ResponseEntity<ResortDTO> getResortById(@RequestParam Long id){
-        ResortDTO resortById = resortService.getResortById(id);
+    ResponseEntity<ResortDto> getResortById(@RequestParam Long id){
+        ResortDto resortById = resortService.getResortById(id);
         return resortById != null ? ResponseEntity.ok(resortById) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/list")
-    ResponseEntity<Page<ResortsList>> getAllResorts(@RequestParam int page){
-        Page<ResortsList> allResort = resortService.getAllResort(page);
+    @GetMapping("/public/api/resort/list")
+    ResponseEntity<Page<ResortListItem>> getAllResorts(@RequestParam int page){
+        Page<ResortListItem> allResort = resortService.getAllResort(page);
         return !allResort.isEmpty() ? ResponseEntity.ok(allResort) : ResponseEntity.notFound().build();
     }
-    @PostMapping("/search")
-    ResponseEntity<Page<ResortsList>> searchResorts(@RequestBody SearchRequestDTO searchParams) {
-        Page<ResortsList> filteredResorts = resortService.searchResorts(searchParams);
+    @PostMapping("/public/api/resort/search")
+    ResponseEntity<Page<ResortListItem>> searchResorts(@RequestBody SearchRequestDTO searchParams) {
+        Page<ResortListItem> filteredResorts = resortService.searchResorts(searchParams);
         return !filteredResorts.isEmpty() ? ResponseEntity.ok(filteredResorts) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/api/resort/add")
+    ResponseEntity<Long> addResort(@RequestBody NewResortData newResortData) {
+        return ResponseEntity.ok(resortService.addResort(newResortData).getId());
     }
     public record SearchRequestDTO(
             String resortName,

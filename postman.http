@@ -19,6 +19,8 @@ Content-Type: application/json
   "password": "kaszanka"
 }
 
+> {% client.global.set("auth_token", response.body.token); %}
+
 ### TEST
 POST http://localhost:8080/api/room/add
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwNTAwNTI2NSwiZXhwIjoxNzA1MDEyNDY1fQ.Yp5tRpw3_FuxHWe7ZrOrfEamGbwb2GDTgHVCOZ4ZKGY
@@ -31,3 +33,49 @@ Content-Type: application/json
   "standard": 3
 }
 
+### Find cities
+GET http://localhost:8080/public/api/location/countries?name=P
+
+### Add city
+POST http://localhost:8080/api/location/addCity
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Mirały",
+  "country": "Polska",
+  "latitude": "23"
+}
+
+### Add resort
+POST http://localhost:8080/api/resort/add
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "Super wycieczka",
+  "description": "Przeżyj to sam",
+  "address": {
+    "buildingNumber": "21",
+    "houseNumber": "37",
+    "street": "Żarska",
+    "city": {
+      "name": "Compton",
+      "country": "Pologne"
+    }
+  },
+  "rooms": [{
+    "standard": -10,
+    "name": "Squot",
+    "personCount": 29
+  }]
+}
+
+### Get incoming tours
+POST http://localhost:8080/public/api/tours/incoming
+Content-Type: application/json
+
+{
+  "resortId": 1,
+  "page": 0
+}

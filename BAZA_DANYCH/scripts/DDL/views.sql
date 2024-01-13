@@ -2,13 +2,10 @@ CREATE OR REPLACE VIEW full_tour_info
 AS
 SELECT tour.id, tour.name AS name, tour.price, tour.departure_date, tour.return_date, tour.description,
        wifi, swimming_pool, air_conditioning, gym, food, room_service, bar, restaurant, free_parking, all_time_reception,
-       resort.name AS resort_name, resort.avg_opinion,
-       city.name AS city, city.country, city.latitude, city.longitude
+       resort_id
 FROM tour
          INNER JOIN facility ON tour.facility_id = facility.id
-         INNER JOIN resort ON tour.resort_id = resort.id
-         INNER JOIN address ON resort.address_id = address.id
-         INNER JOIN city ON address.city_id = city.id;
+         INNER JOIN resort ON tour.resort_id = resort.id;
 
 CREATE OR REPLACE VIEW full_address_info
 AS

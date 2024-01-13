@@ -1,13 +1,21 @@
 package pl.tourpol.backend.api.resort;
 
+import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import pl.tourpol.backend.api.location.LocationService;
 import pl.tourpol.backend.api.resort.ResortController.SearchRequestDTO;
-import pl.tourpol.backend.persistance.entity.*;
-import pl.tourpol.backend.persistance.repository.*;
+import pl.tourpol.backend.api.room.RoomService;
+import pl.tourpol.backend.persistance.entity.Address;
+import pl.tourpol.backend.persistance.entity.Resort;
+import pl.tourpol.backend.persistance.entity.Tour;
+import pl.tourpol.backend.persistance.repository.ResortRepository;
+import pl.tourpol.backend.persistance.repository.TourRepository;
+import pl.tourpol.backend.security.exception.RequestErrorMessage;
+import pl.tourpol.backend.security.exception.RequestException;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -16,17 +24,17 @@ public class ResortService {
 
     private final ResortRepository resortRepository;
     private final TourRepository tourRepository;
-    private final RoomTourRepository roomTourRepository;
-    private final RoomContractRepository roomContractRepository;
+    private final LocationService locationService;
+    private final RoomService roomService;
 
-    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, RoomTourRepository roomTourRepository, RoomContractRepository roomContractRepository) {
+    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, LocationService locationService, RoomService roomService) {
         this.resortRepository = requireNonNull(resortRepository);
         this.tourRepository = requireNonNull(tourRepository);
-        this.roomTourRepository = requireNonNull(roomTourRepository);
-        this.roomContractRepository = requireNonNull(roomContractRepository);
+        this.locationService = requireNonNull(locationService);
+        this.roomService = requireNonNull(roomService);
     }
 
-    public Page<ResortsList> searchResorts(SearchRequestDTO searchParams) {
+    public Page<ResortListItem> searchResorts(SearchRequestDTO searchParams) {
         Page<Resort> filtredResorts = resortRepository.findResortWithFilters(searchParams.resortName(),
                 searchParams.city(),
                 searchParams.country(),
@@ -38,24 +46,45 @@ public class ResortService {
         return filtredResorts.map(this::convertToResortsList);
     }
 
-    public ResortDTO getResortById(Long id) {
+    public ResortDto getResortById(Long id) {
         Resort resort = resortRepository.findById(id).orElse(null);
         if (resort == null) {
             return null;
         }
-        List<Tour> tours = tourRepository.findToursByResortId(id);
-        return convertToResortDTO(resort, tours);
+        return convertToResortDTO(resort);
     }
 
-    public Page<ResortsList> getAllResort(int page) {
+    public Page<ResortListItem> getAllResort(int page) {
         Page<Resort> allResorts = resortRepository.findAllResorts(PageRequest.of(page, 15));
         return allResorts.map(this::convertToResortsList);
     }
 
-    public void addResort(NewResortData newResortData) {
+    @Transactional
+    public Resort addResort(NewResortData newResortData) {
+        validate(newResortData.name(), newResortData.description());
+
+        var addressDTO = newResortData.addressDTO();
+        Address address = locationService.addLocation(addressDTO.street(), addressDTO.buildingNumber(), addressDTO.houseNumber(),
+                addressDTO.city().name(), addressDTO.city().country(), addressDTO.city().longitude(), addressDTO.city().latitude());
+
+        Long resortId = resortRepository.save(new Resort(newResortData.name(), address, newResortData.description())).getId();
+
+        newResortData.rooms()
+                .forEach(room -> roomService.addRoom(resortId, room.name(), room.personCount(), room.standard()));
+
+        return resortRepository.findById(resortId).get();
     }
 
-    private ResortsList convertToResortsList(Resort resort) {
+    private void validate(String name, String description) {
+        if (StringUtils.isBlank(name)) {
+            throw new RequestException(RequestErrorMessage.INVALID_NAME);
+        }
+        if (StringUtils.isBlank(description)) {
+            throw new RequestException(RequestErrorMessage.INVALID_DESCRIPTION);
+        }
+    }
+
+    private ResortListItem convertToResortsList(Resort resort) {
         LocalDate today = LocalDate.now();
         Optional<Tour> nearestTourOpt = tourRepository.findNearestUpcomingTourForResort(resort.getId(), today);
         LocalDate departureDate = null;
@@ -69,7 +98,7 @@ public class ResortService {
             returnDate = nearestTour.getReturnDate();
             price = nearestTour.getPrice();
         }
-        return new ResortsList(
+        return new ResortListItem(
                 resort.getName(),
                 averageOpinion,
                 resort.getAddress().getCity().getCountry(),
@@ -82,57 +111,22 @@ public class ResortService {
         );
     }
 
-    private ResortDTO convertToResortDTO(Resort resort, List<Tour> tours) {
-        List<TourDTO> tourDTOs = tours.stream()
-                .map(this::convertToTourDTO)
-                .toList();
-
-        return new ResortDTO(
+    private ResortDto convertToResortDTO(Resort resort) {
+        return new ResortDto(
                 resort.getName(),
+                resort.getDescription(),
                 resort.getAddress().getCity().getCountry(),
                 resort.getAddress().getCity().getName(),
-                resort.getAddress(),
-                tourDTOs
+                resort.getAddress()
         );
     }
 
-    private TourDTO convertToTourDTO(Tour tour) {
-        return new TourDTO(
-                tour.getFacility(),
-                tour.getName(),
-                tour.getPrice(),
-                tour.getDepartureDate(),
-                tour.getReturnDate(),
-                getTotalRoomCapacity(tour.getId()),
-                calculateAvailablePlacesForTour(tour.getId())
-        );
-    }
-
-    private int calculateAvailablePlacesForTour(Long tourId) {
-        int totalConfirmedPersons = getTotalConfirmedPersons(tourId);
-        int totalRoomCapacity = getTotalRoomCapacity(tourId);
-        return totalRoomCapacity - totalConfirmedPersons;
-    }
-
-    private Short getTotalRoomCapacity(Long tourId) {
-        return Optional.ofNullable(roomTourRepository.sumTotalCapacityForTour(tourId)).orElse((short) 0);
-    }
-
-    private Short getTotalConfirmedPersons(Long tourId) {
-        return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
-    }
-
-    public record ResortsList(String resortName, float averageOpinion, String country, String city, String latitude,
-            String longitude, Float price, LocalDate departureData, LocalDate returnDate
+    public record ResortListItem(String resortName, float averageOpinion, String country, String city, String latitude,
+                                 String longitude, Float price, LocalDate departureData, LocalDate returnDate
     ) {
     }
 
-    public record TourDTO(Facility facilities, String name, Float price, LocalDate departureDate, LocalDate returnDate,
-                          Short roomsCount, Integer placesLeft
-    ) {
-    }
-
-    public record ResortDTO(String resortName, String country, String city, Address address, List<TourDTO> tours) {
+    public record ResortDto(String resortName, String description, String country, String city, Address address) {
 
     }
 
