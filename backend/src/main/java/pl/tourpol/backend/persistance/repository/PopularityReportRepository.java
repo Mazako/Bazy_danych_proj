@@ -19,14 +19,13 @@ public class PopularityReportRepository {
         int offset = page * size;
         return jdbcTemplate.query(
                 "SELECT * FROM generate_popularity_report(?, ?, ?, ?)",
-                new Object[]{startDate, endDate, offset, size},
                 (rs, rowNum) -> new PopularityEntry(
                         rs.getLong("id"),
                         rs.getString("resort_name"),
                         rs.getLong("signed_contracts"),
                         rs.getLong("persons"),
                         rs.getDouble("total_profit")
-                )
-        );
+                ),
+                startDate, endDate, offset, size);
     }
 }
