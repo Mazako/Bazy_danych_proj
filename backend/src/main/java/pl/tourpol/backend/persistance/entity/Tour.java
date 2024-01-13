@@ -49,6 +49,20 @@ public class Tour {
     @JoinColumn(name = "resort_id", nullable = false)
     private Resort resort;
 
+    public Tour tour() {
+
+    }
+
+    public Tour(String name, Float price, LocalDate departureDate, LocalDate returnDate, String description, Facility facility, Resort resort) {
+        this.name = name;
+        this.price = price;
+        this.departureDate = departureDate;
+        this.returnDate = returnDate;
+        this.description = description;
+        this.facility = facility;
+        this.resort = resort;
+    }
+
     public Long getId() {
         return id;
     }

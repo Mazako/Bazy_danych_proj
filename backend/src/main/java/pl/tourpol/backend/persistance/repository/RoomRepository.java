@@ -13,4 +13,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query(value = "SELECT * FROM get_available_rooms(?1, ?2, ?3)", nativeQuery = true)
     List<Room> getAvailableRooms(long resortId, LocalDate startDate, LocalDate endDate);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM is_room_available(?1, ?2, ?3)")
+    boolean isRoomAvailable(long roomId, LocalDate startDate, LocalDate endDate);
+
 }

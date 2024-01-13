@@ -1,13 +1,17 @@
 package pl.tourpol.backend.api.room;
 
 import pl.tourpol.backend.persistance.entity.Room;
+import pl.tourpol.backend.persistance.entity.RoomTour;
+import pl.tourpol.backend.persistance.entity.Tour;
 import pl.tourpol.backend.persistance.repository.ResortRepository;
 import pl.tourpol.backend.persistance.repository.RoomRepository;
+import pl.tourpol.backend.persistance.repository.TourRepository;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
 import pl.tourpol.backend.security.exception.RequestException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -35,6 +39,22 @@ public class RoomService {
         validate(room);
         room.setResort(resort);
         return roomRepository.save(room);
+    }
+
+    public boolean isRoomAvailable(long roomId, LocalDate startDate, LocalDate endDate) {
+        if (roomRepository.findById(roomId).isEmpty()) {
+            throw new RequestException(RequestErrorMessage.ROOM_NOT_EXISTS);
+        }
+        return roomRepository.isRoomAvailable(roomId, startDate, endDate);
+    }
+
+    public Optional<Room> getRoomById(long roomId) {
+        return roomRepository.findById(roomId);
+    }
+
+    public Optional<Room> getAvailableRoomById(long roomId, LocalDate startDate, LocalDate endDate) {
+        return roomRepository.findById(roomId)
+                .filter(room -> isRoomAvailable(roomId, startDate, endDate));
     }
 
     public boolean deleteRoom(long roomId) {

@@ -33,8 +33,8 @@ class ApiConfiguration {
 
     @Bean
     ContractService contractService(ContractRepository contractRepository, RoomContractRepository roomContractRepository,
-                                    UserService userService) {
-        return new ContractService(contractRepository, roomContractRepository, userService);
+                                    UserService userService, TourService tourService) {
+        return new ContractService(contractRepository, roomContractRepository, userService, tourService);
     }
 
     @Bean
@@ -48,8 +48,9 @@ class ApiConfiguration {
     }
 
     @Bean
-    TourService tourService(TourRepository tourRepository, RoomTourRepository roomTourRepository, RoomContractRepository roomContractRepository) {
-        return new TourService(tourRepository, roomTourRepository, roomContractRepository);
+    TourService tourService(TourRepository tourRepository, RoomTourRepository roomTourRepository, RoomContractRepository roomContractRepository,
+                            ResortRepository resortRepository, FacilityRepository facilityRepository, RoomService roomService, ContractRepository contractRepository) {
+        return new TourService(tourRepository, roomTourRepository, roomContractRepository, resortRepository, facilityRepository, roomService, contractRepository);
     }
 
 }
