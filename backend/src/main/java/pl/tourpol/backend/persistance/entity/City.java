@@ -31,6 +31,22 @@ public class City {
     @Column(name = "longitude", length = 12)
     private String longitude;
 
+    public City(String country, String name, String latitude, String longitude) {
+        this.country = country;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public City(String country, String name) {
+        this.country = country;
+        this.name = name;
+    }
+
+    public City() {
+
+    }
+
     public Long getId() {
         return id;
     }

@@ -26,6 +26,15 @@ public class RoomTour {
     @JoinColumn(name = "tour_id", nullable = false)
     private Tour tour;
 
+    public RoomTour() {
+
+    }
+
+    public RoomTour(Room room, Tour tour) {
+        this.room = room;
+        this.tour = tour;
+    }
+
     public Long getId() {
         return id;
     }

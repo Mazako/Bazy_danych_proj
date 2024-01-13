@@ -14,6 +14,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import static java.util.Objects.requireNonNull;
+
 public class RegistrationService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
@@ -21,10 +23,10 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
 
     public RegistrationService(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository, Supplier<Role> userRoleProvider, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.verificationTokenRepository = verificationTokenRepository;
-        this.userRoleProvider = userRoleProvider;
-        this.passwordEncoder = passwordEncoder;
+        this.userRepository = requireNonNull(userRepository);
+        this.verificationTokenRepository = requireNonNull(verificationTokenRepository);
+        this.userRoleProvider = requireNonNull(userRoleProvider);
+        this.passwordEncoder = requireNonNull(passwordEncoder);
     }
 
     public String registerUser(RegistrationDto registrationDto) {

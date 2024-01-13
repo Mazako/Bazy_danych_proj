@@ -5,12 +5,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 
+import static java.util.Objects.requireNonNull;
+
 public class RegistrationListenerImpl implements RegistrationListener {
     private final JavaMailSender javaMailSender;
     private final String appMail;
     public RegistrationListenerImpl(JavaMailSender javaMailSender, String appMail) {
-        this.javaMailSender = javaMailSender;
-        this.appMail = appMail;
+        this.javaMailSender = requireNonNull(javaMailSender);
+        this.appMail = requireNonNull(appMail);
     }
 
     @Override

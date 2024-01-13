@@ -1,7 +1,8 @@
-package pl.tourpol.backend.persistance.entity;
+package pl.tourpol.backend.persistance.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import pl.tourpol.backend.persistance.entity.RolePermission;
 
 import java.util.List;
 

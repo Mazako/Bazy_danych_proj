@@ -1,5 +1,6 @@
 package pl.tourpol.backend.persistance.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -10,6 +11,7 @@ public class Facility {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "facility_id_gen")
     @SequenceGenerator(name = "facility_id_gen", sequenceName = "facility_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
     @NotNull
@@ -51,6 +53,23 @@ public class Facility {
     @NotNull
     @Column(name = "all_time_reception", nullable = false)
     private Boolean allTimeReception = false;
+
+    public Facility(Boolean wifi, Boolean swimmingPool, Boolean airConditioning, Boolean gym, Boolean food, Boolean roomService, Boolean bar, Boolean restaurant, Boolean freeParking, Boolean allTimeReception) {
+        this.wifi = wifi;
+        this.swimmingPool = swimmingPool;
+        this.airConditioning = airConditioning;
+        this.gym = gym;
+        this.food = food;
+        this.roomService = roomService;
+        this.bar = bar;
+        this.restaurant = restaurant;
+        this.freeParking = freeParking;
+        this.allTimeReception = allTimeReception;
+    }
+
+    public Facility() {
+
+    }
 
     public Long getId() {
         return id;

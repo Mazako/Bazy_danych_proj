@@ -49,6 +49,17 @@ public class Contract {
         DONE
     }
 
+    public Contract() {
+
+    }
+
+    public Contract(LocalDate reservationDate, Short pearsonCount, AppUser user, Tour tour, Status status) {
+        this.reservationDate = reservationDate;
+        this.pearsonCount = pearsonCount;
+        this.user = user;
+        this.tour = tour;
+        this.status = status;
+    }
 
     public Long getId() {
         return id;

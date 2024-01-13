@@ -33,6 +33,16 @@ public class Resort {
     @Column(name = "description", length = 1000)
     private String description;
 
+    public Resort() {
+
+    }
+
+    public Resort(String name, Address address, String description) {
+        this.name = name;
+        this.address = address;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

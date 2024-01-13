@@ -134,7 +134,7 @@ CREATE TABLE room (
   id            SERIAL8 NOT NULL,
   person_count  int2 NOT NULL CHECK ( person_count > 0 ),
   name          varchar(255) NOT NULL,
-  standard      int2 NOT NULL CHECK ( standard BETWEEN 0 AND 3),
+  standard      int2 NOT NULL CHECK ( standard BETWEEN 1 AND 3),
   resort_id     int8 NOT NULL,
   PRIMARY KEY (ID));
 CREATE TABLE room_tour (

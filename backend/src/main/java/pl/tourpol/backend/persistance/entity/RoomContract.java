@@ -26,6 +26,15 @@ public class RoomContract {
     @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
+    public RoomContract() {
+
+    }
+
+    public RoomContract(Room room, Contract contract) {
+        this.room = room;
+        this.contract = contract;
+    }
+
     public Long getId() {
         return id;
     }

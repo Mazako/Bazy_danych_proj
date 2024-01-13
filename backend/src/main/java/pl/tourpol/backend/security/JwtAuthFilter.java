@@ -12,14 +12,17 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static java.util.Objects.requireNonNull;
+
 class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     public JwtAuthFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-        this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
+        this.jwtService = requireNonNull(jwtService);
+        this.userDetailsService = requireNonNull(userDetailsService);
     }
 
     @Override
