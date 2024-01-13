@@ -117,13 +117,14 @@ CREATE TRIGGER check_room_before_insert_or_update
     FOR EACH ROW EXECUTE FUNCTION check_room_before_insert_or_update();
 
 
-CREATE OR REPLACE FUNCTION generate_popularity_report(
+create function generate_popularity_report(
     start_date date,
-    end_date date
-)
+    end_date date,
+    page_offset int,
+    page_limit int)
     RETURNS TABLE (id int8, resort_name varchar(100), signed_contracts int8, persons int8, total_profit double precision)
-    LANGUAGE plpgsql
-AS
+    language plpgsql
+as
 $$
 BEGIN
     RETURN QUERY
@@ -137,6 +138,10 @@ BEGIN
                  LEFT JOIN tour ON resort.id = tour.resort_id
                  LEFT JOIN contract ON tour.id = contract.tour_id
         WHERE contract.reservation_date BETWEEN start_date AND end_date
-        GROUP BY resort.id;
+        GROUP BY resort.id
+        HAVING COUNT(contract.id) > 0
+        ORDER BY resort.id
+        OFFSET page_offset ROWS
+            FETCH FIRST page_limit ROWS ONLY;
 END;
 $$;

@@ -1,9 +1,7 @@
 package pl.tourpol.backend.api.notification;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +18,16 @@ public class NotificationController {
         this.notificationService = requireNonNull(notificationService);
     }
 
-     @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getNotifications() {
         List<NotificationDTO> notifications = notificationService.getNotificationsByUserInSession();
         return notifications != null ? ResponseEntity.ok(notifications) : ResponseEntity.notFound().build();
     }
+
+    @PatchMapping("/setAsSeen")
+    public ResponseEntity<?> setNotificationAsSeen(@RequestParam long notificationId) {
+        notificationService.setNotificationAsSeen(notificationId);
+        return ResponseEntity.ok().build();
+    }
+
 }

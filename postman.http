@@ -79,3 +79,7 @@ Content-Type: application/json
   "resortId": 1,
   "page": 0
 }
+
+### Popularity report
+GET http://localhost:8080/api/resort/popularityReport?startDate=2023-01-01&endDate=2024-10-10&page=1&size=2
+Authorization: Bearer {{auth_token}}

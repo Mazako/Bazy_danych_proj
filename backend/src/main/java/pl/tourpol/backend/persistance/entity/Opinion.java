@@ -34,6 +34,17 @@ public class Opinion {
     @JoinColumn(name = "contract_id")
     private Contract contract;
 
+    public Opinion() {
+
+    }
+
+    public Opinion(Short rate, String comment, LocalDate sendDate, Contract contract) {
+        this.rate = rate;
+        this.comment = comment;
+        this.sendDate = sendDate;
+        this.contract = contract;
+    }
+
     public Long getId() {
         return id;
     }

@@ -41,6 +41,18 @@ public class Notification {
     @JoinColumn(name = "notification_type_id")
     private NotificationType notificationType;
 
+    public Notification(String content, Boolean seen, LocalDate sendDate, Contract contract, NotificationType notificationType) {
+        this.content = content;
+        this.seen = seen;
+        this.sendDate = sendDate;
+        this.contract = contract;
+        this.notificationType = notificationType;
+    }
+
+    public Notification() {
+
+    }
+
     public Long getId() {
         return id;
     }

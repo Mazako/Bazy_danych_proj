@@ -15,8 +15,8 @@ import static pl.tourpol.backend.security.permissions.AccessSensitiveOperationTy
 @RequestMapping("/api/user")
 class UserController {
 
-    private UserService userService;
-    private AccessSensitiveOperation accessSensitiveOperation;
+    private final UserService userService;
+    private final AccessSensitiveOperation accessSensitiveOperation;
 
     UserController(UserService userService, AccessSensitiveOperation accessSensitiveOperation) {
         this.userService = requireNonNull(userService);

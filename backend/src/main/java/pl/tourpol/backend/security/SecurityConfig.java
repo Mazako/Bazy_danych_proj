@@ -22,9 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import pl.tourpol.backend.persistance.repository.RoleRepository;
-import pl.tourpol.backend.persistance.repository.UserRepository;
-import pl.tourpol.backend.persistance.repository.VerificationTokenRepository;
+import pl.tourpol.backend.persistance.repository.*;
 import pl.tourpol.backend.security.permissions.AccessSensitiveOperation;
 import pl.tourpol.backend.security.permissions.AccessSensitiveOperationImpl;
 import pl.tourpol.backend.security.registration.RegistrationListener;
@@ -110,8 +108,10 @@ class SecurityConfig {
     }
 
     @Bean
-    AccessSensitiveOperation accessSensitiveOperation(UserRepository userRepository) {
-        return new AccessSensitiveOperationImpl(userRepository);
+    AccessSensitiveOperation accessSensitiveOperation(UserRepository userRepository,
+                                                      NotificationRepository notificationRepository,
+                                                      ContractRepository contractRepository) {
+        return new AccessSensitiveOperationImpl(userRepository, notificationRepository, contractRepository);
     }
 
     @Bean

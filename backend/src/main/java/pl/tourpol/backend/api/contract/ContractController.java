@@ -18,15 +18,28 @@ public class ContractController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ContractDTO>> getContracts() {
+    ResponseEntity<List<ContractDTO>> getContracts() {
         List<ContractDTO> contracts = contractService.getAllContracts();
         return contracts != null ? ResponseEntity.ok(contracts) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ContractDTO> addContract(@RequestBody AddContractRequestDTO dto) {
+    ResponseEntity<ContractDTO> addContract(@RequestBody AddContractRequestDTO dto) {
         return ResponseEntity.ok(contractService.addContract(dto.tourId, dto.roomIds));
     }
 
+    @GetMapping("/checkRefund")
+    ResponseEntity<PriceDTO> checkRefundPossibility(@RequestParam long contractId) {
+        return ResponseEntity.ok(new PriceDTO(contractService.checkRefundPossibility(contractId)));
+    }
+
+    @DeleteMapping("/refund")
+    ResponseEntity<PriceDTO> refund(@RequestParam long contractId) {
+        return ResponseEntity.ok(new PriceDTO(contractService.refundContract(contractId)));
+    }
+
     public record AddContractRequestDTO(long tourId, List<Long> roomIds) {}
+
+    public record PriceDTO(float price) {}
+
 }

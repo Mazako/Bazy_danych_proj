@@ -12,4 +12,7 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     @Query("SELECT c FROM Contract c WHERE c.user.id = :userId")
     List<Contract> findAllByUserId(long userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM refund_factor(?1)")
+    float getRefundFactor(long contractId);
 }

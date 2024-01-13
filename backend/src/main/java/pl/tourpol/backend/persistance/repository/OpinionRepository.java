@@ -13,4 +13,11 @@ public interface OpinionRepository extends JpaRepository<Opinion, Long> {
     @Query("SELECT o FROM Opinion o WHERE o.contract.tour.resort.id = :resortId")
     Page<Opinion> findAllByResortId(long resortId, Pageable pageable);
 
+    @Query(nativeQuery = true, value = """
+            SELECT COUNT(opinion.id) from opinion
+            INNER JOIN contract ON opinion.contract_id = contract.id
+            WHERE contract_id = ?1
+            """)
+    boolean isOpinionAdded(long contractId);
+
 }

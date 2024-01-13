@@ -7,15 +7,18 @@ import org.springframework.data.domain.PageRequest;
 import pl.tourpol.backend.api.location.LocationService;
 import pl.tourpol.backend.api.resort.ResortController.SearchRequestDTO;
 import pl.tourpol.backend.api.room.RoomService;
+import pl.tourpol.backend.persistance.PopularityEntry;
 import pl.tourpol.backend.persistance.entity.Address;
 import pl.tourpol.backend.persistance.entity.Resort;
 import pl.tourpol.backend.persistance.entity.Tour;
+import pl.tourpol.backend.persistance.repository.PopularityReportRepository;
 import pl.tourpol.backend.persistance.repository.ResortRepository;
 import pl.tourpol.backend.persistance.repository.TourRepository;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
 import pl.tourpol.backend.security.exception.RequestException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
@@ -26,12 +29,14 @@ public class ResortService {
     private final TourRepository tourRepository;
     private final LocationService locationService;
     private final RoomService roomService;
+    private final PopularityReportRepository popularityReportRepository;
 
-    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, LocationService locationService, RoomService roomService) {
+    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, LocationService locationService, RoomService roomService, PopularityReportRepository popularityReportRepository) {
         this.resortRepository = requireNonNull(resortRepository);
         this.tourRepository = requireNonNull(tourRepository);
         this.locationService = requireNonNull(locationService);
         this.roomService = requireNonNull(roomService);
+        this.popularityReportRepository = popularityReportRepository;
     }
 
     public Page<ResortListItem> searchResorts(SearchRequestDTO searchParams) {
@@ -73,6 +78,10 @@ public class ResortService {
                 .forEach(room -> roomService.addRoom(resort.getId(), room.name(), room.personCount(), room.standard()));
 
         return resort;
+    }
+
+    public List<PopularityEntry> generatePopularityReport(LocalDate startDate, LocalDate endDate, int page, int size) {
+        return popularityReportRepository.generatePopularityReport(startDate, endDate, page, size);
     }
 
     private void validate(String name, String description) {

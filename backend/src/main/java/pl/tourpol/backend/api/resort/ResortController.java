@@ -4,9 +4,12 @@ package pl.tourpol.backend.api.resort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.tourpol.backend.persistance.PopularityEntry;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 import static pl.tourpol.backend.api.resort.ResortService.ResortDto;
@@ -42,6 +45,15 @@ class ResortController {
     @PostMapping("/api/resort/add")
     ResponseEntity<Long> addResort(@RequestBody NewResortData newResortData) {
         return ResponseEntity.ok(resortService.addResort(newResortData).getId());
+    }
+
+    @GetMapping("/api/resort/popularityReport")
+    @PreAuthorize("hasRole('ADMIN')")
+    ResponseEntity<List<PopularityEntry>> getPopularityReport(@RequestParam LocalDate startDate,
+                                                              @RequestParam LocalDate endDate,
+                                                              @RequestParam int page,
+                                                              @RequestParam int size) {
+        return ResponseEntity.ok(resortService.generatePopularityReport(startDate, endDate, page, size));
     }
     public record SearchRequestDTO(
             String resortName,
