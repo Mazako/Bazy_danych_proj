@@ -23,11 +23,11 @@ Content-Type: application/json
 
 ### TEST
 POST http://localhost:8080/api/room/add
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwNTAwNTI2NSwiZXhwIjoxNzA1MDEyNDY1fQ.Yp5tRpw3_FuxHWe7ZrOrfEamGbwb2GDTgHVCOZ4ZKGY
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "resortId": 1,
+  "resortId": 10,
   "name": "XD",
   "pearsonCount": 10,
   "standard": 3
@@ -65,7 +65,7 @@ Content-Type: application/json
     }
   },
   "rooms": [{
-    "standard": -10,
+    "standard": 3,
     "name": "Squot",
     "personCount": 29
   }]
@@ -83,3 +83,43 @@ Content-Type: application/json
 ### Popularity report
 GET http://localhost:8080/api/resort/popularityReport?startDate=2023-01-01&endDate=2024-10-10&page=1&size=2
 Authorization: Bearer {{auth_token}}
+
+### Add tour
+POST http://localhost:8080/api/tours/add
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "name": "n",
+  "description": "d",
+  "departureDate": "2024-06-06",
+  "returnDate": "2024-07-01",
+  "price": 2137.21,
+  "resortId": 5,
+  "roomIds": [17],
+  "facilities": {
+    "airConditioning": true,
+    "allTimeReception": true,
+    "bar": true,
+    "food": true,
+    "freeParking": true,
+    "gym": true,
+    "restaurant": true,
+    "roomService": true,
+    "swimmingPool": true,
+    "wifi": true
+  }
+}
+
+### Get available rooms
+GET http://localhost:8080/public/api/tour/availableRooms?tourId=5
+
+### Sign contract
+POST http://localhost:8080/api/contracts/add
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "tourId": 5,
+  "roomIds": [17]
+}

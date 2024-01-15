@@ -16,11 +16,11 @@ public interface RoomTourRepository extends JpaRepository<RoomTour, Long> {
     @Query("SELECT SUM(rt.room.personCount) FROM RoomTour rt WHERE rt.tour.id = :tourId")
     Short sumTotalCapacityForTour(Long tourId);
 
-    @Query(nativeQuery = true, value = """
-            SELECT room.* FROM room_tour
-            INNER JOIN tour ON room_tour.tour_id = tour.id
-            INNER JOIN room ON room_tour.room_id = room.id
-            WHERE tour_id = ?1
+    @Query("""
+            SELECT r FROM RoomTour rt
+            INNER JOIN Room r ON r = rt.room
+            INNER JOIN Tour t ON t = rt.tour
+            WHERE t.id = ?1
             """)
     List<Room> getRoomsAssignedToTour(long tourId);
 }

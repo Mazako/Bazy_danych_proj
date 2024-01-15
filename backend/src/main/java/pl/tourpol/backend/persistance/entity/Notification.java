@@ -17,7 +17,7 @@ public class Notification {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Size(max = 100)
+    @Size(max = 1000)
     @NotNull
     @Column(name = "content", nullable = false, length = 100)
     private String content;

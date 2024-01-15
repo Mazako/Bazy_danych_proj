@@ -2,7 +2,7 @@
 -- enums
 CREATE TYPE contract_status AS ENUM('PENDING_PAYMENT', 'CANCELLED', 'PAID', 'IN_PROGRESS', 'DONE');
 -- tables
-
+CREATE CAST (CHARACTER VARYING as contract_status) WITH INOUT AS IMPLICIT;
 CREATE TABLE role (
     id          SERIAL8 NOT NULL,
     role_name   varchar(30) NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE contract (
   PRIMARY KEY (id));
 CREATE TABLE notification (
   id                   SERIAL8 NOT NULL,
-  content              varchar(100) NOT NULL,
+  content              varchar(1000) NOT NULL,
   seen                 bool NOT NULL,
   send_date            date NOT NULL,
   contract_id          int8 NOT NULL,

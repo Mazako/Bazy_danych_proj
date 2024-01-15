@@ -22,7 +22,7 @@ public interface NotificationRepository extends JpaRepository <Notification, Lon
     @Modifying
     void setNotificationAsSeen(long notificationId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM notification_type WHERE id = ?1")
+    @Query("SELECT nt FROM NotificationType nt WHERE nt.id = ?1")
     Optional<NotificationType> findNotificationTypeById(long notificationTypeId);
 
 }

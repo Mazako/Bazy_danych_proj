@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tour_id_gen")
-    @SequenceGenerator(name = "tour_id_gen", sequenceName = "room_tour_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "tour_id_gen", sequenceName = "tour_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
