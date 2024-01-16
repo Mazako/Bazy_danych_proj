@@ -21,6 +21,7 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
             AND restaurant = :restaurant
             AND free_parking = :freeParking
             AND all_time_reception = :allTimeReception
+            LIMIT 1;
             """)
     Optional<Facility> findFacility(@Param("wiFi") boolean wiFi,
                                     @Param("swimmingPool") boolean swimmingPool,

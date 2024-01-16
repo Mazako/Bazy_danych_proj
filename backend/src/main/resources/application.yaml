@@ -7,6 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: true
   mail:
     username: tourpol.aplikacja@gmail.com
     password: vgap aygh giuk vtxv

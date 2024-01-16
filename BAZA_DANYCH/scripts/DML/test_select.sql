@@ -45,8 +45,7 @@ INSERT INTO facility (wifi, swimming_pool, air_conditioning, gym, food, room_ser
 VALUES
     (true, true, true, true, true, true, true, true, true, true),
     (true, false, true, false, true, false, true, true, true, true),
-    (false, true, true, true, false, true, false, true, false, true),
-    (true, true, true, true, true, true, true, true, true, true);
+    (false, true, true, true, false, true, false, true, false, true);
 
 
 INSERT INTO tour (name, price, departure_date, return_date, description, facility_id, resort_id)
@@ -54,7 +53,7 @@ VALUES
     ('Ibiza Adventure', 1200.0, '2023-06-15', '2023-06-22', 'Odkryj piękno Ibizy', 1, 1),
     ('Santorini Escape', 1500.0, '2023-07-01', '2023-07-08', 'Ciesz się słońcem Santorini', 2, 2),
     ('Rio Carnival', 1800.0, '2023-08-20', '2023-08-27', 'Doświadcz karnawału w Rio', 3, 3),
-    ('Maldives Relax', 2000.0, '2023-09-10', '2023-09-17', 'Wypocznij na Malediwach', 4, 4);
+    ('Maldives Relax', 2000.0, '2023-09-10', '2023-09-17', 'Wypocznij na Malediwach', 1, 4);
 
 
 INSERT INTO contract (reservation_date, status, pearson_count, user_id, tour_id)
