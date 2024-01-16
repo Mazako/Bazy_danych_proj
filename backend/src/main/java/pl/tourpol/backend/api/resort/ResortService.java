@@ -108,6 +108,7 @@ public class ResortService {
             price = nearestTour.getPrice();
         }
         return new ResortListItem(
+                resort.getId(),
                 resort.getName(),
                 averageOpinion,
                 resort.getAddress().getCity().getCountry(),
@@ -122,20 +123,22 @@ public class ResortService {
 
     private ResortDto convertToResortDTO(Resort resort) {
         return new ResortDto(
+                resort.getId(),
                 resort.getName(),
                 resort.getDescription(),
                 resort.getAddress().getCity().getCountry(),
                 resort.getAddress().getCity().getName(),
-                resort.getAddress()
+                resort.getAddress().getCity().getLatitude(),
+                resort.getAddress().getCity().getLongitude()
         );
     }
 
-    public record ResortListItem(String resortName, float averageOpinion, String country, String city, String latitude,
+    public record ResortListItem(Long id, String resortName, float averageOpinion, String country, String city, String latitude,
                                  String longitude, Float price, LocalDate departureData, LocalDate returnDate
     ) {
     }
 
-    public record ResortDto(String resortName, String description, String country, String city, Address address) {
+    public record ResortDto(Long id, String resortName, String description, String country, String city, String latitude, String longitude) {
 
     }
 

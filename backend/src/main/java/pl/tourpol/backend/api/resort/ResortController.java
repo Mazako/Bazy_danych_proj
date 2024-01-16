@@ -25,7 +25,7 @@ class ResortController {
         this.resortService = requireNonNull(resortService);
     }
 
-    @GetMapping()
+    @GetMapping("/public/api/resort")
     ResponseEntity<ResortDto> getResortById(@RequestParam Long id){
         ResortDto resortById = resortService.getResortById(id);
         return resortById != null ? ResponseEntity.ok(resortById) : ResponseEntity.notFound().build();

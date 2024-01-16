@@ -19,6 +19,7 @@ class RoomController {
     }
 
     @GetMapping("/public/api/room/availableRooms")
+    @PreAuthorize("hasRole('ADMIN')")
     ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam long resortId,
                                                     @RequestParam LocalDate startDate,
                                                     @RequestParam LocalDate endDate) {

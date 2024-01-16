@@ -1,4 +1,4 @@
-import {Badge, Button, Overlay, OverlayTrigger, Toast, ToastContainer, Tooltip} from "react-bootstrap";
+import {Badge, Button, Overlay, OverlayTrigger, Toast, Tooltip} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
 import {bottom} from "@popperjs/core";
 import {AppDispatch} from "../../app/Store";
@@ -6,6 +6,9 @@ import {useDispatch} from "react-redux";
 import {logout} from "../../features/user/UserSlice";
 import {useNavigate} from "react-router";
 import {createMessage} from "../../features/error/ToastMessageSlice";
+import {NotificationType} from "../../features/user/Notifications";
+import {getNotificationsRequest, markAsSeenRequest} from "../../api/Requests";
+import axios from "axios";
 
 /**
  * This component creates notifications popover also
@@ -15,7 +18,7 @@ export function UserData() {
     const notificationsDivRef: React.MutableRefObject<null | HTMLDivElement> = useRef(null);
     const [hoverNotificationButton, setHoverNotificationButton] = useState(false)
     const [clickNotificationButton, setClickNotificationButton] = useState(false)
-
+    const [notifications, setNotifications] = useState([]);
     const [notification, setNotification] = useState(0)
 
     const dispatch: AppDispatch = useDispatch()
@@ -37,30 +40,19 @@ export function UserData() {
         }
     }
 
-    const renderNotifications = () => {
-        if (notification > 0) {
-            return (
-                <p className="text-danger fs-4 text-center h-100 justify-content-center">
-                    Brak powiadomień :(
-                </p>
-            )
-        } else {
-            return (
-                <div>
-                    <Toast className="mb-3">
-                        <Toast.Header className='justify-content-between'>
-                            <small>dsaDSADSAx</small>
-                        </Toast.Header>
-                        <Toast.Body>XD</Toast.Body>
-                    </Toast>
-                    <Toast>
-                        <Toast.Header>Test</Toast.Header>
-                        <Toast.Body>XD</Toast.Body>
-                    </Toast>
-                </div>
-            )
-        }
-    }
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const response = await getNotificationsRequest();
+                setNotifications(response.data.filter(n => !n.seen));
+            } catch (error) {
+                console.error("Error fetching notifications:", error);
+            }
+        };
+        fetchNotifications();
+        const intervalId = setInterval(fetchNotifications, 10000);
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside)
@@ -68,6 +60,45 @@ export function UserData() {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [])
+
+    const markAsSeen = async (notificationId) => {
+        try {
+            await markAsSeenRequest(notificationId);
+            setNotifications(notifications.filter(n => n.id !== notificationId));
+        } catch (error) {
+            console.error("Error marking notification as seen:", error);
+        }
+    };
+    const renderNotifications = () => {
+        if (notifications.length === 0) {
+            return (
+                <p className="text-danger fs-4 text-center h-100 justify-content-center">
+                    Brak powiadomień :(
+                </p>
+            );
+        }
+
+        return notifications.map(notification => {
+            return (
+                <Toast
+                    key={notification.id}
+                    className="mb-2"
+                >
+                    <Toast.Header closeButton onClick={() => markAsSeen(notification.id)}>
+                        <i className={'me-2'}></i>
+                        <strong className="me-auto">{notification.tourName}</strong>
+                        <small>{notification.sendDate}</small>
+                    </Toast.Header>
+                    <Toast.Body>
+                        {notification.tourName}
+                        <p>{notification.departureDate} - {notification.returnDate}</p>
+                    </Toast.Body>
+                </Toast>
+            );
+        });
+    };
+
+
 
     return (
         <div className="d-flex">

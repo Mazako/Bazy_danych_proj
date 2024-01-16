@@ -174,6 +174,7 @@ public class TourService {
                 incomingTour.getRestaurant(),
                 incomingTour.getFreeParking(),
                 incomingTour.getAllTimeReception()),
+                incomingTour.getId(),
                 incomingTour.getName(),
                 incomingTour.getDescription(),
                 incomingTour.getPrice(),

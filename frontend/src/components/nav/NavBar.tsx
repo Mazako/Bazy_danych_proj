@@ -1,48 +1,51 @@
-import {useSelector} from "react-redux";
-import {userRoleSelector} from "../../features/user/UserSlice";
-import {role} from "../../features/user/UserTypes";
-import React, {JSX} from "react";
-import {Nav} from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap";
-import {UserData} from "./UserData";
+import { useSelector } from "react-redux";
+import { userRoleSelector } from "../../features/user/UserSlice";
+import React from "react";
+import { Nav } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { UserData } from "./UserData";
 
 export function NavBar() {
-    const role: role = useSelector(userRoleSelector)
-    const positions: Array<JSX.Element> = []
+    const role = useSelector(userRoleSelector);
+    const positions: Array<JSX.Element> = [];
+
     positions.push(
-        <LinkContainer to="/offers">
+        <LinkContainer to="/offers" key="offers">
             <Nav.Link eventKey="offers">Oferty</Nav.Link>
         </LinkContainer>
-    )
+    );
+
     if (role === "GUEST") {
         positions.push(
-            <LinkContainer to="/login">
+            <LinkContainer to="/login" key="login">
                 <Nav.Link eventKey="login">Logowanie</Nav.Link>
             </LinkContainer>,
-            <LinkContainer to="/register">
+            <LinkContainer to="/register" key="register">
                 <Nav.Link eventKey="register">Rejestracja</Nav.Link>
             </LinkContainer>
-        )
+        );
     } else if (role === "USER") {
         positions.push(
-            <LinkContainer to="/login">
+            <LinkContainer to="/contracts" key="contracts">
                 <Nav.Link eventKey="contracts">Kontrakty</Nav.Link>
             </LinkContainer>
-        )
+        );
     } else if (role === "ADMIN") {
         positions.push(
-            <LinkContainer to="/login">
-                <Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>)
+            <LinkContainer to="/adminPanel" key="adminPanel">
+                <Nav.Link eventKey="adminPanel">Zarządzanie</Nav.Link>
             </LinkContainer>
-        )
+        );
     }
 
     return (
         <div className="d-flex justify-content-between align-items-center me-3 border-bottom">
             <Nav fill variant="pills" className="mx-4 my-2">
-                {positions.map(position => <Nav.Item className="fs-4">{position}</Nav.Item>)}
+                {positions.map((position) => position)}
             </Nav>
             <UserData />
         </div>
-    )
+    );
 }
+
+export default NavBar;

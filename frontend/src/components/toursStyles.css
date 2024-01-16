@@ -1,0 +1,21 @@
+/* CustomStyles.css */
+.form-label-sm {
+    font-size: 0.75rem;
+}
+.btn-sm {
+    font-size: 0.75rem;
+}
+.card-sm .card-title, .card-sm .card-text {
+    font-size: 0.8rem;
+}
+.facilities-icons > * {
+    margin-right: 10px;
+}
+
+.text-price {
+    color: #007bff;
+}
+
+.card {
+    font-size: 0.9rem;
+}
