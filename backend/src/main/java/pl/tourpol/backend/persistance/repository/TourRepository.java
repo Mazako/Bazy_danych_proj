@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pl.tourpol.backend.persistance.IncomingTour;
+import pl.tourpol.backend.persistance.view.TourViewEntity;
 import pl.tourpol.backend.persistance.entity.Tour;
 
 import java.time.LocalDate;
@@ -27,8 +27,8 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
             WHERE t.resortId = :resortId
             AND (COALESCE(:name, '') = '' OR t.name ILIKE CONCAT('%', :name, '%'))
             AND (:price IS NULL OR t.price <= :price)
-            AND (:departureDate IS NULL OR t.departureDate >= :departureDate)
-            AND (:returnDate IS NULL OR t.returnDate <= :returnDate)
+            AND (cast(:departureDate as date) IS NULL OR t.departureDate >= :departureDate)
+            AND (cast(:returnDate as date ) IS NULL OR t.returnDate <= :returnDate)
             AND (:wiFi IS NULL OR t.wifi = :wiFi)
             AND (:swimmingPool IS NULL OR t.swimmingPool = :swimmingPool)
             AND (:airConditioning IS NULL OR t.airConditioning = :airConditioning)
@@ -40,22 +40,45 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
             AND (:freeParking IS NULL OR t.freeParking = :freeParking)
             AND (:allTimeReception IS NULL OR t.allTimeReception = :allTimeReception)
             """)
-    Page<IncomingTour> findIncomingTours(@Param("resortId") long resortId,
-                                         @Param("name") String name,
-                                         @Param("price") Float price,
-                                         @Param("departureDate") LocalDate departureDate,
-                                         @Param("returnDate") LocalDate returnDate,
-                                         @Param("wiFi") Boolean wiFi,
-                                         @Param("swimmingPool") Boolean swimmingPool,
-                                         @Param("airConditioning") Boolean airConditioning,
-                                         @Param("gym") Boolean gym,
-                                         @Param("food") Boolean food,
-                                         @Param("roomService") Boolean roomService,
-                                         @Param("bar") Boolean bar,
-                                         @Param("restaurant") Boolean restaurant,
-                                         @Param("freeParking") Boolean freeParking,
-                                         @Param("allTimeReception") Boolean allTimeReception,
-                                         Pageable pageable);
+    Page<TourViewEntity> findIncomingTours(@Param("resortId") long resortId,
+                                           @Param("name") String name,
+                                           @Param("price") Float price,
+                                           @Param("departureDate") LocalDate departureDate,
+                                           @Param("returnDate") LocalDate returnDate,
+                                           @Param("wiFi") Boolean wiFi,
+                                           @Param("swimmingPool") Boolean swimmingPool,
+                                           @Param("airConditioning") Boolean airConditioning,
+                                           @Param("gym") Boolean gym,
+                                           @Param("food") Boolean food,
+                                           @Param("roomService") Boolean roomService,
+                                           @Param("bar") Boolean bar,
+                                           @Param("restaurant") Boolean restaurant,
+                                           @Param("freeParking") Boolean freeParking,
+                                           @Param("allTimeReception") Boolean allTimeReception,
+                                           Pageable pageable);
+
+    @Query("""
+            SELECT t FROM DoneTours t
+            WHERE t.resortId = ?1
+            AND (cast(?2 as date) IS NULL OR t.departureDate >= ?2 )
+            AND (cast(?3 as date) IS NULL OR t.returnDate <= ?3)
+            """)
+    Page<TourViewEntity> findDoneTours(long resortId,
+                                       LocalDate departureDate,
+                                       LocalDate returnDate,
+                                       Pageable pageable);
+
+    @Query("""
+            SELECT t FROM OngoingTours t
+            WHERE t.resortId = ?1
+            AND (cast(?2 as date) IS NULL OR t.departureDate >= ?2 )
+            AND (cast(?3 as date) IS NULL OR t.returnDate <= ?3)
+            """)
+    Page<TourViewEntity> findOngoingTours(long resortId,
+                                       LocalDate departureDate,
+                                       LocalDate returnDate,
+                                       Pageable pageable);
+
 
 }
 

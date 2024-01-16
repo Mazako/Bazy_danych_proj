@@ -11,7 +11,7 @@ import pl.tourpol.backend.persistance.PopularityEntry;
 import pl.tourpol.backend.persistance.entity.Address;
 import pl.tourpol.backend.persistance.entity.Resort;
 import pl.tourpol.backend.persistance.entity.Tour;
-import pl.tourpol.backend.persistance.repository.PopularityReportRepository;
+import pl.tourpol.backend.persistance.repository.CustomQueryRepository;
 import pl.tourpol.backend.persistance.repository.ResortRepository;
 import pl.tourpol.backend.persistance.repository.TourRepository;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
@@ -29,14 +29,14 @@ public class ResortService {
     private final TourRepository tourRepository;
     private final LocationService locationService;
     private final RoomService roomService;
-    private final PopularityReportRepository popularityReportRepository;
+    private final CustomQueryRepository customQueryRepository;
 
-    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, LocationService locationService, RoomService roomService, PopularityReportRepository popularityReportRepository) {
+    public ResortService(ResortRepository resortRepository, TourRepository tourRepository, LocationService locationService, RoomService roomService, CustomQueryRepository customQueryRepository) {
         this.resortRepository = requireNonNull(resortRepository);
         this.tourRepository = requireNonNull(tourRepository);
         this.locationService = requireNonNull(locationService);
         this.roomService = requireNonNull(roomService);
-        this.popularityReportRepository = popularityReportRepository;
+        this.customQueryRepository = customQueryRepository;
     }
 
     public Page<ResortListItem> searchResorts(SearchRequestDTO searchParams) {
@@ -81,7 +81,7 @@ public class ResortService {
     }
 
     public List<PopularityEntry> generatePopularityReport(LocalDate startDate, LocalDate endDate, int page, int size) {
-        return popularityReportRepository.generatePopularityReport(startDate, endDate, page, size);
+        return customQueryRepository.generatePopularityReport(startDate, endDate, page, size);
     }
 
     private void validate(String name, String description) {

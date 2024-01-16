@@ -1,18 +1,12 @@
-package pl.tourpol.backend.persistance;
+package pl.tourpol.backend.persistance.view;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDate;
 
-@Entity
-@Immutable
-@Table(name = "incoming_tours")
-public class IncomingTour {
+@MappedSuperclass
+public abstract class TourViewEntity {
     @Id
     @Column(name = "id")
     private Long id;
@@ -135,6 +129,6 @@ public class IncomingTour {
         return resortId;
     }
 
-    protected IncomingTour() {
+    protected TourViewEntity() {
     }
 }

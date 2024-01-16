@@ -34,7 +34,7 @@ dependencies {
 
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("org.postgresql:postgresql:42.5.4")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 

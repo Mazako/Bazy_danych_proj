@@ -16,5 +16,6 @@ public enum RequestErrorMessage {
     EMPTY_LIST,
     NOTIFICATION_NOT_FOUND,
     REFUND_NOT_POSSIBLE,
-    INVALID_RATE
+    INVALID_RATE,
+    CONTRACT_IS_NOT_DONE
 }

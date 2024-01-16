@@ -35,7 +35,7 @@ FROM notification
 
 CREATE OR REPLACE VIEW full_opinion_info
 AS
-SELECT resort.id, resort.name,
+SELECT resort.id AS resort_id, resort.name,
        opinion.id AS opinion_id, opinion.send_date, opinion.comment, opinion.rate,
        app_user.name AS user_name, app_user.last_name
 FROM resort

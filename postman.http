@@ -80,6 +80,14 @@ Content-Type: application/json
   "page": 0
 }
 
+### Get done tours
+GET http://localhost:8080/api/tours/done?resortId=2&page=0
+Authorization: Bearer {{auth_token}}
+
+### Get current tours
+GET http://localhost:8080/api/tours/ongoing?resortId=4&departureDate=2024-01-01&page=0
+Authorization: Bearer {{auth_token}}
+
 ### Popularity report
 GET http://localhost:8080/api/resort/popularityReport?startDate=2023-01-01&endDate=2024-10-10&page=1&size=2
 Authorization: Bearer {{auth_token}}
@@ -123,3 +131,6 @@ Content-Type: application/json
   "tourId": 5,
   "roomIds": [17]
 }
+
+### Get opinions
+GET http://localhost:8080/public/api/opinions?resortId=1&page=0
