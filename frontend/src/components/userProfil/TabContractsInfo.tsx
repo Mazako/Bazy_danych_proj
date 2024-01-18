@@ -11,6 +11,24 @@ export function TabContractsInfo(){
     const [showRefundModal, setShowRefundModal] = useState(false);
     const [selectedContract, setSelectedContract] = useState(null);
 
+    const fetchContracts = async () => {
+        const response = await getContractsByStatusRequest(page, 'PAID,PENDING_PAYMENT,IN_PROGRESS');
+        setContracts(response.data.content);
+        setTotalPages(response.data.totalPages);
+    };
+
+    useEffect(() => {
+        fetchContracts();
+    }, [page]);
+
+    const handleRefundClick = (contract) => {
+        setSelectedContract(contract);
+        setShowRefundModal(true);
+    };
+
+    const refreshContracts = () => {
+        fetchContracts();
+    };
     function ContractsTable({ contracts,onRefundClick}) {
         return (
             <table className="table table-hover table-striped">
@@ -49,19 +67,7 @@ export function TabContractsInfo(){
         );
     }
 
-    useEffect(() => {
-        const fetchContracts = async () => {
-            const response = await getContractsByStatusRequest(page, 'PAID,PENDING_PAYMENT,IN_PROGRESS');
-            setContracts(response.data.content);
-            setTotalPages(response.data.totalPages);
-        };
-        fetchContracts();
-    }, [page]);
 
-    const handleRefundClick = (contract) => {
-        setSelectedContract(contract);
-        setShowRefundModal(true);
-    };
     return (
         <div>
             <ContractsTable contracts={contracts} onRefundClick={handleRefundClick} />
@@ -70,6 +76,7 @@ export function TabContractsInfo(){
                 show={showRefundModal}
                 onHide={() => setShowRefundModal(false)}
                 contract={selectedContract}
+                onRefundSuccess={refreshContracts}
             />
         </div>
     );
