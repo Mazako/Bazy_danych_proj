@@ -1,8 +1,8 @@
 import {Button, Modal, Spinner, Card, ButtonGroup} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {getRefundPriceRequest} from "../../api/Requests";
+import {getRefundPriceRequest, refundRequest} from "../../api/Requests";
 
-const RefundModal = ({ show, onHide, contract }) => {
+const RefundModal = ({ show, onHide, contract,onRefundSuccess }) => {
     const [refundPrice, setRefundPrice] = useState(null);
     const calculatedRefund = refundPrice && contract ? (refundPrice.price * contract.totalPrice) : null;
 
@@ -20,7 +20,16 @@ const RefundModal = ({ show, onHide, contract }) => {
         };
         fetchRefundPrice();
     }, [contract]);
-
+    const handleRefund = async () => {
+        try {
+            await refundRequest(contract.id);
+            console.log("Refund successful for contract ID:", contract.id);
+            onHide();
+            onRefundSuccess();
+        } catch (error) {
+            console.error("Error processing refund for contract ID:", contract.id, error);
+        }
+    };
     return (
         <Modal show={show} onHide={onHide}>
             <Modal.Header closeButton>
@@ -42,8 +51,8 @@ const RefundModal = ({ show, onHide, contract }) => {
             </Modal.Body>
             <Modal.Footer>
                 <ButtonGroup className="w-100 mx-3">
-                    <Button className=" btn btn-secondary mx-1" onClick={onHide}>Zamknij</Button>
-                    <Button className="btn btn-primary mx-1">Zwróć</Button>
+                    <Button className="btn btn-secondary mx-1" onClick={onHide}>Zamknij</Button>
+                    <Button className="btn btn-primary mx-1" onClick={handleRefund}>Zwróć</Button>
                 </ButtonGroup>
             </Modal.Footer>
         </Modal>

@@ -18,7 +18,7 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
     @Query("SELECT t FROM Tour t WHERE t.resort.id = :resortId")
     List<Tour> findToursByResortId(@Param("resortId") Long resortId);
 
-    @Query("SELECT t FROM Tour t WHERE t.resort.id = :resortId AND t.departureDate >= :today ORDER BY t.departureDate ASC")
+    @Query("SELECT t FROM Tour t WHERE t.resort.id = :resortId AND t.departureDate >= :today ORDER BY t.departureDate ASC LIMIT 1")
     Optional<Tour> findNearestUpcomingTourForResort(Long resortId, LocalDate today);
 
     @SuppressWarnings("java:S107")

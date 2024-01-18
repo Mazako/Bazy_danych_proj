@@ -12,7 +12,7 @@ import {create5xxErrorMessage} from "../features/error/ToastMessageSlice";
 import {ResponseBody} from "../api/ResponseBody";
 import {OffersPage} from "../components/OffersPage";
 import {UserProfilePage} from '../components/UserProfilePage';
-import {AdminPanel} from "../components/adminPanel/AdminPanel";
+import {AdminPanel} from "../components/AdminPanel";
 
 
 function App() {

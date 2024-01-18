@@ -8,6 +8,7 @@ import {
 } from "../features/resort/RoomsType";
 import {NotificationDTO} from "../features/user/Notifications";
 import {ContractDTO, ContractDTOList} from "../features/contracts/ContractsType";
+import {NewTourDto, ResortDTO} from "../features/adminPanel/AdminsFormsTypes";
 
 
 class ServerExceptionHandler {
@@ -208,7 +209,7 @@ export const getRefundPriceRequest = async (contractId: number): Promise<Respons
 
 export const refundRequest = async (contractId: number): Promise<ResponseBody<Number>> => {
     try {
-        const response = await defaultRequester.get(`/api/contracts/refund`, {params: {contractId}});
+        const response = await defaultRequester.delete(`/api/contracts/refund`, {params: {contractId}});
         return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
@@ -216,5 +217,31 @@ export const refundRequest = async (contractId: number): Promise<ResponseBody<Nu
             serverExceptionHandler.handle5xxError();
         }
         throw new Error("Error fetching refund for user");
+    }
+}
+
+export const createNewTourRequest = async (newTourData : NewTourDto): Promise<ResponseBody<Number>> =>{
+    try {
+        const response = await defaultRequester.post(`/api/tours/add`, newTourData);
+        return { data: response.data, status: "SUCCESS" };
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error creating contract");
+    }
+}
+
+export const createNewResortRequest = async (newResortData : ResortDTO): Promise<ResponseBody<Number>> =>{
+    try {
+        const response = await defaultRequester.post(`/api/resort/add`, newResortData);
+        return { data: response.data, status: "SUCCESS" };
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error creating contract");
     }
 }
