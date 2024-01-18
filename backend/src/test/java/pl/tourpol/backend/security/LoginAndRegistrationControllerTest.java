@@ -47,7 +47,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
-                        "kaszanka@paruwa.com",
+                        "kaszanka@gmail.com",
                         "kaszanka",
                         "112 997 998"))
                 .exchange()
@@ -64,7 +64,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
-                        "kaszanka@paruwa.com",
+                        "kaszanka@gmail.com",
                         "kaszanka",
                         "112 997 998"))
                 .exchange()
@@ -76,7 +76,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(new RegistrationDto("Jaś",
                         "Kowalski",
-                        "kaszanka@paruwa.com",
+                        "kaszanka@gmail.com",
                         "kaszanka",
                         "142 937 928"))
                 .exchange()
@@ -93,7 +93,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(new RegistrationDto("John",
                         "Doe",
-                        "kaszanka@paruwa.com",
+                        "kaszanka@gmail.com",
                         "kaszanka",
                         "112 997 998"))
                 .exchange()
@@ -109,7 +109,7 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
 
         String token = webTestClient.post()
                 .uri(String.format("http://localhost:%d/auth/login", serverPort))
-                .bodyValue(new CredentialsDTO("kaszanka@paruwa.com", "kaszanka"))
+                .bodyValue(new CredentialsDTO("kaszanka@gmail.com", "kaszanka"))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -120,6 +120,4 @@ class LoginAndRegistrationControllerTest extends BasicDbTest {
         assertThat(token).isNotNull();
 
     }
-
-
 }

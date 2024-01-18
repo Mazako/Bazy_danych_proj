@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: tourpol
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./DB/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./DB/DDL:/DDL
+      - ./DB/DML:/DML
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: mazakoo/tourpol_backend:0.0.1
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tourpol
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: mazakoo/tourpol_frontend:0.0.1
+    ports:
+      - "3000:3000"
