@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
-import { userRoleSelector } from "../../features/user/UserSlice";
+import {useSelector} from "react-redux";
+import {userRoleSelector} from "../../features/user/UserSlice";
 import React from "react";
-import { Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { UserData } from "./UserData";
+import {Nav} from "react-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
+import {UserData} from "./UserData";
 
 export function NavBar() {
     const role = useSelector(userRoleSelector);
@@ -43,7 +43,11 @@ export function NavBar() {
             <Nav fill variant="pills" className="mx-4 my-2">
                 {positions.map((position) => position)}
             </Nav>
-            <UserData />
+            {(role === 'USER' || role === 'ADMIN') && (
+                <>
+                    <UserData/>
+                </>
+            )}
         </div>
     );
 }

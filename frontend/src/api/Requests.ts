@@ -3,11 +3,11 @@ import axios, {AxiosError, AxiosInstance} from "axios";
 import {ResponseBody} from "./ResponseBody";
 import {ResortResponse, ResortsListResponse, SearchParams, ToursListResponse} from "../features/resort/ResortType";
 import {
-    ContractDTO,
     CreateContractDto,
     RoomsResponse
 } from "../features/resort/RoomsType";
 import {NotificationDTO} from "../features/user/Notifications";
+import {ContractDTO, ContractDTOList} from "../features/contracts/ContractsType";
 
 
 class ServerExceptionHandler {
@@ -106,6 +106,24 @@ export const getToursRequest = async (resortId: number, page: number): Promise<R
         throw new Error("Error fetching tours");
     }
 };
+
+export const getFiltredToursRequest = async (resortId: number, page: number,  name: string, price: number): Promise<ResponseBody<ToursListResponse>> => {
+    try {
+        const response = await defaultRequester.post(`/public/api/tours/incoming`, {
+            resortId: resortId,
+            page: page,
+            name: name,
+            price: price
+        });
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error fetching tours");
+    }
+};
 export const getAvailableRooms = async (tourId: number): Promise<ResponseBody<RoomsResponse[]>> => {
     try {
         const response = await defaultRequester.get('/public/api/tour/availableRooms', {
@@ -162,3 +180,41 @@ export const markAsSeenRequest = async (notificationId: number): Promise<void> =
         throw new Error("Error marking notification as seen");
     }
 };
+
+export const getContractsByStatusRequest = async (page: number,statuses: string): Promise<ResponseBody<ContractDTOList>> => {
+    try {
+        const response = await defaultRequester.get(`/api/contracts`, {params: {page, statuses}});
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error fetching contracts for user");
+    }
+}
+export const getRefundPriceRequest = async (contractId: number): Promise<ResponseBody<Number>> => {
+    try {
+        const response = await defaultRequester.get(`/api/contracts/checkRefund`, {params: {contractId}});
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error fetching refund");
+    }
+}
+
+export const refundRequest = async (contractId: number): Promise<ResponseBody<Number>> => {
+    try {
+        const response = await defaultRequester.get(`/api/contracts/refund`, {params: {contractId}});
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error fetching refund for user");
+    }
+}

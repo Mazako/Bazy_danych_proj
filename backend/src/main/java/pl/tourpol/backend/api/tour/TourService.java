@@ -184,6 +184,7 @@ public class TourService {
                 tourViewEntity.getRestaurant(),
                 tourViewEntity.getFreeParking(),
                 tourViewEntity.getAllTimeReception()),
+                tourViewEntity.getId(),
                 tourViewEntity.getName(),
                 tourViewEntity.getDescription(),
                 tourViewEntity.getPrice(),

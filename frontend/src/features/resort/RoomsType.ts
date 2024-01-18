@@ -10,17 +10,4 @@ export interface CreateContractDto{
     roomIds: number[]
 }
 
-export interface ContractDTO {
-    id: number;
-    resortName: string;
-    departureDate: string;
-    returnDate: string;
-    country: string;
-    city: string;
-    reservationDate: string;
-    status: string;
-    personCount: number;
-    totalPrice: number;
-    rooms: RoomsResponse[];
-}
 

@@ -1,7 +1,9 @@
 package pl.tourpol.backend.api.contract;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.tourpol.backend.persistance.entity.Contract;
 
 import java.util.List;
 
@@ -18,8 +20,8 @@ public class ContractController {
     }
 
     @GetMapping
-    ResponseEntity<List<ContractDTO>> getContracts() {
-        List<ContractDTO> contracts = contractService.getAllContracts();
+    ResponseEntity<Page<ContractDTO>> getContracts(@RequestParam int page, @RequestParam String statuses) {
+        Page<ContractDTO> contracts = contractService.getAllContracts(page, statuses);
         return contracts != null ? ResponseEntity.ok(contracts) : ResponseEntity.notFound().build();
     }
 
@@ -30,6 +32,7 @@ public class ContractController {
 
     @GetMapping("/checkRefund")
     ResponseEntity<PriceDTO> checkRefundPossibility(@RequestParam long contractId) {
+        System.out.println(new PriceDTO(contractService.checkRefundPossibility(contractId)));
         return ResponseEntity.ok(new PriceDTO(contractService.checkRefundPossibility(contractId)));
     }
 

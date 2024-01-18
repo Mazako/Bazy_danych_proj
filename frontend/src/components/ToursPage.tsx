@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {getResortRequest, getToursRequest} from '../api/Requests';
+import {getFiltredToursRequest, getResortRequest, getToursRequest} from '../api/Requests';
 import {Button, Card, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap"; // Adjust the import path as needed
 import './toursStyles.css';
 import SearchTour from "./tours/searchTour";
@@ -16,38 +16,40 @@ const ToursPage = () => {
     const id = queryParams.get('id');
     const [selectedTour, setSelectedTour] = useState(null);
     const [modalShow, setModalShow] = useState(false);
-
     const handleReserveClick = (tour) => {
         setSelectedTour(tour);
         setModalShow(true);
     };
 
+    const fetchTours = async (name = '', price=null) => {
+        try {
+            const response = await getFiltredToursRequest(Number(id), 0, name, price);
+            setTours(response.data.content);
+        } catch (error) {
+            console.error("Failed to fetch tours:", error);
+        }
+    };
+
     useEffect(() => {
-        const fetchTours = async () => {
-            try {
-                const response = await getToursRequest(Number(id), 0);
-                setTours(response.data.content);
-            } catch (error) {
-                console.error("Failed to fetch tours:", error);
-            }
-        };
-        const fetchResort = async () => {
-            try {
-                const response = await getResortRequest(Number(id));
-                setResort(response.data);
-            } catch (error) {
-                console.error("Failed to fetch resort:", error);
-            }
-        };
         if (id) {
             fetchTours();
             fetchResort();
         }
     }, [id]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSearch = (name, price) => {
+        fetchTours(name, price);
     };
+
+    const fetchResort = async () => {
+        try {
+            const response = await getResortRequest(Number(id));
+            setResort(response.data);
+        } catch (error) {
+            console.error("Failed to fetch resort:", error);
+        }
+    };
+
     const renderFacilities = (facilities) => {
         return (
             <div>
@@ -90,7 +92,7 @@ const ToursPage = () => {
 
             <Row>
                 <Col sm={12} md={3}>
-                    <SearchTour onSubmit={handleSubmit} />
+                    <SearchTour onSearch={handleSearch} />
                 </Col>
                 <Col sm={12} md={9}>
                     {tours && tours.map((tour, index) => (
@@ -103,7 +105,6 @@ const ToursPage = () => {
                     ))}
                 </Col>
             </Row>
-
         </Container>
     );
 };

@@ -1,0 +1,26 @@
+/* UserProfilePage.css */
+.custom-tab {
+    transition: all 0.3s ease;
+}
+
+.custom-tab:hover {
+    background-color: #f0f0f0; /* Or any other color */
+    border-radius: 5px; /* Optional, for rounded corners */
+}
+.user-profile-container .nav-item-custom {
+    border: 1px solid #dee2e6; /* Bootstrap border color */
+    margin-bottom: 5px;
+    border-radius: 0.25rem; /* Bootstrap border radius */
+    color: #495057; /* Bootstrap text color */
+    background-color: #f8f9fa; /* Bootstrap light background */
+}
+
+.user-profile-container .nav-item-custom:hover {
+    background-color: #e2e6ea; /* Slightly darker for hover */
+    cursor: pointer;
+}
+
+.user-profile-container .nav-link.active {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+}
