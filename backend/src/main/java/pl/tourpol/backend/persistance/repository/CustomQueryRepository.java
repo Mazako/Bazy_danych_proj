@@ -9,10 +9,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class PopularityReportRepository {
+public class CustomQueryRepository {
     private final JdbcTemplate jdbcTemplate;
     @Autowired
-    public PopularityReportRepository(JdbcTemplate jdbcTemplate) {
+    public CustomQueryRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
     public List<PopularityEntry> generatePopularityReport(LocalDate startDate, LocalDate endDate, int page, int size) {

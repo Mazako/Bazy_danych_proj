@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import pl.tourpol.backend.api.room.RoomService;
-import pl.tourpol.backend.persistance.IncomingTour;
+import pl.tourpol.backend.persistance.view.TourViewEntity;
 import pl.tourpol.backend.persistance.entity.*;
 import pl.tourpol.backend.persistance.repository.*;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
@@ -56,6 +56,16 @@ public class TourService {
                         PageRequest.of(params.page(), 10))
                 .map(this::mapToDto);
 
+    }
+
+    public Page<TourDTO> getDoneTours(long resortId, LocalDate departureDate, LocalDate returnDate, int page) {
+        return tourRepository.findDoneTours(resortId, departureDate, returnDate, PageRequest.of(page, 30))
+                .map(this::mapToDto);
+    }
+
+    public Page<TourDTO> getOngoingTours(long resortId, LocalDate departureDate, LocalDate returnDate, int page) {
+        return tourRepository.findOngoingTours(resortId, departureDate, returnDate, PageRequest.of(page, 30))
+                .map(this::mapToDto);
     }
 
     @Transactional
@@ -163,25 +173,24 @@ public class TourService {
         return Optional.ofNullable(roomContractRepository.sumConfirmedPearsonCountForTour(tourId)).orElse((short) 0);
     }
 
-    private TourDTO mapToDto(IncomingTour incomingTour) {
-        return new TourDTO(new Facility(incomingTour.getWifi(),
-                incomingTour.getSwimmingPool(),
-                incomingTour.getAirConditioning(),
-                incomingTour.getGym(),
-                incomingTour.getFood(),
-                incomingTour.getRoomService(),
-                incomingTour.getBar(),
-                incomingTour.getRestaurant(),
-                incomingTour.getFreeParking(),
-                incomingTour.getAllTimeReception()),
-                incomingTour.getId(),
-                incomingTour.getName(),
-                incomingTour.getDescription(),
-                incomingTour.getPrice(),
-                incomingTour.getDepartureDate(),
-                incomingTour.getReturnDate(),
-                getTotalRoomsCapacity(incomingTour.getId()),
-                calculateAvailablePlacesForTour(incomingTour.getId()));
+    private TourDTO mapToDto(TourViewEntity tourViewEntity) {
+        return new TourDTO(new Facility(tourViewEntity.getWifi(),
+                tourViewEntity.getSwimmingPool(),
+                tourViewEntity.getAirConditioning(),
+                tourViewEntity.getGym(),
+                tourViewEntity.getFood(),
+                tourViewEntity.getRoomService(),
+                tourViewEntity.getBar(),
+                tourViewEntity.getRestaurant(),
+                tourViewEntity.getFreeParking(),
+                tourViewEntity.getAllTimeReception()),
+                tourViewEntity.getName(),
+                tourViewEntity.getDescription(),
+                tourViewEntity.getPrice(),
+                tourViewEntity.getDepartureDate(),
+                tourViewEntity.getReturnDate(),
+                getTotalRoomsCapacity(tourViewEntity.getId()),
+                calculateAvailablePlacesForTour(tourViewEntity.getId()));
     }
 
 

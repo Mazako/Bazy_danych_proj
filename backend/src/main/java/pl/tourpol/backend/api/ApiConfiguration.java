@@ -29,8 +29,8 @@ class ApiConfiguration {
 
     @Bean
     ResortService resortService(ResortRepository resortRepository, TourRepository tourRepository,
-                                LocationService locationService, RoomService roomService, PopularityReportRepository popularityReportRepository) {
-        return new ResortService(resortRepository, tourRepository, locationService, roomService, popularityReportRepository);
+                                LocationService locationService, RoomService roomService, CustomQueryRepository customQueryRepository) {
+        return new ResortService(resortRepository, tourRepository, locationService, roomService, customQueryRepository);
     }
 
     @Bean

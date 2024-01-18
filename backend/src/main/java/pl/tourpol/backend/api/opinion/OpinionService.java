@@ -6,6 +6,7 @@ import pl.tourpol.backend.persistance.entity.Contract;
 import pl.tourpol.backend.persistance.entity.Opinion;
 import pl.tourpol.backend.persistance.repository.ContractRepository;
 import pl.tourpol.backend.persistance.repository.OpinionRepository;
+import pl.tourpol.backend.persistance.view.FullOpinionInfo;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
 import pl.tourpol.backend.security.exception.RequestException;
 import pl.tourpol.backend.security.permissions.AccessSensitiveOperation;
@@ -28,7 +29,7 @@ public class OpinionService {
     }
 
     public Page<OpinionDTO> getOpinionsByResortId(long resortId, int page){
-        Page<Opinion> opinions = opinionRepository.findAllByResortId(resortId, PageRequest.of(page, 4));
+        Page<FullOpinionInfo> opinions = opinionRepository.findAllByResortId(resortId, PageRequest.of(page, 4));
         if (opinions.isEmpty())
             return Page.empty();
         return opinions.map(OpinionDTO::toDto);
@@ -50,6 +51,9 @@ public class OpinionService {
             throw new RequestException(RequestErrorMessage.INVALID_RATE);
         }
         Contract contract = contractRepository.findById(contractId).get();
+        if (contract.getStatus() != Contract.Status.DONE) {
+            throw new RequestException(RequestErrorMessage.CONTRACT_IS_NOT_DONE);
+        }
         return opinionRepository.save(new Opinion(rate, comment, LocalDate.now(), contract));
     }
 

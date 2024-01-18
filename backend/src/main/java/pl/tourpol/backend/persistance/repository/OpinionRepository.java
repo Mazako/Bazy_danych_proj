@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.tourpol.backend.persistance.entity.Opinion;
+import pl.tourpol.backend.persistance.view.FullOpinionInfo;
 
 @Repository
 public interface OpinionRepository extends JpaRepository<Opinion, Long> {
 
-    @Query("SELECT o FROM Opinion o WHERE o.contract.tour.resort.id = :resortId")
-    Page<Opinion> findAllByResortId(long resortId, Pageable pageable);
+    @Query("SELECT o FROM FullOpinionInfo o WHERE o.resortId = :resortId")
+    Page<FullOpinionInfo> findAllByResortId(long resortId, Pageable pageable);
 
     @Query(nativeQuery = true, value = """
             SELECT COUNT(opinion.id) from opinion
