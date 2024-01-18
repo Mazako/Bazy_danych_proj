@@ -23,4 +23,6 @@ public interface RoomTourRepository extends JpaRepository<RoomTour, Long> {
             WHERE t.id = ?1
             """)
     List<Room> getRoomsAssignedToTour(long tourId);
+
+
 }

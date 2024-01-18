@@ -39,6 +39,7 @@ public class NotificationService {
         String mail = user.getUsername();
         AppUser appUser = userService.getUserByEmail(mail)
                 .orElseThrow(() -> new AccessDeniedException("User not found"));
+
         List<Notification> allNotificationByUserId = notificationRepository.getAllNotificationByUserId(appUser.getId());
         return allNotificationByUserId.stream()
                 .map(this::convertToNotificationDTO)

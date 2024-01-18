@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import {MainPage} from "../components/MainPage";
 import {LoginPage} from "../components/LoginPage";
@@ -11,6 +11,8 @@ import {useDispatch} from "react-redux";
 import {create5xxErrorMessage} from "../features/error/ToastMessageSlice";
 import {ResponseBody} from "../api/ResponseBody";
 import {OffersPage} from "../components/OffersPage";
+import {UserProfilePage} from '../components/UserProfilePage';
+import {AdminPanel} from "../components/adminPanel/AdminPanel";
 
 
 function App() {
@@ -20,23 +22,22 @@ function App() {
         dispatch(create5xxErrorMessage())
         return {data: null, status: "FAILURE"}
     }
+    if (Cookies.get('token')) {
+        defaultRequester.defaults.headers['Authorization'] = `Bearer ${Cookies.get('token')}`
+    }
 
-    useEffect(() => {
-        if (Cookies.get('token')) {
-            defaultRequester.defaults.headers['Authorization'] = `Bearer ${Cookies.get('token')}`
-        }
-    }, [])
-
-  const router = createBrowserRouter(createRoutesFromElements([
-      <Route path='/' element={<MainPage />}>
-          <Route path='/offers' element={<OffersPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-      </Route>
-  ]))
-  return (
-      <RouterProvider router={router} />
-  );
+    const router = createBrowserRouter(createRoutesFromElements([
+        <Route path='/' element={<MainPage/>}>
+            <Route path='/offers' element={<OffersPage/>}></Route>
+            <Route path='/profile' element={<UserProfilePage/>}/>
+            <Route path='/login' element={<LoginPage/>}/>
+            <Route path='/adminPanel' element={<AdminPanel/>}/>
+            <Route path='/register' element={<RegisterPage/>}/>
+        </Route>
+    ]))
+    return (
+        <RouterProvider router={router}/>
+    );
 }
 
 export default App;

@@ -3,6 +3,8 @@ package pl.tourpol.backend.api.contract;
 
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -24,9 +26,12 @@ import pl.tourpol.backend.user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 public class ContractService {
 
@@ -53,15 +58,17 @@ public class ContractService {
         this.accessSensitiveOperation = accessSensitiveOperation;
     }
 
-    public List<ContractDTO> getAllContracts() {
+    public Page<ContractDTO> getAllContracts(int page, String statuses) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String mail = user.getUsername();
         AppUser appUser = userService.getUserByEmail(mail)
                 .orElseThrow(() -> new AccessDeniedException("User not found"));
-        List<Contract> contracts = contractRepository.findAllByUserId(appUser.getId());
-        return contracts.stream()
-                .map(this::convertToContractDTO)
-                .toList();
+        List<Contract.Status> enumStatuses = Arrays.stream(statuses.split(","))
+                .map(Contract.Status::valueOf)
+                .collect(toList());
+        Page<Contract> contracts = contractRepository.findAllByUserIdAndStatuses(appUser.getId(), enumStatuses, PageRequest.of(page, 10));
+        return contracts.map(this::convertToContractDTO);
+
     }
 
     @Transactional

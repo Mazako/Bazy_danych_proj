@@ -5,6 +5,8 @@ import Paginator from "./resorts/ResortPaginator";
 import ResortCard from "./resorts/ResortCard";
 import {Row} from "react-bootstrap";
 import {SearchBar} from "./resorts/ResortSearchBar";
+import {useLocation} from "react-router";
+import ToursPage from "./ToursPage";
 
 export const OffersPage = () => {
     const [offers, setOffers] = useState<ResortItem[]>([]);
@@ -12,6 +14,11 @@ export const OffersPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [isSearchMode, setIsSearchMode] = useState(false);
     const [searchParams, setSearchFilters] = useState<SearchParams | null>(null);
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id');
+
 
     const handleSearch = async (filters: SearchParams) => {
         setSearchFilters(filters);
@@ -27,14 +34,14 @@ export const OffersPage = () => {
     };
 
     useEffect(() => {
-        setOffers([]);
         const fetchData = async () => {
             try {
                 let response;
                 if (isSearchMode && searchParams) {
-                    response = await searchResortsRequest({ ...searchParams}, page);
+                    response = await searchResortsRequest({ ...searchParams }, page);
                 } else {
                     response = await getResortsRequest(page);
+                    console.log(response);
                 }
 
                 if (response && response.data && response.data.content) {
@@ -48,6 +55,10 @@ export const OffersPage = () => {
 
         fetchData();
     }, [page, isSearchMode, searchParams]);
+
+    if (id) {
+        return <ToursPage />;
+    }
 
     return (
         <div className="my-3">

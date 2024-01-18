@@ -36,7 +36,7 @@ public class Notification {
     @JoinColumn(name = "contract_id", nullable = false)
     private Contract contract;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "notification_type_id")
     private NotificationType notificationType;
