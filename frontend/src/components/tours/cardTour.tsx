@@ -1,8 +1,12 @@
 // TourCard.js
 import React from 'react';
 import {Card, Col, Row} from 'react-bootstrap';
+import {useSelector} from "react-redux";
+import {userRoleSelector} from "../../features/user/UserSlice";
 
 const TourCard = ({tour, renderFacilities, onReserveClick}) => {
+
+    const role = useSelector(userRoleSelector);
 
     return (
         <Row className="mb-3">
@@ -21,9 +25,11 @@ const TourCard = ({tour, renderFacilities, onReserveClick}) => {
                             <div>
                                 <strong>Zawiera w sobie:</strong> {renderFacilities(tour.facilities)}
                             </div>
-                            <button className="btn btn-outline-primary"
-                                    onClick={() => onReserveClick(tour)}>Zarezerwuj
-                            </button>
+                            {(role === 'USER' || role === 'ADMIN') && (
+                                <button className="btn btn-outline-primary"
+                                        onClick={() => onReserveClick(tour)}>Zarezerwuj
+                                </button>
+                            )}
                         </div>
                     </Card.Body>
                 </Card>
