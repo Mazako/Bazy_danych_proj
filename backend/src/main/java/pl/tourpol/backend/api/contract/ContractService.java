@@ -62,8 +62,7 @@ public class ContractService {
         String mail = user.getUsername();
         AppUser appUser = userService.getUserByEmail(mail)
                 .orElseThrow(() -> new AccessDeniedException("User not found"));
-        List<Contract.Status> enumStatuses = Arrays.stream(statuses.split(","))
-                .map(Contract.Status::valueOf)
+        List<String> enumStatuses = Arrays.stream(statuses.split(","))
                 .collect(toList());
         Page<Contract> contracts = contractRepository.findAllByUserIdAndStatuses(appUser.getId(), enumStatuses, PageRequest.of(page, 10));
         return contracts.map(this::convertToContractDTO);
