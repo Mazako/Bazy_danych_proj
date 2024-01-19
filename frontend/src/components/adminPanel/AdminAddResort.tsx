@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Form, Button, Container, Col, Row, Modal, Alert } from 'react-bootstrap';
-import { createNewResortRequest } from "../../api/Requests";
+import React, {useRef, useState} from 'react';
+import {Alert, Button, Col, Container, Form, Modal, Row} from 'react-bootstrap';
+import {createNewResortRequest} from "../../api/Requests";
 import {RoomManager} from "./CreateRooms";
 
 export function AdminAddResort() {

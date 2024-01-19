@@ -1,11 +1,8 @@
 package pl.tourpol.backend.api.room;
 
 import pl.tourpol.backend.persistance.entity.Room;
-import pl.tourpol.backend.persistance.entity.RoomTour;
-import pl.tourpol.backend.persistance.entity.Tour;
 import pl.tourpol.backend.persistance.repository.ResortRepository;
 import pl.tourpol.backend.persistance.repository.RoomRepository;
-import pl.tourpol.backend.persistance.repository.TourRepository;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
 import pl.tourpol.backend.security.exception.RequestException;
 

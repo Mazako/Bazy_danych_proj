@@ -1,7 +1,6 @@
 package pl.tourpol.backend.api.tour;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record NewTourData(long resortId,

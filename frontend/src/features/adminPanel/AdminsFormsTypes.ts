@@ -31,3 +31,11 @@ export interface AddressDTO {
     houseNumber: string;
     city: CityDTO;
 }
+
+export interface PopularityReportDTO{
+    id: number,
+    resortName: string,
+    signedContracts: number,
+    persons: number,
+    totalProfit: number
+}

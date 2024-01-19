@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {Button, Pagination} from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button} from 'react-bootstrap';
 import {getContractsByStatusRequest} from "../../api/Requests";
 import Paginator from "../paging/Paginator";
 import RefundModal from "./RefundModal";
