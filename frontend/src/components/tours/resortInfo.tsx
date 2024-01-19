@@ -4,7 +4,7 @@ import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 
 const ResortInfo = ({ resort }) => {
     const mapStyles = {
-        height: "100%",
+        height: '600px',
         width: "100%"};
 
     const defaultCenter = {
@@ -27,7 +27,7 @@ const ResortInfo = ({ resort }) => {
             </Col>
             <Col md={8}>
                 <LoadScript
-                    googleMapsApiKey="">
+                    googleMapsApiKey="AIzaSyAJTLnFZi0NW2R7CePgEmyBNaoIznj8jM4">
                     <GoogleMap
                         mapContainerStyle={mapStyles}
                         zoom={10}

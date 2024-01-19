@@ -21,7 +21,7 @@ const ToursPage = () => {
         setModalShow(true);
     };
 
-    const fetchTours = async (name = '', price=null) => {
+    const fetchTours = async (name = '', price = null) => {
         try {
             const response = await getFiltredToursRequest(Number(id), 0, name, price);
             setTours(response.data.content);
@@ -80,7 +80,7 @@ const ToursPage = () => {
         <Container className="my-4">
             {resort && (
                 <>
-                    <ResortInfo resort={resort} />
+                    <ResortInfo resort={resort}/>
                     <ReservationModal
                         show={modalShow}
                         onHide={() => setModalShow(false)}
@@ -92,17 +92,31 @@ const ToursPage = () => {
 
             <Row>
                 <Col sm={12} md={3}>
-                    <SearchTour onSearch={handleSearch} />
+                    <SearchTour onSearch={handleSearch}/>
                 </Col>
                 <Col sm={12} md={9}>
-                    {tours && tours.map((tour, index) => (
-                        <TourCard
-                            key={index}
-                            tour={tour}
-                            renderFacilities={renderFacilities}
-                            onReserveClick={handleReserveClick}
-                        />
-                    ))}
+                    {tours && tours.length > 0 ? (
+                        tours.map((tour, index) => (
+                            <TourCard
+                                key={index}
+                                tour={tour}
+                                renderFacilities={renderFacilities}
+                                onReserveClick={handleReserveClick}
+                            />
+                        ))
+                    ) : (
+                        <div className="no-tours-message">
+                            <p style={{
+                                fontSize: '28px',
+                                fontWeight: 'bold',
+                                color: '#007bff',
+                                textAlign: 'center',
+                                marginTop: '20px'
+                            }}>
+                                Brak dostępnych wycieczek.
+                            </p>
+                        </div>
+                    )}
                 </Col>
             </Row>
         </Container>
