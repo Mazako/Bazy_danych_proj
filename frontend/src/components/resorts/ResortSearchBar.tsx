@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Form, Row, Col, Card, Button, InputGroup } from 'react-bootstrap';
+import React, {useRef} from 'react';
+import {Button, Card, Col, Form, InputGroup, Row} from 'react-bootstrap';
 
 export const SearchBar = ({ onSearch, onReset }) => {
     const formRef = useRef(null);

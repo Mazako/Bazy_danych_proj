@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import pl.tourpol.backend.persistance.entity.Contract;
 
 import java.util.Collection;
-import java.util.List;
 
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Long> {

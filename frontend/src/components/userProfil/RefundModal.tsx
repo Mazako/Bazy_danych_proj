@@ -1,4 +1,4 @@
-import {Button, Modal, Spinner, Card, ButtonGroup} from "react-bootstrap";
+import {Button, ButtonGroup, Card, Modal, Spinner} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {getRefundPriceRequest, refundRequest} from "../../api/Requests";
 

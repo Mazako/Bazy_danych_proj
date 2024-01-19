@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Col, Row } from "react-bootstrap";
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import {Card, Col, Row} from "react-bootstrap";
+import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 
 const ResortInfo = ({ resort }) => {
     const mapStyles = {

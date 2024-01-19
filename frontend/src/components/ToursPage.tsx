@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import {getFiltredToursRequest, getResortRequest, getToursRequest} from '../api/Requests';
-import {Button, Card, Col, Container, Form, Row, Spinner, Table} from "react-bootstrap"; // Adjust the import path as needed
+import React, {useEffect, useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import {getFiltredToursRequest, getResortRequest} from '../api/Requests';
+import {Col, Container, Row, Spinner} from "react-bootstrap"; // Adjust the import path as needed
 import './toursStyles.css';
 import SearchTour from "./tours/searchTour";
 import TourCard from "./tours/cardTour";

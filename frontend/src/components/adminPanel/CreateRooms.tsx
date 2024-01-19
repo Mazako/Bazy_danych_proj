@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import {Button, Col, Form, Row} from 'react-bootstrap';
 
 export function RoomManager({ rooms, setRooms }) {
     const addRoomField = () => {

@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import pl.tourpol.backend.api.room.RoomService;
-import pl.tourpol.backend.persistance.view.TourViewEntity;
 import pl.tourpol.backend.persistance.entity.*;
 import pl.tourpol.backend.persistance.repository.*;
+import pl.tourpol.backend.persistance.view.TourViewEntity;
 import pl.tourpol.backend.security.exception.RequestErrorMessage;
 import pl.tourpol.backend.security.exception.RequestException;
 

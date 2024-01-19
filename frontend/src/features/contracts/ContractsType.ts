@@ -1,5 +1,4 @@
 import {RoomsResponse} from "../resort/RoomsType";
-import {ResortItem} from "../resort/ResortType";
 
 export interface ContractDTO {
     id: number;

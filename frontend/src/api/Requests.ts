@@ -2,13 +2,10 @@ import {LoginCredentials, LoginResponse} from "../features/user/UserTypes";
 import axios, {AxiosError, AxiosInstance} from "axios";
 import {ResponseBody} from "./ResponseBody";
 import {ResortResponse, ResortsListResponse, SearchParams, ToursListResponse} from "../features/resort/ResortType";
-import {
-    CreateContractDto,
-    RoomsResponse
-} from "../features/resort/RoomsType";
+import {CreateContractDto, RoomsResponse} from "../features/resort/RoomsType";
 import {NotificationDTO} from "../features/user/Notifications";
 import {ContractDTO, ContractDTOList} from "../features/contracts/ContractsType";
-import {NewTourDto, ResortDTO} from "../features/adminPanel/AdminsFormsTypes";
+import {NewTourDto, PopularityReportDTO, ResortDTO} from "../features/adminPanel/AdminsFormsTypes";
 
 
 class ServerExceptionHandler {
@@ -108,7 +105,7 @@ export const getToursRequest = async (resortId: number, page: number): Promise<R
     }
 };
 
-export const getFiltredToursRequest = async (resortId: number, page: number,  name: string, price: number): Promise<ResponseBody<ToursListResponse>> => {
+export const getFiltredToursRequest = async (resortId: number, page: number, name: string, price: number): Promise<ResponseBody<ToursListResponse>> => {
     try {
         const response = await defaultRequester.post(`/public/api/tours/incoming`, {
             resortId: resortId,
@@ -132,7 +129,7 @@ export const getAvailableRooms = async (tourId: number): Promise<ResponseBody<Ro
                 tourId: tourId,
             }
         });
-        return { data: response.data, status: "SUCCESS" };
+        return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
         if (!err.response) {
@@ -145,7 +142,7 @@ export const getAvailableRooms = async (tourId: number): Promise<ResponseBody<Ro
 export const createContract = async (dto: CreateContractDto): Promise<ResponseBody<ContractDTO>> => {
     try {
         const response = await defaultRequester.post(`/api/contracts/add`, dto);
-        return { data: response.data, status: "SUCCESS" };
+        return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
         if (!err.response) {
@@ -158,7 +155,7 @@ export const createContract = async (dto: CreateContractDto): Promise<ResponseBo
 export const getNotificationsRequest = async (): Promise<ResponseBody<NotificationDTO[]>> => {
     try {
         const response = await defaultRequester.get('/api/notifications');
-        return { data: response.data, status: "SUCCESS" };
+        return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
         if (!err.response) {
@@ -182,7 +179,7 @@ export const markAsSeenRequest = async (notificationId: number): Promise<void> =
     }
 };
 
-export const getContractsByStatusRequest = async (page: number,statuses: string): Promise<ResponseBody<ContractDTOList>> => {
+export const getContractsByStatusRequest = async (page: number, statuses: string): Promise<ResponseBody<ContractDTOList>> => {
     try {
         const response = await defaultRequester.get(`/api/contracts`, {params: {page, statuses}});
         return {data: response.data, status: "SUCCESS"};
@@ -220,10 +217,10 @@ export const refundRequest = async (contractId: number): Promise<ResponseBody<Nu
     }
 }
 
-export const createNewTourRequest = async (newTourData : NewTourDto): Promise<ResponseBody<Number>> =>{
+export const createNewTourRequest = async (newTourData: NewTourDto): Promise<ResponseBody<Number>> => {
     try {
         const response = await defaultRequester.post(`/api/tours/add`, newTourData);
-        return { data: response.data, status: "SUCCESS" };
+        return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
         if (!err.response) {
@@ -233,15 +230,35 @@ export const createNewTourRequest = async (newTourData : NewTourDto): Promise<Re
     }
 }
 
-export const createNewResortRequest = async (newResortData : ResortDTO): Promise<ResponseBody<Number>> =>{
+export const createNewResortRequest = async (newResortData: ResortDTO): Promise<ResponseBody<Number>> => {
     try {
         const response = await defaultRequester.post(`/api/resort/add`, newResortData);
-        return { data: response.data, status: "SUCCESS" };
+        return {data: response.data, status: "SUCCESS"};
     } catch (e) {
         const err = e as AxiosError;
         if (!err.response) {
             serverExceptionHandler.handle5xxError();
         }
         throw new Error("Error creating contract");
+    }
+}
+
+export const getPopularityReportRequest = async (page: number, size: number, startDate: string,endDate: string): Promise<ResponseBody<PopularityReportDTO[]>> => {
+    try {
+        const response = await defaultRequester.get(`/api/resort/popularityReport`, {
+            params: {
+                startDate,
+                endDate,
+                page,
+                size
+            }
+        });
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error fetching refund");
     }
 }

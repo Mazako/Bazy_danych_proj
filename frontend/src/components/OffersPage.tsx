@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {getResortsRequest, searchResortsRequest} from "../api/Requests";
 import {ResortItem, SearchParams} from "../features/resort/ResortType";
 import Paginator from "./resorts/ResortPaginator";

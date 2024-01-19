@@ -3,7 +3,6 @@ package pl.tourpol.backend.api.contract;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.tourpol.backend.persistance.entity.Contract;
 
 import java.util.List;
 

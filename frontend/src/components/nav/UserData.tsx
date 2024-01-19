@@ -1,14 +1,10 @@
 import {Badge, Button, Overlay, OverlayTrigger, Toast, Tooltip} from "react-bootstrap";
 import React, {useEffect, useRef, useState} from "react";
-import {bottom} from "@popperjs/core";
-import {AppDispatch} from "../../app/Store";
 import {useDispatch, useSelector} from "react-redux";
 import {logout, userRoleSelector} from "../../features/user/UserSlice";
 import {useNavigate} from "react-router";
 import {createMessage} from "../../features/error/ToastMessageSlice";
-import {NotificationType} from "../../features/user/Notifications";
 import {getNotificationsRequest, markAsSeenRequest} from "../../api/Requests";
-import axios from "axios";
 import {FaUserCircle} from "react-icons/fa";
 
 /**

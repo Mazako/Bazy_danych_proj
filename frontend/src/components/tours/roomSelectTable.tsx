@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Form } from 'react-bootstrap';
+import {Form, Table} from 'react-bootstrap';
 
 const RoomSelectionTable = ({ availableRooms, selectedRooms, toggleRoomSelection }) => {
     return (

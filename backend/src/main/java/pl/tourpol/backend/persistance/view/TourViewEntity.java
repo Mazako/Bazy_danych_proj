@@ -1,6 +1,8 @@
 package pl.tourpol.backend.persistance.view;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;

@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {isMessageEmptySelector, messageSelector, removeMessage} from "../features/error/ToastMessageSlice";
 import {Toast, ToastContainer} from "react-bootstrap";
 import {AppDispatch} from "../app/Store";
-import {OffersPage} from "./OffersPage";
 import {useEffect} from "react";
 
 export function MainPage() {
