@@ -6,6 +6,7 @@ import {CreateContractDto, RoomsResponse} from "../features/resort/RoomsType";
 import {NotificationDTO} from "../features/user/Notifications";
 import {ContractDTO, ContractDTOList} from "../features/contracts/ContractsType";
 import {NewTourDto, PopularityReportDTO, ResortDTO} from "../features/adminPanel/AdminsFormsTypes";
+import {AddOpinionRequestDTO} from "../features/user/Opinion";
 
 
 class ServerExceptionHandler {
@@ -260,5 +261,30 @@ export const getPopularityReportRequest = async (page: number, size: number, sta
             serverExceptionHandler.handle5xxError();
         }
         throw new Error("Error fetching refund");
+    }
+}
+export const checkIfOpinionIsAddedRequest = async (contractId: number): Promise<ResponseBody<boolean>> => {
+    try {
+        const response = await defaultRequester.get(`/api/opinions/added`, {params: {contractId}});
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error checking opinion");
+    }
+}
+
+export const addOpinionRequest = async (addOpinionRequestDTO: AddOpinionRequestDTO): Promise<ResponseBody<Number>> => {
+    try {
+        const response = await defaultRequester.post(`/api/opinions/add`, addOpinionRequestDTO);
+        return {data: response.data, status: "SUCCESS"};
+    } catch (e) {
+        const err = e as AxiosError;
+        if (!err.response) {
+            serverExceptionHandler.handle5xxError();
+        }
+        throw new Error("Error creating contract");
     }
 }

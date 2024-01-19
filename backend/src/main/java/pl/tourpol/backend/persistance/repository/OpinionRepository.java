@@ -15,10 +15,11 @@ public interface OpinionRepository extends JpaRepository<Opinion, Long> {
     Page<FullOpinionInfo> findAllByResortId(long resortId, Pageable pageable);
 
     @Query(nativeQuery = true, value = """
-            SELECT COUNT(opinion.id) from opinion
-            INNER JOIN contract ON opinion.contract_id = contract.id
-            WHERE contract_id = ?1
-            """)
+        SELECT CASE WHEN COUNT(opinion.id) > 0 THEN TRUE ELSE FALSE END from opinion
+        INNER JOIN contract ON opinion.contract_id = contract.id
+        WHERE contract_id = ?1
+        """)
     boolean isOpinionAdded(long contractId);
+
 
 }
