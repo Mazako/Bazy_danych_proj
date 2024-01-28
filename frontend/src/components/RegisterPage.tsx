@@ -46,13 +46,13 @@ export function RegisterPage() {
         })
     }, [firstName, lastName, password, repeatedPassword, phone, mail])
 
-    const createFormLabel = (validatedElement: boolean, label: string, validationErrorMessage: string) => {
+    const createFormLabel = (validatedElement: boolean, label: string, validationErrorMessage: string, id:string) => {
         if (everSubmitted && !validatedElement) {
             return (<Form.Label className='w-100 d-flex justify-content-between'>
                 <span className='d-inline-block'>
                     {label}
                 </span>
-                <span className='text-danger text-end d-inline-block'>
+                <span className='text-danger text-end d-inline-block' id={`${id}-error`}>
                     ({validationErrorMessage})
                 </span>
             </Form.Label>)
@@ -91,8 +91,9 @@ export function RegisterPage() {
     return (<div className='d-flex justify-content-center'>
         <Form onSubmit={handleSubmit} className="border rounded p-lg-4 w-50" style={{marginTop: '90px'}}>
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.fistName, 'Imię', 'Imię nie może być puste i musi się składać z samych liter i spacji')}
+                {createFormLabel(validatedElements.fistName, 'Imię', 'Imię nie może być puste i musi się składać z samych liter i spacji', "first-name")}
                 <Form.Control
+                    id="first-name"
                     type='text'
                     onChange={e => setFirstName(e.target.value)}
                     value={firstName}
@@ -100,8 +101,9 @@ export function RegisterPage() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.lastName, 'Nazwisko', 'Nazwisko nie może być puste i musi się składać z samych liter i spacji')}
+                {createFormLabel(validatedElements.lastName, 'Nazwisko', 'Nazwisko nie może być puste i musi się składać z samych liter i spacji', "last-name")}
                 <Form.Control
+                    id="last-name"
                     type='text'
                     onChange={e => setLastName(e.target.value)}
                     value={lastName}
@@ -109,8 +111,9 @@ export function RegisterPage() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.mail, 'E-mail', 'Niepoprawny adres E-mail')}
+                {createFormLabel(validatedElements.mail, 'E-mail', 'Niepoprawny adres E-mail', "mail")}
                 <Form.Control
+                    id="mail"
                     type='text'
                     onChange={e => setMail(e.target.value)}
                     value={mail}
@@ -118,8 +121,9 @@ export function RegisterPage() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.password, 'Hasło', 'Hasło musi mieć minimum 8 znaków i zawierać minimum jedną wielką literę i cyfrę')}
+                {createFormLabel(validatedElements.password, 'Hasło', 'Hasło musi mieć minimum 8 znaków i zawierać minimum jedną wielką literę i cyfrę', "password")}
                 <Form.Control
+                    id="password"
                     value={password}
                     type='password'
                     onChange={e => setPassword(e.target.value)}
@@ -127,8 +131,9 @@ export function RegisterPage() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.repeatedPassword, 'Powtórz hasło', 'Hasła się nie zgadzają')}
+                {createFormLabel(validatedElements.repeatedPassword, 'Powtórz hasło', 'Hasła się nie zgadzają', "repeated-password")}
                 <Form.Control
+                    id="repeated-password"
                     value={repeatedPassword}
                     type='password'
                     onChange={e => setRepeatedPassword(e.target.value)}
@@ -136,15 +141,16 @@ export function RegisterPage() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                {createFormLabel(validatedElements.phone, 'Numer telefonu', 'Niepoprawny numer telefonu')}
+                {createFormLabel(validatedElements.phone, 'Numer telefonu', 'Niepoprawny numer telefonu', "phone")}
                 <Form.Control
+                    id="phone"
                     value={phone}
                     type='tel'
                     onChange={e => setPhone(e.target.value)}
                     isInvalid={everSubmitted && !validatedElements.phone}/>
             </Form.Group>
 
-            <Button variant='primary' type='submit'>Zarejestruj się</Button>
+            <Button variant='primary' type='submit' id="submit-button">Zarejestruj się</Button>
         </Form>
     </div>)
 }

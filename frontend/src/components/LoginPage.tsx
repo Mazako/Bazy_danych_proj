@@ -32,6 +32,7 @@ export function LoginPage(): React.JSX.Element {
                 <Form.Group className='mb-3' controlId='formBasicEmail'>
                     <Form.Label>Email</Form.Label>
                     <Form.Control
+                        id='email-label'
                         type='text'
                         onChange={e => setMail(e.target.value)}
                         value={mail}/>
@@ -39,13 +40,14 @@ export function LoginPage(): React.JSX.Element {
                 <Form.Group className='mb-3' controlId='formBasicPassword'>
                     <Form.Label>Hasło</Form.Label>
                     <Form.Control
+                        id="password-label"
                         value={password}
                         type='password'
                         onChange={e => setPassword(e.target.value)}/>
                 </Form.Group>
                 <Button variant='primary' type='submit'>Zaloguj się</Button>
             </Form>
-            {triedToLogin && !loggedIn && <p className="fs-4 text-danger">Niepoprawne dane logowania</p>}
+            {triedToLogin && !loggedIn && <p id="incorrect-login" className="fs-4 text-danger">Niepoprawne dane logowania</p>}
         </div>
     )
 }

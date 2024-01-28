@@ -17,9 +17,9 @@ export function UserProfilePage() {
                             <Nav.Item>
                                 <Nav.Link eventKey="mojeDane" className="nav-item-custom">Moje Dane</Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            <Nav.Item id="actual-reservations">
                                 <Nav.Link eventKey="mojeRezerwacje" className="nav-item-custom">Aktualne
-                                    rezerwacji</Nav.Link>
+                                    rezerwacje</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="historiaRezerwacji" className="nav-item-custom">Historia

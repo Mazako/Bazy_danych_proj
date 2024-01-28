@@ -42,7 +42,7 @@ export function TabContractsInfo(){
                     <th>Status</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="resorts-body-list">
                 {contracts.map(contract => (
                     <tr key={contract.id}>
                         <td>{contract.resortName}</td>

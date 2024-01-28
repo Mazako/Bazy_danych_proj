@@ -127,7 +127,7 @@ export function UserData() {
                     </Overlay>
 
             <OverlayTrigger placement="bottom" overlay={<Tooltip style={{position: "fixed"}}>Mój profil</Tooltip>}>
-                <Button className="mx-1" onClick={handleProfileClick}>
+                <Button className="mx-1" id="user-profile" onClick={handleProfileClick}>
                     <FaUserCircle />
                 </Button>
             </OverlayTrigger>

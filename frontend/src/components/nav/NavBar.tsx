@@ -18,10 +18,10 @@ export function NavBar() {
     if (role === "GUEST") {
         positions.push(
             <LinkContainer to="/login" key="login">
-                <Nav.Link eventKey="login">Logowanie</Nav.Link>
+                <Nav.Link id="login" eventKey="login">Logowanie</Nav.Link>
             </LinkContainer>,
             <LinkContainer to="/register" key="register">
-                <Nav.Link eventKey="register">Rejestracja</Nav.Link>
+                <Nav.Link id="register" eventKey="register">Rejestracja</Nav.Link>
             </LinkContainer>
         );
     } else if (role === "USER") {

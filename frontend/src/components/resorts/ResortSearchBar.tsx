@@ -32,42 +32,42 @@ export const SearchBar = ({ onSearch, onReset }) => {
                         <Col md={4}>
                             <InputGroup>
                                 <InputGroup.Text>🏖️</InputGroup.Text>
-                                <Form.Control placeholder="Nazwa kurortu" name="resortName" />
+                                <Form.Control placeholder="Nazwa kurortu" name="resortName" id="resort-name"/>
                             </InputGroup>
                         </Col>
                         <Col md={4}>
                             <InputGroup>
                                 <InputGroup.Text>🌐</InputGroup.Text>
-                                <Form.Control placeholder="Państwo" name="country" />
+                                <Form.Control placeholder="Państwo" name="country" id="country"/>
                             </InputGroup>
                         </Col>
                         <Col md={4}>
                             <InputGroup>
                                 <InputGroup.Text>🏙️</InputGroup.Text>
-                                <Form.Control placeholder="Miasto" name="city" />
+                                <Form.Control placeholder="Miasto" name="city" id="city"/>
                             </InputGroup>
                         </Col>
                         <Col md={3}>
                             <InputGroup>
                                 <InputGroup.Text>💲</InputGroup.Text>
-                                <Form.Control type="number" placeholder="Cena min" name="minPrice" />
+                                <Form.Control type="number" placeholder="Cena min" name="minPrice" id="min-price"/>
                             </InputGroup>
                         </Col>
                         <Col md={3}>
                             <InputGroup>
                                 <InputGroup.Text>💲</InputGroup.Text>
-                                <Form.Control type="number" placeholder="Cena max" name="maxPrice" />
+                                <Form.Control type="number" placeholder="Cena max" name="maxPrice" id="max-price"/>
                             </InputGroup>
                         </Col>
                         <Col md={3}>
-                            <Form.Control type="date" name="departureDate" />
+                            <Form.Control type="date" name="departureDate" id="departure-date"/>
                         </Col>
                         <Col md={3}>
-                            <Form.Control type="date" name="returnDate" />
+                            <Form.Control type="date" name="returnDate" id="return-date"/>
                         </Col>
                         <Col xs={12} className="text-center">
-                            <Button variant="primary" type="submit">Wyszukaj</Button>
-                            <Button variant="outline-secondary" onClick={handleReset} className="ms-2">Reset</Button>
+                            <Button variant="primary" type="submit" id="resort-search-button">Wyszukaj</Button>
+                            <Button variant="outline-secondary" onClick={handleReset} className="ms-2" id="resort-reset-button">Reset</Button>
                         </Col>
                     </Row>
                 </Form>

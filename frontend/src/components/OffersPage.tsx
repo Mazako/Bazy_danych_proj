@@ -63,7 +63,7 @@ export const OffersPage = () => {
     return (
         <div className="my-3">
             <SearchBar onSearch={handleSearch} onReset={resetSearch} />
-            <Row xs={1} md={3} className="g-4 mt-3" style={{ marginLeft: '5rem', marginRight: '5rem' }}>
+            <Row id="resort-list" xs={1} md={3} className="g-4 mt-3" style={{ marginLeft: '5rem', marginRight: '5rem' }}>
                 {offers && offers.map(offer => <ResortCard offer={offer} key={offer.resortName} />)}
             </Row>
             <div  className="my-4">
